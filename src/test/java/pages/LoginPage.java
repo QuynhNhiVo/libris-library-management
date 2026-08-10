@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 
-import com.libris.dao.UserDAO;
 import com.libris.ui.LoginView;
 
 public class LoginPage {
