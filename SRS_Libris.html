@@ -1,0 +1,1660 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SRS - Libris Desktop App</title>
+    <style>
+        /* ===== CSS RESET & BASE ===== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --primary: #2563EB;
+            --primary-dark: #1E3A8A;
+            --primary-light: #EFF6FF;
+            --accent: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --gray-50: #F8FAFC;
+            --gray-100: #F1F5F9;
+            --gray-200: #E2E8F0;
+            --gray-300: #CBD5E1;
+            --gray-400: #94A3B8;
+            --gray-500: #64748B;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1E293B;
+            --gray-900: #0F172A;
+            --font-sans: 'Segoe UI', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+            --radius: 12px;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,.05);
+            --shadow: 0 1px 3px rgba(0,0,0,.1), 0 1px 2px rgba(0,0,0,.06);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,.1), 0 2px 4px -2px rgba(0,0,0,.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,.1), 0 4px 6px -4px rgba(0,0,0,.1);
+        }
+
+        html { scroll-behavior: smooth; font-size: 16px; }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--gray-50);
+            color: var(--gray-800);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== SIDEBAR / TOC ===== */
+        .sidebar {
+            position: fixed;
+            top: 0; left: 0;
+            width: 280px;
+            height: 100vh;
+            background: #fff;
+            border-right: 1px solid var(--gray-200);
+            overflow-y: auto;
+            z-index: 100;
+            padding: 24px 0;
+            transition: transform .3s ease;
+        }
+
+        .sidebar-brand {
+            padding: 0 24px 20px;
+            border-bottom: 1px solid var(--gray-200);
+            margin-bottom: 16px;
+        }
+
+        .sidebar-brand h2 {
+            font-size: 1.25rem;
+            color: var(--primary);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sidebar-brand p {
+            font-size: .75rem;
+            color: var(--gray-400);
+            margin-top: 4px;
+        }
+
+        .toc { list-style: none; padding: 0 12px; }
+
+        .toc li { margin-bottom: 2px; }
+
+        .toc a {
+            display: block;
+            padding: 8px 12px;
+            font-size: .85rem;
+            color: var(--gray-600);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all .2s;
+        }
+
+        .toc a:hover, .toc a.active {
+            background: var(--primary-light);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .toc .sub { padding-left: 24px; font-size: .8rem; }
+
+        /* ===== MAIN CONTENT ===== */
+        .main {
+            margin-left: 280px;
+            padding: 40px 60px 80px;
+            max-width: 1100px;
+        }
+
+        /* ===== COVER ===== */
+        .cover {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+            border-radius: var(--radius);
+            padding: 60px 50px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cover::after {
+            content: '';
+            position: absolute;
+            top: -60%; right: -20%;
+            width: 600px; height: 600px;
+            background: rgba(255,255,255,.05);
+            border-radius: 50%;
+        }
+
+        .cover h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 8px; position: relative; z-index: 1; }
+        .cover .subtitle { font-size: 1.15rem; opacity: .9; margin-bottom: 32px; position: relative; z-index: 1; }
+
+        .cover-meta {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px 40px;
+            font-size: .9rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cover-meta span { opacity: .8; }
+        .cover-meta strong { opacity: 1; }
+
+        /* ===== SECTIONS ===== */
+        section { margin-bottom: 48px; }
+
+        h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            padding-bottom: 12px;
+            border-bottom: 3px solid var(--primary);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2 .badge {
+            background: var(--primary);
+            color: #fff;
+            font-size: .7rem;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin: 28px 0 12px;
+        }
+
+        h4 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin: 20px 0 10px;
+        }
+
+        p { margin-bottom: 12px; color: var(--gray-700); }
+
+        ul, ol { margin: 8px 0 16px 24px; color: var(--gray-700); }
+        li { margin-bottom: 6px; }
+
+        /* ===== CARDS ===== */
+        .card {
+            background: #fff;
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .card-header {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--gray-800);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-icon {
+            width: 32px; height: 32px;
+            background: var(--primary-light);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        /* ===== TABLES ===== */
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 16px 0 24px;
+            border-radius: var(--radius);
+            border: 1px solid var(--gray-200);
+            box-shadow: var(--shadow-sm);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: .9rem;
+        }
+
+        thead th {
+            background: var(--gray-50);
+            color: var(--gray-700);
+            font-weight: 600;
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 2px solid var(--gray-200);
+            white-space: nowrap;
+        }
+
+        tbody td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-100);
+            vertical-align: top;
+        }
+
+        tbody tr:hover { background: var(--gray-50); }
+
+        /* ===== BADGES ===== */
+        .tag {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: .75rem;
+            font-weight: 600;
+        }
+
+        .tag-blue { background: #DBEAFE; color: #1D4ED8; }
+        .tag-green { background: #D1FAE5; color: #065F46; }
+        .tag-yellow { background: #FEF3C7; color: #92400E; }
+        .tag-red { background: #FEE2E2; color: #991B1B; }
+        .tag-purple { background: #EDE9FE; color: #5B21B6; }
+        .tag-gray { background: var(--gray-100); color: var(--gray-600); }
+
+        /* ===== CODE ===== */
+        code {
+            font-family: var(--font-mono);
+            background: var(--gray-100);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: .85rem;
+            color: var(--primary-dark);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E2E8F0;
+            padding: 20px 24px;
+            border-radius: var(--radius);
+            overflow-x: auto;
+            font-size: .85rem;
+            line-height: 1.6;
+            margin: 16px 0 24px;
+        }
+
+        pre code {
+            background: none;
+            color: inherit;
+            padding: 0;
+        }
+
+        /* ===== DIAGRAM ===== */
+        .diagram-container {
+            background: #fff;
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin: 20px 0;
+            text-align: center;
+            overflow-x: auto;
+        }
+
+        .diagram-container svg { max-width: 100%; }
+
+        /* ===== FLOW LIST ===== */
+        .flow-list {
+            list-style: none;
+            margin: 0; padding: 0;
+            counter-reset: flow;
+        }
+
+        .flow-list li {
+            counter-increment: flow;
+            padding: 12px 16px 12px 48px;
+            position: relative;
+            border-left: 2px solid var(--primary-light);
+            margin-bottom: 0;
+        }
+
+        .flow-list li::before {
+            content: counter(flow);
+            position: absolute;
+            left: 10px; top: 12px;
+            width: 24px; height: 24px;
+            background: var(--primary);
+            color: #fff;
+            border-radius: 50%;
+            font-size: .75rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .flow-list li:last-child { border-left-color: transparent; }
+
+        /* ===== GRID ===== */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+
+        /* ===== ALERT BOX ===== */
+        .alert {
+            padding: 16px 20px;
+            border-radius: var(--radius);
+            margin: 16px 0;
+            font-size: .9rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .alert-info { background: #EFF6FF; border-left: 4px solid var(--primary); color: var(--primary-dark); }
+        .alert-warn { background: #FFFBEB; border-left: 4px solid var(--warning); color: #92400E; }
+        .alert-danger { background: #FEF2F2; border-left: 4px solid var(--danger); color: #991B1B; }
+
+        /* ===== MISC ===== */
+        .divider { border: none; border-top: 1px solid var(--gray-200); margin: 32px 0; }
+        .text-muted { color: var(--gray-400); }
+        .text-sm { font-size: .85rem; }
+        strong { color: var(--gray-900); }
+        .highlight { background: #FEF9C3; padding: 2px 4px; border-radius: 3px; }
+
+        /* ===== PRINT ===== */
+        @media print {
+            .sidebar { display: none; }
+            .main { margin-left: 0; padding: 20px; }
+            .cover { break-after: page; }
+            section { break-inside: avoid; }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .sidebar { transform: translateX(-100%); }
+            .main { margin-left: 0; padding: 24px; }
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== SIDEBAR / MỤC LỤC ===== -->
+<nav class="sidebar">
+    <div class="sidebar-brand">
+        <h2>📘 Libris SRS</h2>
+        <p>Đặc tả Yêu cầu Phần mềm v2.0</p>
+    </div>
+    <ul class="toc">
+        <li><a href="#sec1">1. Giới thiệu</a></li>
+        <li><a href="#sec1-1" class="sub">1.1 Mục đích</a></li>
+        <li><a href="#sec1-2" class="sub">1.2 Phạm vi</a></li>
+        <li><a href="#sec1-3" class="sub">1.3 Thuật ngữ</a></li>
+        <li><a href="#sec1-4" class="sub">1.4 Tài liệu tham khảo</a></li>
+        <li><a href="#sec2">2. Mô tả tổng quan</a></li>
+        <li><a href="#sec2-1" class="sub">2.1 Kiến trúc hệ thống</a></li>
+        <li><a href="#sec2-2" class="sub">2.2 Công nghệ sử dụng</a></li>
+        <li><a href="#sec2-3" class="sub">2.3 Cấu trúc mã nguồn</a></li>
+        <li><a href="#sec2-4" class="sub">2.4 Đối tượng sử dụng</a></li>
+        <li><a href="#sec2-5" class="sub">2.5 Ràng buộc hệ thống</a></li>
+        <li><a href="#sec3">3. Cơ sở dữ liệu</a></li>
+        <li><a href="#sec3-1" class="sub">3.1 Sơ đồ ERD</a></li>
+        <li><a href="#sec3-2" class="sub">3.2 Chi tiết các bảng</a></li>
+        <li><a href="#sec4">4. Yêu cầu chức năng</a></li>
+        <li><a href="#sec4-1" class="sub">4.1 Đăng nhập</a></li>
+        <li><a href="#sec4-2" class="sub">4.2 Dashboard</a></li>
+        <li><a href="#sec4-3" class="sub">4.3 Quản lý sách</a></li>
+        <li><a href="#sec4-4" class="sub">4.4 Quản lý khách hàng</a></li>
+        <li><a href="#sec4-5" class="sub">4.5 Quản lý đơn thuê</a></li>
+        <li><a href="#sec4-6" class="sub">4.6 Thuê sách (Customer)</a></li>
+        <li><a href="#sec4-7" class="sub">4.7 Sách đang thuê</a></li>
+        <li><a href="#sec4-8" class="sub">4.8 Báo cáo & Thống kê</a></li>
+        <li><a href="#sec4-9" class="sub">4.9 Hồ sơ người dùng</a></li>
+        <li><a href="#sec4-10" class="sub">4.10 Xuất Excel</a></li>
+        <li><a href="#sec5">5. Yêu cầu phi chức năng</a></li>
+        <li><a href="#sec6">6. Ma trận chức năng</a></li>
+        <li><a href="#sec7">7. Luồng nghiệp vụ</a></li>
+        <li><a href="#sec8">8. Phụ lục</a></li>
+    </ul>
+</nav>
+
+<!-- ===== NỘI DUNG CHÍNH ===== -->
+<div class="main">
+
+    <!-- COVER -->
+    <div class="cover">
+        <h1>📘 Đặc tả Yêu cầu Phần mềm (SRS)</h1>
+        <p class="subtitle">Hệ thống Quản lý Thư viện — Libris Desktop Application</p>
+        <div class="cover-meta">
+            <div><span>Phiên bản:</span> <strong>2.0</strong></div>
+            <div><span>Ngày tạo:</span> <strong>09/08/2026</strong></div>
+            <div><span>Dự án:</span> <strong>Java Libris Desktop App</strong></div>
+            <div><span>Công cụ:</span> <strong>Java Swing + SQLite</strong></div>
+            <div><span>Mã nguồn:</span> <strong>com.libris.*</strong></div>
+            <div><span>Trạng thái:</span> <strong>Phân tích từ mã nguồn</strong></div>
+        </div>
+    </div>
+
+    <!-- ===== 1. GIỚI THIỆU ===== -->
+    <section id="sec1">
+        <h2>1. Giới thiệu <span class="badge">INTRODUCTION</span></h2>
+
+        <div id="sec1-1">
+            <h3>1.1 Mục đích tài liệu</h3>
+            <p>
+                Tài liệu Đặc tả Yêu cầu Phần mềm (SRS) này mô tả đầy đủ các yêu cầu chức năng và phi chức năng 
+                của hệ thống <strong>Libris — Ứng dụng Quản lý Thư viện Desktop</strong>. Tài liệu được tạo tự động 
+                từ phân tích mã nguồn thực tế của dự án, bao gồm các package: <code>model</code>, <code>dao</code>, 
+                <code>controller</code>, <code>ui</code>, <code>utils</code>, <code>config</code>, và <code>helpers</code>.
+            </p>
+            <p>
+                Đối tượng đọc: nhóm phát triển, giảng viên, người đánh giá dự án và các bên liên quan khác 
+                cần hiểu rõ chức năng, kiến trúc và hành vi của hệ thống.
+            </p>
+        </div>
+
+        <div id="sec1-2">
+            <h3>1.2 Phạm vi hệ thống</h3>
+            <p>
+                <strong>Libris</strong> là ứng dụng desktop (Java Swing) dùng để quản lý hoạt động cho thuê sách 
+                tại thư viện. Hệ thống hỗ trợ hai vai trò người dùng chính:
+            </p>
+            <div class="grid-2">
+                <div class="card">
+                    <div class="card-header"><div class="card-icon">👨‍💼</div> Admin (Quản trị viên)</div>
+                    <ul>
+                        <li>Quản lý danh mục sách (CRUD)</li>
+                        <li>Quản lý khách hàng (CRUD)</li>
+                        <li>Quản lý đơn thuê sách</li>
+                        <li>Duyệt / Từ chối đơn thuê</li>
+                        <li>Xem Dashboard tổng quan</li>
+                        <li>Xem báo cáo & thống kê</li>
+                        <li>Xuất dữ liệu ra Excel</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <div class="card-header"><div class="card-icon">👤</div> Customer (Khách hàng)</div>
+                    <ul>
+                        <li>Xem danh sách sách có sẵn</li>
+                        <li>Tạo yêu cầu thuê sách</li>
+                        <li>Xem danh sách sách đang thuê</li>
+                        <li>Yêu cầu trả sách</li>
+                        <li>Quản lý hồ sơ cá nhân</li>
+                        <li>Đổi mật khẩu</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="sec1-3">
+            <h3>1.3 Thuật ngữ & Viết tắt</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Thuật ngữ</th>
+                            <th>Ý nghĩa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>SRS</code></td><td>Software Requirements Specification — Đặc tả yêu cầu phần mềm</td></tr>
+                        <tr><td><code>CRUD</code></td><td>Create, Read, Update, Delete — Các thao tác cơ bản trên dữ liệu</td></tr>
+                        <tr><td><code>DAO</code></td><td>Data Access Object — Lớp truy cập dữ liệu</td></tr>
+                        <tr><td><code>MVC</code></td><td>Model–View–Controller — Mô hình kiến trúc phần mềm</td></tr>
+                        <tr><td><code>ERD</code></td><td>Entity Relationship Diagram — Sơ đồ quan hệ thực thể</td></tr>
+                        <tr><td><code>SQLite</code></td><td>Hệ quản trị CSDL nhúng, file-based</td></tr>
+                        <tr><td><code>FlatLaf</code></td><td>Thư viện Look & Feel hiện đại cho Java Swing</td></tr>
+                        <tr><td><code>JFreeChart</code></td><td>Thư viện tạo biểu đồ cho Java</td></tr>
+                        <tr><td><code>Apache POI</code></td><td>Thư viện đọc/ghi file Microsoft Office (Excel .xlsx)</td></tr>
+                        <tr><td><code>WAL</code></td><td>Write-Ahead Logging — Chế độ ghi trước log của SQLite</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="sec1-4">
+            <h3>1.4 Tài liệu tham khảo</h3>
+            <ul>
+                <li>IEEE Std 830-1998: Recommended Practice for Software Requirements Specifications</li>
+                <li>Mã nguồn dự án: <code>com.libris.*</code></li>
+                <li>File schema: <code>src/main/resources/database.sql</code></li>
+                <li>File cấu hình Maven: <code>pom.xml</code></li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- ===== 2. MÔ TẢ TỔNG QUAN ===== -->
+    <section id="sec2">
+        <h2>2. Mô tả tổng quan <span class="badge">OVERVIEW</span></h2>
+
+        <div id="sec2-1">
+            <h3>2.1 Kiến trúc hệ thống</h3>
+            <p>
+                Libris sử dụng mô hình kiến trúc <strong>MVC (Model–View–Controller)</strong> được tổ chức rõ ràng 
+                thành các package riêng biệt. Các tầng giao tiếp theo hướng: <code>UI (View) → Controller → DAO → Database</code>.
+            </p>
+
+            <div class="diagram-container">
+                <svg viewBox="0 0 800 420" xmlns="http://www.w3.org/2000/svg" style="max-width:720px">
+                    <!-- Background -->
+                    <defs>
+                        <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#2563EB"/>
+                            <stop offset="100%" stop-color="#1E3A8A"/>
+                        </linearGradient>
+                        <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#10B981"/>
+                            <stop offset="100%" stop-color="#065F46"/>
+                        </linearGradient>
+                        <linearGradient id="g3" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#F59E0B"/>
+                            <stop offset="100%" stop-color="#92400E"/>
+                        </linearGradient>
+                        <linearGradient id="g4" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#8B5CF6"/>
+                            <stop offset="100%" stop-color="#5B21B6"/>
+                        </linearGradient>
+                    </defs>
+
+                    <!-- UI Layer -->
+                    <rect x="50" y="20" width="700" height="75" rx="12" fill="url(#g1)" opacity=".9"/>
+                    <text x="400" y="48" text-anchor="middle" fill="#fff" font-weight="700" font-size="15">TẦNG GIAO DIỆN (UI / View)</text>
+                    <text x="400" y="72" text-anchor="middle" fill="#BFDBFE" font-size="11">LoginView · MainFrame · SidebarPanel · DashboardView · BooksView · CustomersView · OrdersView · RentView · MyRentalsView · ReportsView · ProfileView</text>
+
+                    <!-- Arrow -->
+                    <path d="M400 95 L400 125" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrow)"/>
+                    <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#94A3B8"/></marker></defs>
+
+                    <!-- Controller Layer -->
+                    <rect x="50" y="130" width="700" height="70" rx="12" fill="url(#g2)" opacity=".9"/>
+                    <text x="400" y="158" text-anchor="middle" fill="#fff" font-weight="700" font-size="15">TẦNG ĐIỀU KHIỂN (Controller)</text>
+                    <text x="400" y="180" text-anchor="middle" fill="#D1FAE5" font-size="11">AuthController · BookController · CustomerController · RentalOrderController · RentController · ReportController</text>
+
+                    <!-- Arrow -->
+                    <path d="M400 200 L400 230" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrow)"/>
+
+                    <!-- DAO Layer -->
+                    <rect x="50" y="235" width="700" height="70" rx="12" fill="url(#g3)" opacity=".9"/>
+                    <text x="400" y="263" text-anchor="middle" fill="#fff" font-weight="700" font-size="15">TẦNG TRUY CẬP DỮ LIỆU (DAO)</text>
+                    <text x="400" y="285" text-anchor="middle" fill="#FEF3C7" font-size="11">UserDAO · BookDAO · CustomerDAO · RentalOrderDAO · RentDAO · ReportDAO</text>
+
+                    <!-- Arrow -->
+                    <path d="M400 305 L400 335" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrow)"/>
+
+                    <!-- DB Layer -->
+                    <rect x="200" y="340" width="400" height="60" rx="12" fill="url(#g4)" opacity=".9"/>
+                    <text x="400" y="368" text-anchor="middle" fill="#fff" font-weight="700" font-size="15">CƠ SỞ DỮ LIỆU SQLite</text>
+                    <text x="400" y="388" text-anchor="middle" fill="#EDE9FE" font-size="11">Libris.db (WAL mode) — DatabaseConnection · database.sql</text>
+
+                    <!-- Side: Model -->
+                    <rect x="50" y="340" width="130" height="60" rx="10" fill="#F1F5F9" stroke="#CBD5E1"/>
+                    <text x="115" y="366" text-anchor="middle" fill="#334155" font-weight="600" font-size="12">MODEL</text>
+                    <text x="115" y="384" text-anchor="middle" fill="#64748B" font-size="9">Book · User · Customer</text>
+
+                    <!-- Side: Utils -->
+                    <rect x="620" y="340" width="130" height="60" rx="10" fill="#F1F5F9" stroke="#CBD5E1"/>
+                    <text x="685" y="366" text-anchor="middle" fill="#334155" font-weight="600" font-size="12">UTILS / CONFIG</text>
+                    <text x="685" y="384" text-anchor="middle" fill="#64748B" font-size="9">Excel · Chart · Icon</text>
+                </svg>
+            </div>
+        </div>
+
+        <div id="sec2-2">
+            <h3>2.2 Công nghệ sử dụng</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr><th>Công nghệ</th><th>Phiên bản</th><th>Vai trò</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Java SE</strong></td><td>25</td><td>Ngôn ngữ lập trình chính</td></tr>
+                        <tr><td><strong>Java Swing</strong></td><td>—</td><td>Framework xây dựng giao diện desktop</td></tr>
+                        <tr><td><strong>SQLite</strong></td><td>3.53.2.0</td><td>Hệ quản trị CSDL nhúng (file-based)</td></tr>
+                        <tr><td><strong>FlatLaf</strong></td><td>3.7.1</td><td>Modern Look &amp; Feel cho Swing</td></tr>
+                        <tr><td><strong>FlatLaf Extras</strong></td><td>3.7.1</td><td>Hỗ trợ render icon SVG</td></tr>
+                        <tr><td><strong>JFreeChart</strong></td><td>1.5.6</td><td>Tạo biểu đồ thống kê (Line Chart)</td></tr>
+                        <tr><td><strong>Apache POI</strong></td><td>5.5.1</td><td>Xuất dữ liệu ra file Excel (.xlsx)</td></tr>
+                        <tr><td><strong>Maven</strong></td><td>—</td><td>Quản lý build và dependency</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="sec2-3">
+            <h3>2.3 Cấu trúc mã nguồn (Package)</h3>
+            <pre><code>com.libris/
+├── config/
+│   └── Constants.java            — Hằng số hệ thống, đường dẫn icon, URL database
+├── helpers/
+│   └── PropertiesHelpers.java    — Đọc file .properties (Icons.properties)
+├── model/                        — Các lớp thực thể (Entity / POJO)
+│   ├── Book.java                 — Thực thể Sách
+│   ├── Customer.java             — Thực thể Khách hàng
+│   ├── User.java                 — Thực thể Người dùng (Account)
+│   ├── RentalOrder.java          — Thực thể Đơn thuê sách
+│   ├── RentalOrderDetail.java    — Chi tiết đơn thuê (sách trong đơn)
+│   ├── RentRequest.java          — Yêu cầu thuê sách (từ Customer)
+│   └── ReportStat.java           — Dữ liệu thống kê (label-value)
+├── dao/                          — Data Access Objects (SQL queries)
+│   ├── UserDAO.java              — Xác thực, quản lý tài khoản
+│   ├── BookDAO.java              — CRUD sách, tìm kiếm
+│   ├── CustomerDAO.java          — CRUD khách hàng, tìm kiếm
+│   ├── RentalOrderDAO.java       — CRUD đơn thuê, chi tiết đơn
+│   ├── RentDAO.java              — Xử lý thuê/trả sách (Customer)
+│   └── ReportDAO.java            — Truy vấn thống kê & báo cáo
+├── controller/                   — Business logic trung gian
+│   ├── AuthController.java       — Đăng nhập, hồ sơ, đổi mật khẩu
+│   ├── BookController.java       — Quản lý sách
+│   ├── CustomerController.java   — Quản lý khách hàng
+│   ├── RentalOrderController.java— Quản lý đơn thuê (Admin)
+│   ├── RentController.java       — Thuê/trả sách (Customer)
+│   └── ReportController.java     — Báo cáo & thống kê
+├── ui/                           — Giao diện Swing (Views)
+│   ├── LoginView.java            — Màn hình đăng nhập
+│   ├── MainFrame.java            — Khung chính + CardLayout
+│   ├── SidebarPanel.java         — Thanh điều hướng bên trái
+│   ├── DashboardView.java        — Tổng quan hệ thống (Admin)
+│   ├── BooksView.java            — Quản lý sách (Admin)
+│   ├── CustomersView.java        — Quản lý khách hàng (Admin)
+│   ├── OrdersView.java           — Quản lý đơn thuê (Admin)
+│   ├── ReportsView.java          — Báo cáo thống kê (Admin)
+│   ├── RentView.java             — Thuê sách (Customer)
+│   ├── MyRentalsView.java        — Sách đang thuê (Customer)
+│   └── ProfileView.java          — Hồ sơ cá nhân (Customer)
+└── utils/                        — Tiện ích
+    ├── DatabaseConnection.java   — Kết nối & khởi tạo SQLite
+    ├── ExcelExporter.java        — Xuất Excel (Books, Customers, Orders, Revenue)
+    ├── ChartGenerator.java       — Tạo biểu đồ doanh thu (JFreeChart)
+    └── IconUtils.java            — Load icon SVG/PNG từ URL hoặc local</code></pre>
+        </div>
+
+        <div id="sec2-4">
+            <h3>2.4 Đối tượng sử dụng & Vai trò</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr><th>Vai trò</th><th>Mô tả</th><th>Sidebar Menu</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="tag tag-blue">Admin</span></td>
+                            <td>Quản trị viên thư viện — toàn quyền quản lý sách, khách hàng, đơn thuê và xem báo cáo. Tài khoản Admin <strong>không</strong> liên kết với bảng Customers (<code>CustomerID = NULL</code>).</td>
+                            <td>Tổng quan · Quản lý sách · Khách hàng · Đơn thuê · Báo cáo</td>
+                        </tr>
+                        <tr>
+                            <td><span class="tag tag-green">Customer</span></td>
+                            <td>Khách hàng — đăng nhập để thuê sách, theo dõi đơn thuê và quản lý hồ sơ cá nhân. Tài khoản Customer liên kết với bảng Customers qua <code>CustomerID</code>.</td>
+                            <td>Thuê sách · Sách đang thuê · Hồ sơ</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="sec2-5">
+            <h3>2.5 Ràng buộc hệ thống</h3>
+            <ul>
+                <li>Hệ thống chạy dưới dạng ứng dụng <strong>Desktop standalone</strong> (Java Swing), không có server riêng.</li>
+                <li>Cơ sở dữ liệu SQLite lưu tại file <code>Libris.db</code> cùng thư mục với ứng dụng.</li>
+                <li>Kết nối database dùng chế độ <strong>WAL</strong> (Write-Ahead Logging) với <code>busy_timeout=30000ms</code>.</li>
+                <li>Entry point của ứng dụng: <code>com.libris.ui.LoginView.main()</code>.</li>
+                <li>Kích thước cửa sổ tối thiểu: <strong>1024 × 800 pixels</strong>.</li>
+                <li>Icon được load từ URL internet (unpkg.com) hoặc file local resources.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- ===== 3. CƠ SỞ DỮ LIỆU ===== -->
+    <section id="sec3">
+        <h2>3. Cơ sở dữ liệu <span class="badge">DATABASE</span></h2>
+
+        <div id="sec3-1">
+            <h3>3.1 Sơ đồ quan hệ thực thể (ERD)</h3>
+            <div class="diagram-container">
+                <svg viewBox="0 0 820 500" xmlns="http://www.w3.org/2000/svg" style="max-width:780px">
+                    <!-- Books -->
+                    <rect x="20" y="20" width="230" height="260" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
+                    <rect x="20" y="20" width="230" height="36" rx="10" fill="#2563EB"/>
+                    <rect x="20" y="46" width="230" height="0" fill="#2563EB"/>
+                    <text x="135" y="44" text-anchor="middle" fill="#fff" font-weight="700" font-size="14">📚 Books</text>
+                    <text x="32" y="72" fill="#1E293B" font-size="11" font-weight="600">PK  BookID         INTEGER</text>
+                    <text x="32" y="90" fill="#334155" font-size="11">     BookCode       VARCHAR(20) UQ</text>
+                    <text x="32" y="108" fill="#334155" font-size="11">     Title          VARCHAR(200)</text>
+                    <text x="32" y="126" fill="#334155" font-size="11">     Author         VARCHAR(100)</text>
+                    <text x="32" y="144" fill="#334155" font-size="11">     Category       VARCHAR(100)</text>
+                    <text x="32" y="162" fill="#334155" font-size="11">     Publisher      VARCHAR(100)</text>
+                    <text x="32" y="180" fill="#334155" font-size="11">     PublishYear    INTEGER</text>
+                    <text x="32" y="198" fill="#334155" font-size="11">     BookStatus     VARCHAR(20)</text>
+                    <text x="32" y="216" fill="#334155" font-size="11">     RentalPrice    INTEGER</text>
+                    <text x="32" y="234" fill="#334155" font-size="11">     DepositPrice   INTEGER</text>
+                    <text x="32" y="264" fill="#64748B" font-size="9" font-style="italic">CHECK: Available|Rented|Pending</text>
+
+                    <!-- Customers -->
+                    <rect x="310" y="20" width="220" height="180" rx="10" fill="#ECFDF5" stroke="#10B981" stroke-width="2"/>
+                    <rect x="310" y="20" width="220" height="36" rx="10" fill="#10B981"/>
+                    <text x="420" y="44" text-anchor="middle" fill="#fff" font-weight="700" font-size="14">👥 Customers</text>
+                    <text x="322" y="72" fill="#1E293B" font-size="11" font-weight="600">PK  CustomerID     INTEGER</text>
+                    <text x="322" y="90" fill="#334155" font-size="11">     CustomerCode   VARCHAR(20) UQ</text>
+                    <text x="322" y="108" fill="#334155" font-size="11">     FullName       VARCHAR(100)</text>
+                    <text x="322" y="126" fill="#334155" font-size="11">     Phone          VARCHAR(20)</text>
+                    <text x="322" y="144" fill="#334155" font-size="11">     Address        VARCHAR(200)</text>
+                    <text x="322" y="162" fill="#334155" font-size="11">     Email          VARCHAR(100)</text>
+
+                    <!-- Users -->
+                    <rect x="590" y="20" width="210" height="170" rx="10" fill="#FEF3C7" stroke="#F59E0B" stroke-width="2"/>
+                    <rect x="590" y="20" width="210" height="36" rx="10" fill="#F59E0B"/>
+                    <text x="695" y="44" text-anchor="middle" fill="#fff" font-weight="700" font-size="14">🔐 Users</text>
+                    <text x="602" y="72" fill="#1E293B" font-size="11" font-weight="600">PK  UserID         INTEGER</text>
+                    <text x="602" y="90" fill="#334155" font-size="11">     Username       VARCHAR(50) UQ</text>
+                    <text x="602" y="108" fill="#334155" font-size="11">     Password       VARCHAR(100)</text>
+                    <text x="602" y="126" fill="#334155" font-size="11">     Role           VARCHAR(20)</text>
+                    <text x="602" y="144" fill="#1E293B" font-size="11" font-weight="600">FK  CustomerID     INTEGER NULL</text>
+                    <text x="602" y="170" fill="#64748B" font-size="9" font-style="italic">CHECK: Admin|Customer</text>
+
+                    <!-- FK: Users → Customers -->
+                    <line x1="590" y1="144" x2="530" y2="110" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="4"/>
+                    <text x="548" y="120" fill="#92400E" font-size="9">FK</text>
+
+                    <!-- RentalOrders -->
+                    <rect x="270" y="260" width="280" height="230" rx="10" fill="#FEF2F2" stroke="#EF4444" stroke-width="2"/>
+                    <rect x="270" y="260" width="280" height="36" rx="10" fill="#EF4444"/>
+                    <text x="410" y="284" text-anchor="middle" fill="#fff" font-weight="700" font-size="14">📋 RentalOrders</text>
+                    <text x="282" y="312" fill="#1E293B" font-size="11" font-weight="600">PK  OrderID            INTEGER</text>
+                    <text x="282" y="330" fill="#334155" font-size="11">     OrderCode          VARCHAR(20) UQ</text>
+                    <text x="282" y="348" fill="#1E293B" font-size="11" font-weight="600">FK  CustomerID         INTEGER</text>
+                    <text x="282" y="366" fill="#334155" font-size="11">     RentDate           DATETIME</text>
+                    <text x="282" y="384" fill="#334155" font-size="11">     ExpectedReturnDate DATETIME</text>
+                    <text x="282" y="402" fill="#334155" font-size="11">     ReturnDate         DATETIME NULL</text>
+                    <text x="282" y="420" fill="#334155" font-size="11">     OrderStatus        VARCHAR(20)</text>
+                    <text x="282" y="438" fill="#334155" font-size="11">     TotalDeposit / TotalRentalFee</text>
+                    <text x="282" y="456" fill="#334155" font-size="11">     LateFee / TotalAmount  INTEGER</text>
+                    <text x="282" y="478" fill="#64748B" font-size="9" font-style="italic">CHECK: Pending|Renting|Returned|Rejected</text>
+
+                    <!-- FK: RentalOrders → Customers -->
+                    <line x1="410" y1="260" x2="420" y2="200" stroke="#EF4444" stroke-width="1.5" stroke-dasharray="4"/>
+                    <text x="422" y="230" fill="#991B1B" font-size="9">FK CustomerID</text>
+
+                    <!-- RentalOrderDetails -->
+                    <rect x="600" y="300" width="200" height="130" rx="10" fill="#EDE9FE" stroke="#8B5CF6" stroke-width="2"/>
+                    <rect x="600" y="300" width="200" height="36" rx="10" fill="#8B5CF6"/>
+                    <text x="700" y="324" text-anchor="middle" fill="#fff" font-weight="700" font-size="13">📄 OrderDetails</text>
+                    <text x="612" y="352" fill="#1E293B" font-size="11" font-weight="600">PK  OrderDetailID  INT</text>
+                    <text x="612" y="370" fill="#1E293B" font-size="11" font-weight="600">FK  OrderID       INT</text>
+                    <text x="612" y="388" fill="#1E293B" font-size="11" font-weight="600">FK  BookID        INT</text>
+
+                    <!-- FK: Details → Orders -->
+                    <line x1="600" y1="370" x2="550" y2="370" stroke="#8B5CF6" stroke-width="1.5" stroke-dasharray="4"/>
+                    <text x="558" y="364" fill="#5B21B6" font-size="9">FK</text>
+
+                    <!-- FK: Details → Books -->
+                    <line x1="700" y1="430" x2="135" y2="280" stroke="#8B5CF6" stroke-width="1" stroke-dasharray="4" opacity=".5"/>
+                    <text x="200" y="310" fill="#5B21B6" font-size="9">FK BookID</text>
+                </svg>
+            </div>
+        </div>
+
+        <div id="sec3-2">
+            <h3>3.2 Chi tiết các bảng dữ liệu</h3>
+
+            <h4>3.2.1 Bảng Books (Sách)</h4>
+            <div class="table-wrapper">
+                <table>
+                    <thead><tr><th>Cột</th><th>Kiểu dữ liệu</th><th>Ràng buộc</th><th>Mô tả</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>BookID</code></td><td>INTEGER</td><td>PK, AUTO_INCREMENT</td><td>ID sách (tự tăng)</td></tr>
+                        <tr><td><code>BookCode</code></td><td>VARCHAR(20)</td><td>NOT NULL, UNIQUE</td><td>Mã sách (VD: B001)</td></tr>
+                        <tr><td><code>Title</code></td><td>VARCHAR(200)</td><td>NOT NULL</td><td>Tên sách</td></tr>
+                        <tr><td><code>Author</code></td><td>VARCHAR(100)</td><td>NOT NULL</td><td>Tên tác giả</td></tr>
+                        <tr><td><code>Category</code></td><td>VARCHAR(100)</td><td>—</td><td>Thể loại (Văn học, Thiếu nhi, ...)</td></tr>
+                        <tr><td><code>Publisher</code></td><td>VARCHAR(100)</td><td>—</td><td>Nhà xuất bản</td></tr>
+                        <tr><td><code>PublishYear</code></td><td>INTEGER</td><td>—</td><td>Năm xuất bản</td></tr>
+                        <tr><td><code>BookStatus</code></td><td>VARCHAR(20)</td><td>NOT NULL, CHECK</td><td>Trạng thái: <span class="tag tag-green">Available</span> <span class="tag tag-yellow">Pending</span> <span class="tag tag-red">Rented</span></td></tr>
+                        <tr><td><code>RentalPrice</code></td><td>INTEGER</td><td>NOT NULL, DEFAULT 10000</td><td>Giá thuê (VNĐ/ngày)</td></tr>
+                        <tr><td><code>DepositPrice</code></td><td>INTEGER</td><td>NOT NULL, DEFAULT 50000</td><td>Tiền đặt cọc (VNĐ)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4>3.2.2 Bảng Customers (Khách hàng)</h4>
+            <div class="table-wrapper">
+                <table>
+                    <thead><tr><th>Cột</th><th>Kiểu dữ liệu</th><th>Ràng buộc</th><th>Mô tả</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>CustomerID</code></td><td>INTEGER</td><td>PK, AUTO_INCREMENT</td><td>ID khách hàng</td></tr>
+                        <tr><td><code>CustomerCode</code></td><td>VARCHAR(20)</td><td>NOT NULL, UNIQUE</td><td>Mã khách hàng (VD: C001)</td></tr>
+                        <tr><td><code>FullName</code></td><td>VARCHAR(100)</td><td>NOT NULL</td><td>Họ và tên</td></tr>
+                        <tr><td><code>Phone</code></td><td>VARCHAR(20)</td><td>—</td><td>Số điện thoại</td></tr>
+                        <tr><td><code>Address</code></td><td>VARCHAR(200)</td><td>—</td><td>Địa chỉ</td></tr>
+                        <tr><td><code>Email</code></td><td>VARCHAR(100)</td><td>—</td><td>Email</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4>3.2.3 Bảng Users (Tài khoản người dùng)</h4>
+            <div class="table-wrapper">
+                <table>
+                    <thead><tr><th>Cột</th><th>Kiểu dữ liệu</th><th>Ràng buộc</th><th>Mô tả</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>UserID</code></td><td>INTEGER</td><td>PK, AUTO_INCREMENT</td><td>ID tài khoản</td></tr>
+                        <tr><td><code>Username</code></td><td>VARCHAR(50)</td><td>NOT NULL, UNIQUE</td><td>Tên đăng nhập</td></tr>
+                        <tr><td><code>Password</code></td><td>VARCHAR(100)</td><td>NOT NULL</td><td>Mật khẩu (plain text)</td></tr>
+                        <tr><td><code>Role</code></td><td>VARCHAR(20)</td><td>NOT NULL, CHECK</td><td>Vai trò: <span class="tag tag-blue">Admin</span> hoặc <span class="tag tag-green">Customer</span></td></tr>
+                        <tr><td><code>CustomerID</code></td><td>INTEGER</td><td>FK, NULLABLE</td><td>Liên kết với Customers (NULL nếu Admin)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4>3.2.4 Bảng RentalOrders (Đơn thuê sách)</h4>
+            <div class="table-wrapper">
+                <table>
+                    <thead><tr><th>Cột</th><th>Kiểu dữ liệu</th><th>Ràng buộc</th><th>Mô tả</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>OrderID</code></td><td>INTEGER</td><td>PK, AUTO_INCREMENT</td><td>ID đơn thuê</td></tr>
+                        <tr><td><code>OrderCode</code></td><td>VARCHAR(20)</td><td>NOT NULL, UNIQUE</td><td>Mã đơn (VD: O001)</td></tr>
+                        <tr><td><code>CustomerID</code></td><td>INTEGER</td><td>FK, NOT NULL</td><td>ID khách hàng thuê</td></tr>
+                        <tr><td><code>RentDate</code></td><td>DATETIME</td><td>NOT NULL, DEFAULT NOW</td><td>Ngày thuê</td></tr>
+                        <tr><td><code>ExpectedReturnDate</code></td><td>DATETIME</td><td>NOT NULL</td><td>Ngày dự kiến trả (≥ RentDate)</td></tr>
+                        <tr><td><code>ReturnDate</code></td><td>DATETIME</td><td>NULLABLE</td><td>Ngày trả thực tế (≥ RentDate)</td></tr>
+                        <tr><td><code>OrderStatus</code></td><td>VARCHAR(20)</td><td>NOT NULL, CHECK</td><td>
+                            <span class="tag tag-yellow">Pending</span>
+                            <span class="tag tag-blue">Renting</span>
+                            <span class="tag tag-green">Returned</span>
+                            <span class="tag tag-red">Rejected</span>
+                        </td></tr>
+                        <tr><td><code>TotalDeposit</code></td><td>INTEGER</td><td>DEFAULT 0</td><td>Tổng tiền đặt cọc</td></tr>
+                        <tr><td><code>TotalRentalFee</code></td><td>INTEGER</td><td>DEFAULT 0</td><td>Tổng phí thuê</td></tr>
+                        <tr><td><code>LateFee</code></td><td>INTEGER</td><td>DEFAULT 0</td><td>Phí phạt trả muộn</td></tr>
+                        <tr><td><code>TotalAmount</code></td><td>INTEGER</td><td>DEFAULT 0</td><td>Tổng thanh toán</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4>3.2.5 Bảng RentalOrderDetails (Chi tiết đơn thuê)</h4>
+            <div class="table-wrapper">
+                <table>
+                    <thead><tr><th>Cột</th><th>Kiểu dữ liệu</th><th>Ràng buộc</th><th>Mô tả</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>OrderDetailID</code></td><td>INTEGER</td><td>PK, AUTO_INCREMENT</td><td>ID chi tiết</td></tr>
+                        <tr><td><code>OrderID</code></td><td>INTEGER</td><td>FK, NOT NULL</td><td>Tham chiếu đến RentalOrders</td></tr>
+                        <tr><td><code>BookID</code></td><td>INTEGER</td><td>FK, NOT NULL</td><td>Tham chiếu đến Books</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="alert alert-info">
+                <span>ℹ️</span>
+                <div>
+                    <strong>Quan hệ dữ liệu:</strong> Mỗi đơn thuê (RentalOrders) có thể chứa nhiều sách thông qua bảng trung gian RentalOrderDetails. 
+                    Một User role "Customer" liên kết 1-1 với một Customer thông qua CustomerID.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 4. YÊU CẦU CHỨC NĂNG ===== -->
+    <section id="sec4">
+        <h2>4. Yêu cầu chức năng <span class="badge">FUNCTIONAL REQUIREMENTS</span></h2>
+
+        <!-- 4.1 ĐĂNG NHẬP -->
+        <div id="sec4-1" class="card">
+            <div class="card-header"><div class="card-icon">🔐</div> FR-01: Đăng nhập hệ thống</div>
+            <div class="table-wrapper">
+                <table>
+                    <tbody>
+                        <tr><td style="width:160px"><strong>Mã chức năng</strong></td><td>FR-01</td></tr>
+                        <tr><td><strong>Tên chức năng</strong></td><td>Đăng nhập hệ thống (Login)</td></tr>
+                        <tr><td><strong>Vai trò</strong></td><td><span class="tag tag-blue">Admin</span> <span class="tag tag-green">Customer</span></td></tr>
+                        <tr><td><strong>Lớp liên quan</strong></td><td><code>LoginView</code> → <code>AuthController</code> → <code>UserDAO.login()</code></td></tr>
+                        <tr><td><strong>Mô tả</strong></td><td>Người dùng nhập tên đăng nhập và mật khẩu để truy cập hệ thống. Hệ thống xác thực thông tin từ bảng Users (LEFT JOIN Customers để lấy thông tin profile).</td></tr>
+                        <tr><td><strong>Dữ liệu đầu vào</strong></td><td>Username (text), Password (text)</td></tr>
+                        <tr><td><strong>Dữ liệu đầu ra</strong></td><td>Đối tượng <code>User</code> chứa: userId, username, password, role, customerId, fullName, email, phone</td></tr>
+                        <tr><td><strong>Xử lý bất đồng bộ</strong></td><td>Có — sử dụng <code>SwingWorker</code> để tránh block UI thread</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <h4>Luồng xử lý:</h4>
+            <ol class="flow-list">
+                <li>Người dùng mở ứng dụng → hiển thị <code>LoginView</code> (cửa sổ 900×550).</li>
+                <li>Nhập Username và Password vào form.</li>
+                <li>Nhấn nút "Đăng nhập" hoặc phím Enter.</li>
+                <li>Hệ thống kiểm tra: nếu username hoặc password rỗng → hiển thị thông báo lỗi "Vui lòng nhập đủ thông tin!".</li>
+                <li>Nút Login chuyển sang trạng thái disabled, text đổi thành "Đang kết nối...".</li>
+                <li><code>SwingWorker</code> thực thi <code>AuthController.login()</code> trên background thread.</li>
+                <li><code>UserDAO.login()</code> thực hiện truy vấn SQL: <code>SELECT u.*, c.FullName, c.Email, c.Phone FROM Users u LEFT JOIN Customers c ON u.CustomerID = c.CustomerID WHERE u.Username = ? AND u.Password = ?</code></li>
+                <li>Nếu tìm thấy user → tạo <code>MainFrame(user)</code> → đóng LoginView.</li>
+                <li>Nếu không tìm thấy → hiển thị "Sai tên đăng nhập hoặc mật khẩu!" → enable lại nút Login.</li>
+                <li>Nếu có lỗi kết nối database → hiển thị "Lỗi kết nối cơ sở dữ liệu!".</li>
+            </ol>
+            <h4>Điều hướng sau đăng nhập:</h4>
+            <ul>
+                <li><strong>Admin</strong> → trang mặc định: <code>dashboard</code> (Tổng quan)</li>
+                <li><strong>Customer</strong> → trang mặc định: <code>rent</code> (Thuê sách)</li>
+            </ul>
+        </div>
+
+        <!-- 4.2 DASHBOARD -->
+        <div id="sec4-2" class="card">
+            <div class="card-header"><div class="card-icon">📊</div> FR-02: Tổng quan hệ thống (Dashboard)</div>
+            <div class="table-wrapper">
+                <table>
+                    <tbody>
+                        <tr><td style="width:160px"><strong>Mã chức năng</strong></td><td>FR-02</td></tr>
+                        <tr><td><strong>Vai trò</strong></td><td><span class="tag tag-blue">Admin</span></td></tr>
+                        <tr><td><strong>Lớp liên quan</strong></td><td><code>DashboardView</code> → <code>BookController</code>, <code>CustomerController</code>, <code>RentalOrderController</code>, <code>ReportController</code></td></tr>
+                        <tr><td><strong>Mô tả</strong></td><td>Trang tổng quan hiển thị các thẻ thống kê nhanh, bảng đơn thuê gần đây và danh sách sách được thuê nhiều nhất.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <h4>Thành phần giao diện:</h4>
+            <div class="grid-2">
+                <div>
+                    <strong>4 thẻ thống kê (Stat Cards):</strong>
+                    <ul>
+                        <li>Tổng số sách</li>
+                        <li>Sách có sẵn (Available)</li>
+                        <li>Sách đang thuê (Rented)</li>
+                        <li>Tổng khách hàng</li>
+                    </ul>
+                </div>
+                <div>
+                    <strong>Bảng và Widget:</strong>
+                    <ul>
+                        <li>Bảng "Đơn thuê gần đây" — hiển thị 5 đơn mới nhất (Mã đơn, Khách hàng, Ngày thuê, Trạng thái)</li>
+                        <li>Widget "Sách được thuê nhiều nhất" — Top 4 cuốn sách, hiển thị ranking, tên sách, tác giả, số lượt thuê</li>
+                        <li>Nút "Xem tất cả ➔" để chuyển đến trang Đơn thuê</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4.3 QUẢN LÝ SÁCH -->
+        <div id="sec4-3" class="card">
+            <div class="card-header"><div class="card-icon">📚</div> FR-03: Quản lý sách</div>
+            <div class="table-wrapper">
+                <table>
+                    <tbody>
+                        <tr><td style="width:160px"><strong>Mã chức năng</strong></td><td>FR-03</td></tr>
+                        <tr><td><strong>Vai trò</strong></td><td><span class="tag tag-blue">Admin</span></td></tr>
+                        <tr><td><strong>Lớp liên quan</strong></td><td><code>BooksView</code> → <code>BookController</code> → <code>BookDAO</code></td></tr>
+                        <tr><td><strong>Mô tả</strong></td><td>Admin thực hiện CRUD trên danh mục sách: xem danh sách, thêm, sửa, xóa và tìm kiếm sách.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4>FR-03.1: Xem danh sách sách</h4>
+            <ul>
+                <li>Hiển thị bảng với các cột: Mã sách, Tên sách, Tác giả, Thể loại, NXB, Năm XB, Trạng thái, Giá thuê, Tiền cọc.</li>
+                <li>Sắp xếp mặc định theo <code>BookID DESC</code> (sách mới nhất lên đầu).</li>
+                <li>Dữ liệu tự động refresh khi chuyển đến trang sách.</li>
+            </ul>
+
+            <h4>FR-03.2: Thêm sách mới</h4>
+            <ul>
+                <li>Mở dialog nhập thông tin: BookCode, Title, Author, Category, Publisher, PublishYear, BookStatus, RentalPrice, DepositPrice.</li>
+                <li>SQL: <code>INSERT INTO Books (...) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)</code></li>
+            </ul>
+
+            <h4>FR-03.3: Cập nhật sách</h4>
+            <ul>
+                <li>Chọn sách từ bảng → mở dialog sửa thông tin.</li>
+                <li>SQL: <code>UPDATE Books SET ... WHERE BookID = ?</code></li>
+            </ul>
+
+            <h4>FR-03.4: Xóa sách</h4>
+            <ul>
+                <li>Chọn sách → xác nhận xóa → xóa khỏi database.</li>
+                <li>SQL: <code>DELETE FROM Books WHERE BookID = ?</code></li>
+            </ul>
+
+            <h4>FR-03.5: Tìm kiếm sách</h4>
+            <ul>
+                <li>Tìm kiếm theo từ khóa, so khớp với: Title, Author, BookCode.</li>
+                <li>SQL: <code>SELECT * FROM Books WHERE Title LIKE ? OR Author LIKE ? OR BookCode LIKE ?</code></li>
+                <li>Sử dụng pattern <code>%keyword%</code> cho tìm kiếm gần đúng.</li>
+            </ul>
+        </div>
+
+        <!-- 4.4 QUẢN LÝ KHÁCH HÀNG -->
+        <div id="sec4-4" class="card">
+            <div class="card-header"><div class="card-icon">👥</div> FR-04: Quản lý khách hàng</div>
+            <div class="table-wrapper">
+                <table>
+                    <tbody>
+                        <tr><td style="width:160px"><strong>Mã chức năng</strong></td><td>FR-04</td></tr>
+                        <tr><td><strong>Vai trò</strong></td><td><span class="tag tag-blue">Admin</span></td></tr>
+                        <tr><td><strong>Lớp liên quan</strong></td><td><code>CustomersView</code> → <code>CustomerController</code> → <code>CustomerDAO</code></td></tr>
+                        <tr><td><strong>Mô tả</strong></td><td>Admin thực hiện CRUD trên danh sách khách hàng: xem, thêm, sửa, xóa và tìm kiếm.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4>FR-04.1: Xem danh sách khách hàng</h4>
+            <ul>
+                <li>Hiển thị bảng: Mã KH, Họ tên, SĐT, Email, Địa chỉ.</li>
+                <li>Sắp xếp theo <code>CustomerID DESC</code>.</li>
+            </ul>
+
+            <h4>FR-04.2: Thêm khách hàng</h4>
+            <ul>
+                <li>Nhập: CustomerCode, FullName, Phone, Address, Email.</li>
+                <li>SQL: <code>INSERT INTO Customers (...) VALUES (?, ?, ?, ?, ?)</code></li>
+            </ul>
+
+            <h4>FR-04.3: Cập nhật khách hàng</h4>
+            <ul>
+                <li>SQL: <code>UPDATE Customers SET ... WHERE CustomerID = ?</code></li>
+            </ul>
+
+            <h4>FR-04.4: Xóa khách hàng</h4>
+            <ul>
+                <li>SQL: <code>DELETE FROM Customers WHERE CustomerID = ?</code></li>
+            </ul>
+
+            <h4>FR-04.5: Tìm kiếm khách hàng</h4>
+            <ul>
+                <li>Tìm theo CustomerID (nếu input là số) hoặc FullName (tìm gần đúng).</li>
+                <li>SQL: <code>SELECT * FROM Customers WHERE CustomerID = ? OR FullName LIKE ?</code></li>
+            </ul>
+        </div>
+
+        <!-- 4.5 QUẢN LÝ ĐƠN THUÊ -->
+        <div id="sec4-5" class="card">
+            <div class="card-header"><div class="card-icon">📋</div> FR-05: Quản lý đơn thuê sách</div>
+            <div class="table-wrapper">
+                <table>
+                    <tbody>
+                        <tr><td style="width:160px"><strong>Mã chức năng</strong></td><td>FR-05</td></tr>
+                        <tr><td><strong>Vai trò</strong></td><td><span class="tag tag-blue">Admin</span></td></tr>
+                        <tr><td><strong>Lớp liên quan</strong></td><td><code>OrdersView</code> → <code>RentalOrderController</code> → <code>RentalOrderDAO</code></td></tr>
+                        <tr><td><strong>Mô tả</strong></td><td>Admin quản lý toàn bộ đơn thuê: xem danh sách, tạo đơn mới, xem chi tiết, duyệt/từ chối đơn, xử lý trả sách.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4>FR-05.1: Xem danh sách đơn thuê</h4>
+            <ul>
+                <li>Hiển thị: Mã đơn, Mã KH, Khách hàng, Ngày thuê, Hạn trả, Trạng thái, Tiền cọc, Phí thuê, Phí phạt, Tổng tiền.</li>
+                <li>Sắp xếp theo <code>OrderID DESC</code>.</li>
+                <li>JOIN bảng Customers để lấy CustomerCode và CustomerName.</li>
+            </ul>
+
+            <h4>FR-05.2: Tạo đơn thuê mới</h4>
+            <ul>
+                <li>Chọn khách hàng, chọn sách (nhiều cuốn), nhập ngày thuê, hạn trả, phí.</li>
+                <li>Xử lý transaction: INSERT RentalOrders → INSERT RentalOrderDetails → UPDATE Books.BookStatus = 'Rented'.</li>
+                <li>Nếu một bước thất bại → <code>ROLLBACK</code> toàn bộ.</li>
+            </ul>
+
+            <h4>FR-05.3: Xem chi tiết đơn</h4>
+            <ul>
+                <li>Hiển thị thông tin đơn + danh sách sách trong đơn (BookCode, Title, Author, Category, Publisher, PublishYear, BookStatus, RentalPrice, DepositPrice).</li>
+            </ul>
+
+            <h4>FR-05.4: Cập nhật trạng thái đơn</h4>
+            <ul>
+                <li>Duyệt đơn: Pending → Renting</li>
+                <li>Từ chối đơn: Pending → Rejected</li>
+                <li>Trả sách: Renting → Returned (cập nhật ReturnDate + đổi BookStatus → 'Available')</li>
+            </ul>
+
+            <div class="alert alert-warn">
+                <span>⚠️</span>
+                <div>
+                    <strong>Transaction:</strong> Thao tác tạo đơn và cập nhật trạng thái đều sử dụng transaction 
+                    (<code>conn.setAutoCommit(false)</code>) để đảm bảo tính toàn vẹn dữ liệu. Nếu có lỗi, 
+                    hệ thống sẽ <code>ROLLBACK</code> và ném lại SQLException.
+                </div>
+            </div>
+        </div>
+
+        <!-- 4.6 THUÊ SÁCH (CUSTOMER) -->
+        <div id="sec4-6" class="card">
+            <div class="card-header"><div class="card-icon">📖</div> FR-06: Thuê sách (Customer)</div>
+            <div class="table-wrapper">
+                <table>
+                    <tbody>
+                        <tr><td style="width:160px"><strong>Mã chức năng</strong></td><td>FR-06</td></tr>
+                        <tr><td><strong>Vai trò</strong></td><td><span class="tag tag-green">Customer</span></td></tr>
+                        <tr><td><strong>Lớp liên quan</strong></td><td><code>RentView</code> → <code>RentController</code> → <code>RentDAO</code></td></tr>
+                        <tr><td><strong>Mô tả</strong></td><td>Khách hàng xem danh sách sách có sẵn (status = 'Available'), chọn sách và tạo yêu cầu thuê.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4>FR-06.1: Xem sách có sẵn</h4>
+            <ul>
+                <li>Hiển thị danh sách sách có <code>BookStatus = 'Available'</code>.</li>
+                <li>SQL: <code>SELECT * FROM Books WHERE BookStatus = 'Available'</code></li>
+            </ul>
+
+            <h4>FR-06.2: Tạo yêu cầu thuê</h4>
+            <ul>
+                <li>Khách hàng chọn một hoặc nhiều sách, chọn ngày dự kiến trả.</li>
+                <li>Hệ thống tạo đơn thuê với trạng thái <span class="tag tag-yellow">Pending</span>.</li>
+                <li>Mã đơn tự động: <code>"REQ" + System.currentTimeMillis()</code>.</li>
+                <li>Giá thuê mặc định: <code>10,000 VNĐ × số sách</code>.</li>
+                <li>Hệ thống tự động chuyển trạng thái sách sang <code>Rented</code>.</li>
+            </ul>
+        </div>
+
+        <!-- 4.7 SÁCH ĐANG THUÊ -->
+        <div id="sec4-7" class="card">
+            <div class="card-header"><div class="card-icon">📕</div> FR-07: Sách đang thuê (My Rentals)</div>
+            <div class="table-wrapper">
+                <table>
+                    <tbody>
+                        <tr><td style="width:160px"><strong>Mã chức năng</strong></td><td>FR-07</td></tr>
+                        <tr><td><strong>Vai trò</strong></td><td><span class="tag tag-green">Customer</span></td></tr>
+                        <tr><td><strong>Lớp liên quan</strong></td><td><code>MyRentalsView</code> → <code>RentController</code> → <code>RentDAO</code></td></tr>
+                        <tr><td><strong>Mô tả</strong></td><td>Khách hàng xem danh sách các đơn thuê của mình (trạng thái Pending hoặc Renting) và có thể yêu cầu trả sách.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4>FR-07.1: Xem đơn thuê cá nhân</h4>
+            <ul>
+                <li>Hiển thị đơn thuê của khách hàng đang đăng nhập.</li>
+                <li>Lọc: <code>CustomerID = ? AND OrderStatus IN ('Pending', 'Renting')</code>.</li>
+                <li>Sắp xếp theo ngày thuê giảm dần.</li>
+                <li>Mỗi đơn hiển thị kèm danh sách sách chi tiết (JOIN RentalOrderDetails + Books).</li>
+            </ul>
+
+            <h4>FR-07.2: Trả sách</h4>
+            <ul>
+                <li>Khách hàng chọn đơn thuê → nhấn nút "Trả sách".</li>
+                <li>Hệ thống cập nhật: <code>OrderStatus = 'Returned'</code>, <code>ReturnDate = NOW()</code>.</li>
+                <li>Đồng thời chuyển các sách trong đơn về trạng thái <span class="tag tag-green">Available</span>.</li>
+            </ul>
+        </div>
+
+        <!-- 4.8 BÁO CÁO -->
+        <div id="sec4-8" class="card">
+            <div class="card-header"><div class="card-icon">📈</div> FR-08: Báo cáo & Thống kê</div>
+            <div class="table-wrapper">
+                <table>
+                    <tbody>
+                        <tr><td style="width:160px"><strong>Mã chức năng</strong></td><td>FR-08</td></tr>
+                        <tr><td><strong>Vai trò</strong></td><td><span class="tag tag-blue">Admin</span></td></tr>
+                        <tr><td><strong>Lớp liên quan</strong></td><td><code>ReportsView</code> → <code>ReportController</code> → <code>ReportDAO</code></td></tr>
+                        <tr><td><strong>Mô tả</strong></td><td>Admin xem các báo cáo thống kê chi tiết về hoạt động thư viện.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4>FR-08.1: Thống kê tổng quan (Dashboard Stats)</h4>
+            <ul>
+                <li>Tổng số sách, tổng khách hàng, đơn đang thuê, đơn đã trả, doanh thu tháng hiện tại.</li>
+                <li>Truy vấn đơn dùng subquery tổng hợp trên nhiều bảng.</li>
+            </ul>
+
+            <h4>FR-08.2: Doanh thu theo tháng</h4>
+            <ul>
+                <li>Hiển thị doanh thu 12 tháng trong năm được chọn.</li>
+                <li>Chỉ tính đơn có <code>OrderStatus = 'Returned'</code>.</li>
+                <li>Biểu đồ đường (Line Chart) được render bởi <code>ChartGenerator.createRevenueChart()</code>.</li>
+                <li>Có thể xuất báo cáo doanh thu ra file Excel.</li>
+            </ul>
+
+            <h4>FR-08.3: Top sách được thuê nhiều nhất</h4>
+            <ul>
+                <li>Đếm số lần mỗi sách xuất hiện trong RentalOrderDetails.</li>
+                <li>SQL: <code>SELECT b.Title, COUNT(od.BookID) as rentCount FROM RentalOrderDetails od JOIN Books b ON od.BookID = b.BookID GROUP BY od.BookID ORDER BY rentCount DESC LIMIT ?</code></li>
+            </ul>
+
+            <h4>FR-08.4: Thống kê theo thể loại</h4>
+            <ul>
+                <li>Đếm số lượt thuê theo Category của sách.</li>
+                <li>Sắp xếp theo số lượt thuê giảm dần.</li>
+            </ul>
+
+            <h4>FR-08.5: Top khách hàng thuê nhiều nhất</h4>
+            <ul>
+                <li>Đếm số đơn thuê theo từng khách hàng.</li>
+                <li>SQL: JOIN RentalOrders + Customers, GROUP BY CustomerID.</li>
+            </ul>
+
+            <h4>FR-08.6: Sách quá hạn</h4>
+            <ul>
+                <li>Danh sách đơn thuê có trạng thái <code>Renting</code> và <code>ExpectedReturnDate &lt; datetime('now')</code>.</li>
+                <li>Hiển thị: Mã đơn, Khách hàng, Ngày thuê, Hạn trả, Tổng tiền.</li>
+            </ul>
+        </div>
+
+        <!-- 4.9 HỒ SƠ -->
+        <div id="sec4-9" class="card">
+            <div class="card-header"><div class="card-icon">👤</div> FR-09: Quản lý hồ sơ người dùng</div>
+            <div class="table-wrapper">
+                <table>
+                    <tbody>
+                        <tr><td style="width:160px"><strong>Mã chức năng</strong></td><td>FR-09</td></tr>
+                        <tr><td><strong>Vai trò</strong></td><td><span class="tag tag-green">Customer</span></td></tr>
+                        <tr><td><strong>Lớp liên quan</strong></td><td><code>ProfileView</code> → <code>AuthController</code> → <code>UserDAO</code></td></tr>
+                        <tr><td><strong>Mô tả</strong></td><td>Khách hàng xem và cập nhật thông tin cá nhân, đổi mật khẩu.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4>FR-09.1: Xem thông tin cá nhân</h4>
+            <ul>
+                <li>Hiển thị: Username, FullName, Email, Phone, Role.</li>
+                <li>Dữ liệu lấy từ <code>UserDAO.getUserById()</code> (JOIN Users + Customers).</li>
+            </ul>
+
+            <h4>FR-09.2: Cập nhật thông tin profile</h4>
+            <ul>
+                <li>Cho phép sửa: FullName, Email, Phone.</li>
+                <li>Xử lý transaction: Lấy CustomerID từ Users → UPDATE Customers.</li>
+                <li>Chỉ cập nhật nếu tài khoản có liên kết CustomerID (không áp dụng cho Admin).</li>
+            </ul>
+
+            <h4>FR-09.3: Đổi mật khẩu</h4>
+            <ul>
+                <li>Nhập: mật khẩu hiện tại, mật khẩu mới.</li>
+                <li>Kiểm tra mật khẩu hiện tại khớp → cập nhật mật khẩu mới.</li>
+                <li>SQL: <code>UPDATE Users SET Password = ? WHERE UserID = ?</code></li>
+            </ul>
+
+            <div class="alert alert-danger">
+                <span>🔴</span>
+                <div>
+                    <strong>Lưu ý bảo mật:</strong> Mật khẩu hiện tại được lưu dưới dạng <strong>plain text</strong> 
+                    trong database. Trong môi trường production, cần mã hóa mật khẩu bằng thuật toán hash 
+                    (BCrypt, PBKDF2, Argon2).
+                </div>
+            </div>
+        </div>
+
+        <!-- 4.10 XUẤT EXCEL -->
+        <div id="sec4-10" class="card">
+            <div class="card-header"><div class="card-icon">📥</div> FR-10: Xuất dữ liệu ra Excel</div>
+            <div class="table-wrapper">
+                <table>
+                    <tbody>
+                        <tr><td style="width:160px"><strong>Mã chức năng</strong></td><td>FR-10</td></tr>
+                        <tr><td><strong>Vai trò</strong></td><td><span class="tag tag-blue">Admin</span></td></tr>
+                        <tr><td><strong>Lớp liên quan</strong></td><td><code>ExcelExporter</code> (sử dụng Apache POI)</td></tr>
+                        <tr><td><strong>Mô tả</strong></td><td>Hệ thống cho phép xuất dữ liệu từ các bảng ra file Excel (.xlsx) với header được định dạng chuyên nghiệp.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4>Các loại báo cáo xuất Excel:</h4>
+            <div class="table-wrapper">
+                <table>
+                    <thead><tr><th>Hàm</th><th>Dữ liệu</th><th>Tên Sheet</th><th>Các cột</th></tr></thead>
+                    <tbody>
+                        <tr>
+                            <td><code>exportBooks()</code></td>
+                            <td>Danh sách sách</td>
+                            <td>"Danh sách sách"</td>
+                            <td>Mã sách, Tên sách, Tác giả, Thể loại, NXB, Năm XB, Trạng thái, Giá thuê, Tiền cọc</td>
+                        </tr>
+                        <tr>
+                            <td><code>exportCustomers()</code></td>
+                            <td>Danh sách khách hàng</td>
+                            <td>"Danh sách khách hàng"</td>
+                            <td>Mã KH, Họ tên, SĐT, Email, Địa chỉ</td>
+                        </tr>
+                        <tr>
+                            <td><code>exportOrders()</code></td>
+                            <td>Danh sách đơn thuê</td>
+                            <td>"Danh sách đơn thuê"</td>
+                            <td>Mã đơn, Mã KH, Khách hàng, Ngày thuê, Hạn trả, Trạng thái, Tổng tiền</td>
+                        </tr>
+                        <tr>
+                            <td><code>exportRevenueReport()</code></td>
+                            <td>Báo cáo doanh thu</td>
+                            <td>"Báo cáo doanh thu"</td>
+                            <td>Tháng, Doanh thu (VNĐ)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4>Định dạng Header:</h4>
+            <ul>
+                <li>Font: <strong>Bold</strong>, màu chữ: <strong>Trắng</strong></li>
+                <li>Nền: <strong>Xanh dương (Blue)</strong></li>
+                <li>Căn giữa, có viền (border) 4 cạnh</li>
+                <li>Auto-size column width</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- ===== 5. YÊU CẦU PHI CHỨC NĂNG ===== -->
+    <section id="sec5">
+        <h2>5. Yêu cầu phi chức năng <span class="badge">NON-FUNCTIONAL</span></h2>
+
+        <div class="grid-2">
+            <div class="card">
+                <div class="card-header"><div class="card-icon">⚡</div> Hiệu năng</div>
+                <ul>
+                    <li>Giao diện sử dụng <code>SwingWorker</code> cho thao tác nặng (đăng nhập) để không block EDT.</li>
+                    <li>SQLite WAL mode cho phép đọc/ghi đồng thời.</li>
+                    <li>Busy timeout: 30,000ms để xử lý database lock.</li>
+                    <li>Dữ liệu tự động refresh khi chuyển trang (navigateTo).</li>
+                </ul>
+            </div>
+            <div class="card">
+                <div class="card-header"><div class="card-icon">🔒</div> Bảo mật</div>
+                <ul>
+                    <li>Xác thực bằng Username/Password.</li>
+                    <li>Phân quyền theo Role: Admin / Customer.</li>
+                    <li>Sidebar menu khác nhau cho từng vai trò.</li>
+                    <li><span class="tag tag-red">Cần cải thiện</span> Mật khẩu lưu plain text.</li>
+                    <li>Foreign Keys được bật: <code>PRAGMA foreign_keys=ON</code>.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <div class="card-header"><div class="card-icon">🎨</div> Giao diện</div>
+                <ul>
+                    <li>Sử dụng FlatLaf Look &amp; Feel hiện đại.</li>
+                    <li>Bảng màu chủ đạo: Blue (#2563EB), nền sáng (#F1F5F9).</li>
+                    <li>Font chính: Segoe UI.</li>
+                    <li>Kích thước cửa sổ tối thiểu: 1024×800.</li>
+                    <li>Icon SVG được load từ URL (unpkg.com) với fallback local.</li>
+                    <li>Sidebar trái cố định, content chính dùng CardLayout.</li>
+                    <li>Bo góc (rounded corners) trên cards và bảng.</li>
+                    <li>Hover effects trên các nút navigation.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <div class="card-header"><div class="card-icon">🗄️</div> Dữ liệu & Toàn vẹn</div>
+                <ul>
+                    <li>SQLite file-based: <code>Libris.db</code>.</li>
+                    <li>Tự động khởi tạo database từ <code>database.sql</code> khi lần đầu chạy.</li>
+                    <li>Transaction cho các thao tác phức hợp (tạo đơn, cập nhật trạng thái).</li>
+                    <li>CHECK constraint trên BookStatus và OrderStatus.</li>
+                    <li>UNIQUE constraint trên BookCode, CustomerCode, OrderCode, Username.</li>
+                    <li>Foreign key giữa RentalOrders → Customers, RentalOrderDetails → (RentalOrders, Books), Users → Customers.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <div class="card-header"><div class="card-icon">📦</div> Triển khai</div>
+                <ul>
+                    <li>Build thành JAR đóng gói (jar-with-dependencies) bằng Maven Assembly Plugin.</li>
+                    <li>Entry point: <code>com.libris.ui.LoginView</code>.</li>
+                    <li>File batch khởi chạy: <code>run.bat</code>.</li>
+                    <li>Yêu cầu JRE 25+.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <div class="card-header"><div class="card-icon">🔌</div> Khả năng mở rộng</div>
+                <ul>
+                    <li>Kiến trúc MVC tách biệt rõ ràng View / Controller / DAO.</li>
+                    <li>Hệ thống icon quản lý qua Properties file → dễ thay đổi.</li>
+                    <li>Model POJO đơn giản → dễ serialize/deserialize.</li>
+                    <li>Config tập trung trong <code>Constants.java</code>.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 6. MA TRẬN CHỨC NĂNG ===== -->
+    <section id="sec6">
+        <h2>6. Ma trận chức năng theo vai trò <span class="badge">ROLE MATRIX</span></h2>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Chức năng</th>
+                        <th style="text-align:center">Admin 👨‍💼</th>
+                        <th style="text-align:center">Customer 👤</th>
+                        <th>View / Controller chính</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Đăng nhập</td><td style="text-align:center">✅</td><td style="text-align:center">✅</td><td><code>LoginView → AuthController</code></td></tr>
+                    <tr><td>Đăng xuất</td><td style="text-align:center">✅</td><td style="text-align:center">✅</td><td><code>SidebarPanel</code></td></tr>
+                    <tr><td>Dashboard tổng quan</td><td style="text-align:center">✅</td><td style="text-align:center">—</td><td><code>DashboardView</code></td></tr>
+                    <tr><td>Quản lý sách (CRUD)</td><td style="text-align:center">✅</td><td style="text-align:center">—</td><td><code>BooksView → BookController</code></td></tr>
+                    <tr><td>Quản lý khách hàng (CRUD)</td><td style="text-align:center">✅</td><td style="text-align:center">—</td><td><code>CustomersView → CustomerController</code></td></tr>
+                    <tr><td>Quản lý đơn thuê (CRUD)</td><td style="text-align:center">✅</td><td style="text-align:center">—</td><td><code>OrdersView → RentalOrderController</code></td></tr>
+                    <tr><td>Duyệt / Từ chối đơn thuê</td><td style="text-align:center">✅</td><td style="text-align:center">—</td><td><code>OrdersView</code></td></tr>
+                    <tr><td>Xử lý trả sách (Admin)</td><td style="text-align:center">✅</td><td style="text-align:center">—</td><td><code>OrdersView</code></td></tr>
+                    <tr><td>Báo cáo & Thống kê</td><td style="text-align:center">✅</td><td style="text-align:center">—</td><td><code>ReportsView → ReportController</code></td></tr>
+                    <tr><td>Xuất Excel</td><td style="text-align:center">✅</td><td style="text-align:center">—</td><td><code>ExcelExporter</code></td></tr>
+                    <tr><td>Xem sách có sẵn</td><td style="text-align:center">—</td><td style="text-align:center">✅</td><td><code>RentView → RentController</code></td></tr>
+                    <tr><td>Tạo yêu cầu thuê sách</td><td style="text-align:center">—</td><td style="text-align:center">✅</td><td><code>RentView → RentController</code></td></tr>
+                    <tr><td>Xem sách đang thuê</td><td style="text-align:center">—</td><td style="text-align:center">✅</td><td><code>MyRentalsView → RentController</code></td></tr>
+                    <tr><td>Yêu cầu trả sách (Customer)</td><td style="text-align:center">—</td><td style="text-align:center">✅</td><td><code>MyRentalsView</code></td></tr>
+                    <tr><td>Quản lý hồ sơ cá nhân</td><td style="text-align:center">—</td><td style="text-align:center">✅</td><td><code>ProfileView → AuthController</code></td></tr>
+                    <tr><td>Đổi mật khẩu</td><td style="text-align:center">—</td><td style="text-align:center">✅</td><td><code>ProfileView → AuthController</code></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ===== 7. LUỒNG NGHIỆP VỤ ===== -->
+    <section id="sec7">
+        <h2>7. Luồng nghiệp vụ chính <span class="badge">WORKFLOWS</span></h2>
+
+        <h3>7.1 Luồng thuê sách (Customer → Admin)</h3>
+        <div class="diagram-container">
+            <svg viewBox="0 0 800 340" xmlns="http://www.w3.org/2000/svg" style="max-width:760px">
+                <!-- Nodes -->
+                <rect x="20" y="140" width="120" height="50" rx="25" fill="#2563EB" opacity=".9"/>
+                <text x="80" y="170" text-anchor="middle" fill="#fff" font-size="12" font-weight="600">Đăng nhập</text>
+
+                <rect x="170" y="140" width="120" height="50" rx="8" fill="#EFF6FF" stroke="#2563EB"/>
+                <text x="230" y="162" text-anchor="middle" fill="#1E293B" font-size="11" font-weight="600">Xem sách</text>
+                <text x="230" y="178" text-anchor="middle" fill="#64748B" font-size="9">Available</text>
+
+                <rect x="320" y="140" width="120" height="50" rx="8" fill="#EFF6FF" stroke="#2563EB"/>
+                <text x="380" y="162" text-anchor="middle" fill="#1E293B" font-size="11" font-weight="600">Chọn sách</text>
+                <text x="380" y="178" text-anchor="middle" fill="#64748B" font-size="9">Tạo RentRequest</text>
+
+                <rect x="470" y="140" width="120" height="50" rx="8" fill="#FEF3C7" stroke="#F59E0B"/>
+                <text x="530" y="162" text-anchor="middle" fill="#1E293B" font-size="11" font-weight="600">Đơn Pending</text>
+                <text x="530" y="178" text-anchor="middle" fill="#92400E" font-size="9">Chờ duyệt</text>
+
+                <!-- Branch: Approve -->
+                <rect x="620" y="80" width="150" height="50" rx="8" fill="#D1FAE5" stroke="#10B981"/>
+                <text x="695" y="102" text-anchor="middle" fill="#065F46" font-size="11" font-weight="600">✅ Duyệt → Renting</text>
+                <text x="695" y="118" text-anchor="middle" fill="#064E3B" font-size="9">Book → Rented</text>
+
+                <!-- Branch: Reject -->
+                <rect x="620" y="200" width="150" height="50" rx="8" fill="#FEE2E2" stroke="#EF4444"/>
+                <text x="695" y="222" text-anchor="middle" fill="#991B1B" font-size="11" font-weight="600">❌ Từ chối → Rejected</text>
+                <text x="695" y="238" text-anchor="middle" fill="#7F1D1D" font-size="9">Book → Available</text>
+
+                <!-- Return flow -->
+                <rect x="620" y="280" width="150" height="50" rx="25" fill="#10B981"/>
+                <text x="695" y="308" text-anchor="middle" fill="#fff" font-size="11" font-weight="600">📦 Trả sách → Returned</text>
+
+                <!-- Arrows -->
+                <line x1="140" y1="165" x2="170" y2="165" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arrow)"/>
+                <line x1="290" y1="165" x2="320" y2="165" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arrow)"/>
+                <line x1="440" y1="165" x2="470" y2="165" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arrow)"/>
+                <line x1="590" y1="155" x2="620" y2="110" stroke="#10B981" stroke-width="1.5" marker-end="url(#arrow)"/>
+                <line x1="590" y1="175" x2="620" y2="220" stroke="#EF4444" stroke-width="1.5" marker-end="url(#arrow)"/>
+                <line x1="695" y1="130" x2="695" y2="280" stroke="#10B981" stroke-width="1" stroke-dasharray="4"/>
+
+                <!-- Labels -->
+                <text x="80" y="125" text-anchor="middle" fill="#2563EB" font-size="10" font-weight="600">CUSTOMER</text>
+                <text x="695" y="65" text-anchor="middle" fill="#10B981" font-size="10" font-weight="600">ADMIN XỬ LÝ</text>
+            </svg>
+        </div>
+
+        <h3>7.2 Luồng trạng thái đơn thuê (Order Status)</h3>
+        <div class="diagram-container">
+            <svg viewBox="0 0 700 160" xmlns="http://www.w3.org/2000/svg" style="max-width:660px">
+                <!-- Pending -->
+                <rect x="20" y="55" width="130" height="50" rx="8" fill="#FEF3C7" stroke="#F59E0B" stroke-width="2"/>
+                <text x="85" y="78" text-anchor="middle" fill="#92400E" font-size="13" font-weight="700">⏳ Pending</text>
+                <text x="85" y="95" text-anchor="middle" fill="#92400E" font-size="9">Chờ duyệt</text>
+
+                <!-- Renting -->
+                <rect x="230" y="20" width="130" height="50" rx="8" fill="#DBEAFE" stroke="#2563EB" stroke-width="2"/>
+                <text x="295" y="43" text-anchor="middle" fill="#1D4ED8" font-size="13" font-weight="700">📖 Renting</text>
+                <text x="295" y="60" text-anchor="middle" fill="#1D4ED8" font-size="9">Đang thuê</text>
+
+                <!-- Returned -->
+                <rect x="440" y="20" width="130" height="50" rx="8" fill="#D1FAE5" stroke="#10B981" stroke-width="2"/>
+                <text x="505" y="43" text-anchor="middle" fill="#065F46" font-size="13" font-weight="700">✅ Returned</text>
+                <text x="505" y="60" text-anchor="middle" fill="#065F46" font-size="9">Đã trả</text>
+
+                <!-- Rejected -->
+                <rect x="230" y="90" width="130" height="50" rx="8" fill="#FEE2E2" stroke="#EF4444" stroke-width="2"/>
+                <text x="295" y="113" text-anchor="middle" fill="#991B1B" font-size="13" font-weight="700">❌ Rejected</text>
+                <text x="295" y="130" text-anchor="middle" fill="#991B1B" font-size="9">Đã từ chối</text>
+
+                <!-- Arrows -->
+                <line x1="150" y1="70" x2="230" y2="45" stroke="#2563EB" stroke-width="2" marker-end="url(#arrow)"/>
+                <text x="185" y="50" fill="#2563EB" font-size="9" font-weight="600">Duyệt</text>
+
+                <line x1="150" y1="90" x2="230" y2="115" stroke="#EF4444" stroke-width="2" marker-end="url(#arrow)"/>
+                <text x="175" y="118" fill="#EF4444" font-size="9" font-weight="600">Từ chối</text>
+
+                <line x1="360" y1="45" x2="440" y2="45" stroke="#10B981" stroke-width="2" marker-end="url(#arrow)"/>
+                <text x="400" y="38" fill="#10B981" font-size="9" font-weight="600">Trả sách</text>
+            </svg>
+        </div>
+
+        <h3>7.3 Luồng trạng thái sách (Book Status)</h3>
+        <div class="diagram-container">
+            <svg viewBox="0 0 600 100" xmlns="http://www.w3.org/2000/svg" style="max-width:560px">
+                <rect x="20" y="25" width="130" height="50" rx="8" fill="#D1FAE5" stroke="#10B981" stroke-width="2"/>
+                <text x="85" y="55" text-anchor="middle" fill="#065F46" font-size="14" font-weight="700">Available</text>
+
+                <rect x="230" y="25" width="130" height="50" rx="8" fill="#FEE2E2" stroke="#EF4444" stroke-width="2"/>
+                <text x="295" y="55" text-anchor="middle" fill="#991B1B" font-size="14" font-weight="700">Rented</text>
+
+                <rect x="440" y="25" width="130" height="50" rx="8" fill="#FEF3C7" stroke="#F59E0B" stroke-width="2"/>
+                <text x="505" y="55" text-anchor="middle" fill="#92400E" font-size="14" font-weight="700">Pending</text>
+
+                <line x1="150" y1="45" x2="230" y2="45" stroke="#EF4444" stroke-width="2" marker-end="url(#arrow)"/>
+                <text x="190" y="38" fill="#EF4444" font-size="9">Thuê</text>
+
+                <path d="M295 75 Q295 95 85 95 Q20 95 20 75" stroke="#10B981" stroke-width="1.5" fill="none" stroke-dasharray="4" marker-end="url(#arrow)"/>
+                <text x="160" y="92" fill="#10B981" font-size="9">Trả sách</text>
+            </svg>
+        </div>
+    </section>
+
+    <!-- ===== 8. PHỤ LỤC ===== -->
+    <section id="sec8">
+        <h2>8. Phụ lục <span class="badge">APPENDIX</span></h2>
+
+        <h3>8.1 Dữ liệu mẫu</h3>
+        <p>Hệ thống được khởi tạo với dữ liệu mẫu từ file <code>database.sql</code>:</p>
+        <div class="table-wrapper">
+            <table>
+                <thead><tr><th>Bảng</th><th>Số lượng</th><th>Ví dụ</th></tr></thead>
+                <tbody>
+                    <tr><td>Books</td><td>33 đầu sách</td><td>Dế Mèn Phiêu Lưu Ký, Chí Phèo, Harry Potter, Đắc Nhân Tâm, ...</td></tr>
+                    <tr><td>Customers</td><td>13 khách hàng</td><td>Nguyễn Văn A, Trần Thị B, Le Van C, ...</td></tr>
+                    <tr><td>Users</td><td>3 tài khoản</td><td>admin/123 (Admin), customer1/123, customer2/123 (Customer)</td></tr>
+                    <tr><td>RentalOrders</td><td>8 đơn thuê</td><td>O001 → O107, trạng thái: Renting, Returned</td></tr>
+                    <tr><td>RentalOrderDetails</td><td>~15 chi tiết</td><td>Mỗi đơn 1-3 sách</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>8.2 Tài khoản demo</h3>
+        <div class="table-wrapper">
+            <table>
+                <thead><tr><th>Username</th><th>Password</th><th>Role</th><th>Liên kết Customer</th></tr></thead>
+                <tbody>
+                    <tr><td><code>admin</code></td><td><code>123</code></td><td><span class="tag tag-blue">Admin</span></td><td>—</td></tr>
+                    <tr><td><code>customer1</code></td><td><code>123</code></td><td><span class="tag tag-green">Customer</span></td><td>Nguyễn Văn A (C001)</td></tr>
+                    <tr><td><code>customer2</code></td><td><code>123</code></td><td><span class="tag tag-green">Customer</span></td><td>Trần Thị B (C002)</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>8.3 Tổng hợp các lớp mã nguồn</h3>
+        <div class="table-wrapper">
+            <table>
+                <thead><tr><th>Package</th><th>Lớp</th><th>Kích thước</th><th>Chức năng chính</th></tr></thead>
+                <tbody>
+                    <tr><td rowspan="7"><code>model</code></td><td>Book.java</td><td>2.5 KB</td><td>POJO sách (10 trường)</td></tr>
+                    <tr><td>Customer.java</td><td>1.5 KB</td><td>POJO khách hàng (6 trường)</td></tr>
+                    <tr><td>User.java</td><td>1.9 KB</td><td>POJO tài khoản + thông tin profile (8 trường)</td></tr>
+                    <tr><td>RentalOrder.java</td><td>4.0 KB</td><td>POJO đơn thuê (12 trường + List&lt;Detail&gt;)</td></tr>
+                    <tr><td>RentalOrderDetail.java</td><td>1.1 KB</td><td>POJO chi tiết đơn (liên kết Book)</td></tr>
+                    <tr><td>RentRequest.java</td><td>1.6 KB</td><td>DTO yêu cầu thuê từ Customer</td></tr>
+                    <tr><td>ReportStat.java</td><td>1.1 KB</td><td>DTO thống kê (label-value flexible)</td></tr>
+
+                    <tr><td rowspan="6"><code>dao</code></td><td>BookDAO.java</td><td>6.3 KB</td><td>getAllBooks, addBook, updateBook, deleteBook, searchBook</td></tr>
+                    <tr><td>CustomerDAO.java</td><td>5.0 KB</td><td>getAllCustomers, addCustomer, updateCustomer, deleteCustomer, searchCustomer</td></tr>
+                    <tr><td>UserDAO.java</td><td>6.4 KB</td><td>login, getUserById, updateUserInfo, updateProfileDetails, changePassword</td></tr>
+                    <tr><td>RentalOrderDAO.java</td><td>14.3 KB</td><td>getAllOrders, getOrderById, getOrderDetails, addOrder (transaction), updateOrderStatus (transaction)</td></tr>
+                    <tr><td>RentDAO.java</td><td>7.4 KB</td><td>getAvailableBooks, getCustomerRentals, createRentRequest, returnBooks</td></tr>
+                    <tr><td>ReportDAO.java</td><td>7.6 KB</td><td>getDashboardStats, getMonthlyRevenue, getTopBooks, getCategoryStats, getTopCustomers, getOverdueBooks</td></tr>
+
+                    <tr><td rowspan="6"><code>controller</code></td><td>AuthController.java</td><td>1.1 KB</td><td>login, updateProfileDetails, changePassword</td></tr>
+                    <tr><td>BookController.java</td><td>1.4 KB</td><td>getAllBooks, addBook, updateBook, deleteBook, searchBook</td></tr>
+                    <tr><td>CustomerController.java</td><td>1.5 KB</td><td>getAllCustomers, addCustomer, updateCustomer, deleteCustomer, searchCustomer</td></tr>
+                    <tr><td>RentalOrderController.java</td><td>1.6 KB</td><td>getAllOrders, getOrderById, getOrderDetails, addOrder, updateOrderStatus</td></tr>
+                    <tr><td>RentController.java</td><td>1.1 KB</td><td>getAvailableBooks, getCustomerRentals, createRentRequest, returnBooks</td></tr>
+                    <tr><td>ReportController.java</td><td>1.2 KB</td><td>getDashboardStats, getMonthlyRevenue, getTopBooks, getCategoryStats, getTopCustomers, getOverdueBooks</td></tr>
+
+                    <tr><td rowspan="11"><code>ui</code></td><td>LoginView.java</td><td>9.0 KB</td><td>Màn hình đăng nhập (SwingWorker)</td></tr>
+                    <tr><td>MainFrame.java</td><td>3.6 KB</td><td>Khung chính + CardLayout + auto refresh</td></tr>
+                    <tr><td>SidebarPanel.java</td><td>9.6 KB</td><td>Navigation sidebar (phân theo Role)</td></tr>
+                    <tr><td>DashboardView.java</td><td>14.8 KB</td><td>Tổng quan: 4 cards, đơn gần đây, top sách</td></tr>
+                    <tr><td>BooksView.java</td><td>36.0 KB</td><td>CRUD sách + tìm kiếm + xuất Excel</td></tr>
+                    <tr><td>CustomersView.java</td><td>30.8 KB</td><td>CRUD khách hàng + tìm kiếm + xuất Excel</td></tr>
+                    <tr><td>OrdersView.java</td><td>40.0 KB</td><td>CRUD đơn thuê + duyệt/từ chối + xuất Excel</td></tr>
+                    <tr><td>RentView.java</td><td>38.0 KB</td><td>Thuê sách (Customer): chọn sách, tạo yêu cầu</td></tr>
+                    <tr><td>MyRentalsView.java</td><td>25.7 KB</td><td>Sách đang thuê + trả sách (Customer)</td></tr>
+                    <tr><td>ReportsView.java</td><td>13.7 KB</td><td>Báo cáo thống kê + biểu đồ + xuất Excel</td></tr>
+                    <tr><td>ProfileView.java</td><td>22.9 KB</td><td>Hồ sơ cá nhân + đổi mật khẩu</td></tr>
+
+                    <tr><td rowspan="4"><code>utils</code></td><td>DatabaseConnection.java</td><td>5.6 KB</td><td>Singleton SQLite connection + auto-init từ SQL script</td></tr>
+                    <tr><td>ExcelExporter.java</td><td>7.6 KB</td><td>4 hàm xuất Excel (Books, Customers, Orders, Revenue)</td></tr>
+                    <tr><td>ChartGenerator.java</td><td>1.8 KB</td><td>Tạo Line Chart doanh thu (JFreeChart)</td></tr>
+                    <tr><td>IconUtils.java</td><td>6.0 KB</td><td>Load icon SVG/PNG từ URL hoặc local + fallback</td></tr>
+
+                    <tr><td><code>config</code></td><td>Constants.java</td><td>2.8 KB</td><td>Hằng số: DB URL, 20+ icon path</td></tr>
+                    <tr><td><code>helpers</code></td><td>PropertiesHelpers.java</td><td>1.2 KB</td><td>Đọc file Icons.properties</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>8.4 Lịch sử phiên bản tài liệu</h3>
+        <div class="table-wrapper">
+            <table>
+                <thead><tr><th>Phiên bản</th><th>Ngày</th><th>Mô tả thay đổi</th></tr></thead>
+                <tbody>
+                    <tr><td>1.0</td><td>—</td><td>Bản SRS gốc (nếu có)</td></tr>
+                    <tr><td><strong>2.0</strong></td><td><strong>09/08/2026</strong></td><td>Tạo SRS đầy đủ từ phân tích mã nguồn. Bao gồm: kiến trúc MVC, sơ đồ ERD, 10 chức năng chính (FR-01 → FR-10), yêu cầu phi chức năng, ma trận vai trò, luồng nghiệp vụ, chi tiết database, tổng hợp mã nguồn.</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <hr class="divider">
+    <p class="text-muted text-sm" style="text-align:center; padding: 20px 0;">
+        📘 <strong>Libris SRS v2.0</strong> — Tạo tự động bởi Antigravity AI từ phân tích mã nguồn dự án Java Libris Desktop App.
+        <br>Ngày tạo: 09/08/2026 · Tổng cộng: 7 packages · 30 lớp Java · 5 bảng CSDL · 10 chức năng chính.
+    </p>
+
+</div>
+
+<!-- Smooth scroll highlight for TOC -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const links = document.querySelectorAll('.toc a');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    links.forEach(l => l.classList.remove('active'));
+                    const id = entry.target.id;
+                    const link = document.querySelector(`.toc a[href="#${id}"]`);
+                    if (link) link.classList.add('active');
+                }
+            });
+        }, { rootMargin: '-20% 0px -70% 0px' });
+
+        document.querySelectorAll('section[id], div[id]').forEach(el => observer.observe(el));
+    });
+</script>
+
+</body>
+</html>
