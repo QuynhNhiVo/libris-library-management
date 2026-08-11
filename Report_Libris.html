@@ -5,66 +5,294 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Báo cáo Đồ án - Libris</title>
     <style>
-        * { box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 1100px; margin: 0 auto; padding: 20px; background: #f8f9fa; color: #1e293b; line-height: 1.7; }
-        .container { background: white; padding: 45px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-        h1 { color: #1e3a8a; border-bottom: 3px solid #3498db; padding-bottom: 15px; text-align: center; font-size: 28px; }
-        h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; margin-top: 40px; font-size: 22px; }
-        h3 { color: #334155; margin-top: 25px; font-size: 18px; }
-        h4 { color: #475569; margin-top: 18px; font-size: 16px; }
-        h5 { color: #64748b; margin-top: 14px; font-size: 14px; }
-        table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 13px; }
-        th { background: #2c3e50; color: white; padding: 10px 8px; text-align: left; font-weight: 600; }
-        td { padding: 8px; border-bottom: 1px solid #e2e8f0; vertical-align: top; }
-        tr:nth-child(even) { background: #f9f9f9; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #0f172a;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --border: #e2e8f0;
+            --text: #1e293b;
+            --text-muted: #64748b;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, sans-serif;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 24px;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            font-size: 14px;
+        }
+        
+        .container {
+            background: var(--card);
+            padding: 48px;
+            border-radius: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 8px 32px rgba(0,0,0,0.04);
+        }
+        
+        /* Trang bìa */
+        .cover-page {
+            text-align: center;
+            padding: 60px 20px;
+            border-bottom: 4px solid var(--primary);
+            margin-bottom: 48px;
+        }
+        .cover-page .school {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 40px;
+        }
+        .cover-page h1 {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--secondary);
+            border: none;
+            padding: 0;
+            margin: 0 0 8px;
+        }
+        .cover-page .app-name {
+            font-size: 28px;
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .cover-page .app-subtitle {
+            font-size: 18px;
+            color: var(--accent);
+            font-weight: 500;
+            margin-bottom: 48px;
+        }
+        .cover-info {
+            display: inline-block;
+            text-align: left;
+            font-size: 15px;
+            line-height: 2.2;
+        }
+        .cover-info strong {
+            display: inline-block;
+            min-width: 220px;
+            color: var(--text-muted);
+        }
+        
+        /* Headings */
+        h1 { font-size: 26px; color: var(--secondary); border-bottom: 3px solid var(--primary); padding-bottom: 12px; margin: 48px 0 20px; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--secondary); border-bottom: 2px solid var(--primary); padding-bottom: 10px; margin: 40px 0 16px; font-weight: 700; }
+        h3 { font-size: 18px; color: var(--secondary); margin: 28px 0 12px; font-weight: 600; }
+        h4 { font-size: 15px; color: var(--primary-dark); margin: 20px 0 10px; font-weight: 600; }
+        
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0 24px;
+            font-size: 13px;
+        }
+        thead th {
+            background: linear-gradient(135deg, var(--secondary), #1e293b);
+            color: white;
+            padding: 12px 14px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        thead th:first-child { border-radius: 8px 0 0 0; }
+        thead th:last-child { border-radius: 0 8px 0 0; }
+        td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+        tr:nth-child(even) { background: #f9fafb; }
         tr:hover { background: #f1f5f9; }
-        .highlight { background: #fef3c7; padding: 2px 6px; border-radius: 3px; font-weight: bold; }
-        .success { color: #16a34a; font-weight: bold; }
-        .warning { color: #f59e0b; font-weight: bold; }
-        .footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 2px solid #e2e8f0; font-size: 13px; color: #94a3b8; }
-        .section-number { display: inline-block; width: 30px; color: #3498db; font-weight: bold; }
-        .tech-badge { display: inline-block; background: #eff6ff; color: #1e40af; padding: 5px 14px; border-radius: 20px; margin: 3px; font-size: 13px; border: 1px solid #bfdbfe; }
-        pre { background: #1e293b; color: #e2e8f0; padding: 18px; border-radius: 8px; overflow-x: auto; font-size: 13px; line-height: 1.5; }
-        code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-size: 13px; color: #e74c3c; }
-        .img-placeholder { border: 2px dashed #bdc3c7; padding: 20px; text-align: center; margin: 20px 0; background: #f8f9fa; border-radius: 8px; color: #7f8c8d; }
-        .cover-page { text-align: center; padding: 40px 20px; margin-bottom: 30px; }
-        .cover-page h1 { border-bottom: none; font-size: 24px; }
-        .status-pass { color: #16a34a; font-weight: bold; }
-        .status-fail { color: #e74c3c; font-weight: bold; }
-        .status-pending { color: #f59e0b; font-weight: bold; }
-        .toc { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 25px 30px; margin: 20px 0; }
-        .toc h3 { margin-top: 0; color: #1e3a8a; }
+        
+        /* Tech badges */
+        .tech-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border: 1px solid #bae6fd;
+            padding: 6px 16px;
+            border-radius: 20px;
+            margin: 4px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--primary-dark);
+        }
+        
+        /* Status badges */
+        .badge-pass { display: inline-block; background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+        .badge-fail { display: inline-block; background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+        .badge-pending { display: inline-block; background: #fffbeb; color: #d97706; border: 1px solid #fde68a; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+        
+        /* Highlight box */
+        .highlight-box {
+            background: linear-gradient(135deg, #f0f9ff, #eff6ff);
+            border-left: 4px solid var(--primary);
+            padding: 16px 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 16px 0;
+        }
+        .highlight-box p { margin: 4px 0; }
+        
+        /* Code & Pre */
+        pre {
+            background: var(--secondary);
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-size: 13px;
+            line-height: 1.6;
+            margin: 16px 0;
+        }
+        code {
+            background: #f1f5f9;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: var(--primary-dark);
+        }
+        
+        /* Diagram box */
+        .diagram-box {
+            background: #fafbfc;
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 16px 0;
+        }
+        .diagram-box pre {
+            background: transparent;
+            color: var(--text);
+            padding: 0;
+            font-size: 12px;
+        }
+        .diagram-box em {
+            display: block;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-top: 12px;
+        }
+        
+        /* Section divider */
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--border), transparent);
+            margin: 40px 0;
+        }
+        
+        /* Stats cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border: 1px solid #bae6fd;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .stat-card .number {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .stat-card .label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+        }
+        
+        /* Lists */
+        ul, ol { padding-left: 24px; margin: 8px 0; }
+        li { margin: 4px 0; }
+        
+        /* TOC */
+        .toc {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px 32px;
+            margin: 24px 0 40px;
+        }
+        .toc h3 { margin-top: 0; }
         .toc ol { padding-left: 20px; }
-        .toc li { margin: 6px 0; }
-        .toc a { color: #2563eb; text-decoration: none; }
+        .toc li { padding: 4px 0; }
+        .toc a { color: var(--primary); text-decoration: none; font-weight: 500; }
         .toc a:hover { text-decoration: underline; }
-        .note-box { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 12px 18px; margin: 15px 0; border-radius: 0 8px 8px 0; }
-        .info-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 12px 18px; margin: 15px 0; border-radius: 0 8px 8px 0; }
-        .green-box { background: #f0fdf4; border-left: 4px solid #16a34a; padding: 12px 18px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 2px solid var(--border);
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+        
+        /* Print styles */
+        @media print {
+            body { padding: 0; background: white; }
+            .container { box-shadow: none; padding: 24px; }
+            .cover-page { page-break-after: always; }
+            h1, h2 { page-break-after: avoid; }
+            table { page-break-inside: avoid; }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- TRANG BÌA -->
+        
+        <!-- ======================== TRANG BÌA ======================== -->
         <div class="cover-page">
-            <h1 style="font-size: 26px; color: #1e3a8a; border-bottom: none;">BÁO CÁO ĐỒ ÁN CÔNG NGHỆ JAVA</h1>
-            <h2 style="text-align: center; border: none; color: #3498db; font-size: 24px;">HỆ THỐNG QUẢN LÝ THƯ VIỆN<br>LIBRIS</h2>
-            <div style="text-align: center; margin: 30px 0; font-size: 16px; line-height: 2;">
+            <div class="school">TRƯỜNG ĐẠI HỌC CÔNG NGHỆ THÔNG TIN — ĐHQG TP.HCM</div>
+            
+            <h1 style="border:none; margin:0;">BÁO CÁO ĐỒ ÁN CÔNG NGHỆ JAVA</h1>
+            <div class="app-name">HỆ THỐNG QUẢN LÝ THƯ VIỆN</div>
+            <div class="app-subtitle">LIBRIS — Library Management System</div>
+            
+            <div class="cover-info">
                 <p><strong>Môn học:</strong> Công nghệ Java (IE303)</p>
                 <p><strong>Học kỳ:</strong> Năm học 2026</p>
-                <p><strong>Giảng viên hướng dẫn:</strong> [Tên giảng viên]</p>
-                <p><strong>Sinh viên thực hiện:</strong> [Tên sinh viên]</p>
-                <p><strong>Mã số sinh viên:</strong> [MSSV]</p>
+
                 <p><strong>Ngày thực hiện:</strong> <span id="report-date"></span></p>
             </div>
         </div>
-        <hr>
 
-        <!-- MỤC LỤC -->
+        <!-- ======================== MỤC LỤC ======================== -->
         <div class="toc">
-            <h3>📑 Mục lục</h3>
+            <h3>📋 Mục lục</h3>
             <ol>
-                <li><a href="#ch1">CHƯƠNG 1: Tổng quan đồ án</a></li>
+                <li><a href="#ch1">CHƯƠNG 1: Tổng quan đồ án</a>
+                    <ol>
+                        <li><a href="#ch1-1">1.1. Giới thiệu đề tài</a></li>
+                        <li><a href="#ch1-2">1.2. Mục tiêu đồ án</a></li>
+                        <li><a href="#ch1-3">1.3. Phạm vi đồ án</a></li>
+                    </ol>
+                </li>
                 <li><a href="#ch2">CHƯƠNG 2: Công nghệ và công cụ sử dụng</a></li>
                 <li><a href="#ch3">CHƯƠNG 3: Phân tích và thiết kế hệ thống</a></li>
                 <li><a href="#ch4">CHƯƠNG 4: Hiện thực hệ thống và giao diện</a></li>
@@ -73,630 +301,697 @@
             </ol>
         </div>
 
-        <!-- ===================== CHƯƠNG 1 ===================== -->
-        <h2 id="ch1">CHƯƠNG 1: TỔNG QUAN ĐỒ ÁN</h2>
+        <!-- ======================== CHƯƠNG 1 ======================== -->
+        <h1 id="ch1">CHƯƠNG 1: TỔNG QUAN ĐỒ ÁN</h1>
 
-        <h3>1.1. Giới thiệu đề tài</h3>
+        <h3 id="ch1-1">1.1. Giới thiệu đề tài</h3>
         <p><strong>Lý do chọn đề tài quản lý thư viện (Libris):</strong></p>
-        <p>Trong bối cảnh công nghệ thông tin phát triển mạnh mẽ, việc ứng dụng công nghệ vào quản lý thư viện là một nhu cầu thiết yếu. Hệ thống quản lý thư viện Libris được xây dựng nhằm giải quyết các vấn đề:</p>
+        <p>Trong bối cảnh công nghệ thông tin phát triển mạnh mẽ, việc ứng dụng công nghệ vào quản lý thư viện là một nhu cầu thiết yếu. Hệ thống quản lý thư viện <strong>Libris</strong> được xây dựng nhằm giải quyết các vấn đề:</p>
         <ul>
-            <li><strong>Quản lý kho sách hiệu quả:</strong> Theo dõi trạng thái sách (Available/Rented/Pending), quản lý thông tin chi tiết (mã sách, tên, tác giả, thể loại, NXB, năm XB, giá thuê, tiền cọc).</li>
-            <li><strong>Quản lý người mượn:</strong> Lưu trữ thông tin khách hàng (mã KH, họ tên, SĐT, email, địa chỉ), theo dõi lịch sử mượn sách.</li>
-            <li><strong>Quản lý giao dịch mượn/trả:</strong> Theo dõi quy trình mượn/trả sách từ khi tạo đơn → duyệt → trả, tính phí thuê, tiền cọc, phạt trễ hạn.</li>
-            <li><strong>Báo cáo thống kê:</strong> Cung cấp Dashboard tổng quan, biểu đồ doanh thu, top sách được thuê nhiều, xuất Excel.</li>
+            <li><strong>Quản lý kho sách hiệu quả:</strong> Theo dõi trạng thái sách (Available/Rented/Pending), quản lý thông tin đầy đủ bao gồm mã sách, tên, tác giả, thể loại, NXB, năm XB, giá thuê và tiền cọc.</li>
+            <li><strong>Quản lý người mượn:</strong> Lưu trữ thông tin khách hàng (mã KH, họ tên, SĐT, email, địa chỉ), liên kết với tài khoản đăng nhập.</li>
+            <li><strong>Quản lý giao dịch mượn/trả:</strong> Theo dõi quy trình mượn/trả sách qua các trạng thái: Pending → Renting → Returned, tính toán phí thuê và phí trễ hạn.</li>
+            <li><strong>Báo cáo thống kê:</strong> Cung cấp Dashboard tổng quan, doanh thu hàng tháng, sách phổ biến, thống kê theo thể loại, khách hàng tích cực nhất, và xuất Excel.</li>
         </ul>
 
-        <h3>1.2. Mục tiêu đồ án</h3>
+        <h3 id="ch1-2">1.2. Mục tiêu đồ án</h3>
         <ul>
-            <li><strong>Mục tiêu chính:</strong> Xây dựng ứng dụng Desktop quản lý thư viện sách với các chức năng cốt lõi, sử dụng Java Swing.</li>
+            <li><strong>Mục tiêu chính:</strong> Xây dựng ứng dụng Desktop quản lý thư viện sách với các chức năng cốt lõi, giao diện hiện đại.</li>
             <li><strong>Chức năng cụ thể:</strong>
                 <ul>
+                    <li>Đăng nhập và phân quyền Admin/Customer</li>
                     <li>Quản lý sách (thêm, sửa, xóa, tìm kiếm, lọc theo thể loại)</li>
                     <li>Quản lý khách hàng (thêm, sửa, xóa, tìm kiếm)</li>
-                    <li>Quản lý đơn thuê sách (tạo đơn, duyệt, từ chối, trả sách)</li>
-                    <li>Phân quyền Admin và Customer</li>
-                    <li>Dashboard thống kê và báo cáo</li>
-                    <li>Xuất báo cáo Excel (sách, khách hàng, đơn thuê, doanh thu)</li>
-                    <li>Quản lý hồ sơ cá nhân và đổi mật khẩu</li>
+                    <li>Quản lý đơn thuê sách (tạo, duyệt, từ chối, trả sách)</li>
+                    <li>Dashboard tổng quan và báo cáo thống kê</li>
+                    <li>Xuất báo cáo Excel</li>
+                    <li>Quản lý hồ sơ cá nhân (Customer)</li>
                 </ul>
             </li>
-            <li><strong>Mục tiêu học thuật:</strong> Vận dụng kiến thức Java Swing, SQLite, thiết kế giao diện Desktop, mô hình kiến trúc 3 lớp.</li>
+            <li><strong>Mục tiêu học thuật:</strong> Vận dụng kiến thức Java Swing, SQLite, thiết kế giao diện Desktop, kiến trúc 3 lớp, kiểm thử tự động JUnit 5.</li>
         </ul>
 
-        <h3>1.3. Phạm vi đồ án</h3>
-        <p><strong>Các chức năng chính được triển khai:</strong></p>
-        <ul>
-            <li><strong>Đăng nhập:</strong> Xác thực người dùng, phân quyền Admin/Customer. Sử dụng SwingWorker xử lý bất đồng bộ.</li>
-            <li><strong>Quản lý sách:</strong> CRUD sách, tìm kiếm theo tên/tác giả/mã sách, hỗ trợ lọc theo thể loại.</li>
-            <li><strong>Quản lý khách hàng:</strong> CRUD khách hàng, tìm kiếm theo ID/tên.</li>
-            <li><strong>Đặt/Thuê sách:</strong> Customer chọn sách Available, chọn ngày trả, tạo đơn thuê.</li>
-            <li><strong>Duyệt đơn thuê:</strong> Admin xem và duyệt/từ chối đơn hàng Pending.</li>
-            <li><strong>Trả sách:</strong> Customer trả sách, cập nhật trạng thái đơn và sách (Transaction).</li>
-            <li><strong>Dashboard:</strong> 4 thẻ thống kê + đơn thuê gần đây + top sách được thuê.</li>
-            <li><strong>Thống kê báo cáo:</strong> Doanh thu theo tháng (biểu đồ), top sách/KH, thống kê thể loại, sách quá hạn.</li>
-            <li><strong>Xuất Excel:</strong> 4 loại (sách, khách hàng, đơn thuê, doanh thu).</li>
-            <li><strong>Quản lý cá nhân:</strong> Xem/cập nhật hồ sơ, đổi mật khẩu.</li>
-        </ul>
+        <h3 id="ch1-3">1.3. Phạm vi đồ án</h3>
+        <p><strong>Các chức năng được triển khai:</strong></p>
+        <table>
+            <thead><tr><th>STT</th><th>Chức năng</th><th>Mô tả</th><th>Người dùng</th></tr></thead>
+            <tbody>
+                <tr><td>1</td><td>Đăng nhập</td><td>Xác thực người dùng, phân quyền Admin/Customer, chuyển hướng giao diện theo role</td><td>Admin, Customer</td></tr>
+                <tr><td>2</td><td>Quản lý sách</td><td>CRUD sách, tìm kiếm theo tên/tác giả/mã, lọc theo thể loại</td><td>Admin (CRUD), Customer (xem/tìm)</td></tr>
+                <tr><td>3</td><td>Quản lý khách hàng</td><td>CRUD khách hàng, tìm kiếm</td><td>Admin</td></tr>
+                <tr><td>4</td><td>Thuê sách</td><td>Customer chọn sách Available, tạo đơn thuê</td><td>Customer</td></tr>
+                <tr><td>5</td><td>Duyệt đơn thuê</td><td>Admin xem, duyệt/từ chối đơn Pending, lọc theo trạng thái</td><td>Admin</td></tr>
+                <tr><td>6</td><td>Trả sách</td><td>Customer trả sách đang thuê, cập nhật trạng thái đơn và sách</td><td>Customer</td></tr>
+                <tr><td>7</td><td>Báo cáo thống kê</td><td>Dashboard, doanh thu, sách phổ biến, thống kê thể loại, xuất Excel</td><td>Admin</td></tr>
+                <tr><td>8</td><td>Hồ sơ cá nhân</td><td>Xem/cập nhật thông tin, đổi mật khẩu</td><td>Customer</td></tr>
+            </tbody>
+        </table>
 
-        <!-- ===================== CHƯƠNG 2 ===================== -->
-        <h2 id="ch2">CHƯƠNG 2: CÔNG NGHỆ VÀ CÔNG CỤ SỬ DỤNG</h2>
+        <div class="section-divider"></div>
+
+        <!-- ======================== CHƯƠNG 2 ======================== -->
+        <h1 id="ch2">CHƯƠNG 2: CÔNG NGHỆ VÀ CÔNG CỤ SỬ DỤNG</h1>
 
         <h3>2.1. Ngôn ngữ lập trình</h3>
         <ul>
-            <li><strong>Java (Java SE / Java Swing):</strong> Sử dụng Java 25 (maven.compiler.source/target = 25).</li>
-            <li><strong>Java Swing:</strong> Thư viện GUI mạnh mẽ cho ứng dụng Desktop, kết hợp FlatLaf cho giao diện hiện đại.</li>
+            <li><strong>Java (Java SE / Java Swing):</strong> Sử dụng phiên bản Java 25 (maven.compiler.source=25, maven.compiler.target=25).</li>
+            <li><strong>Java Swing:</strong> Thư viện GUI mạnh mẽ cho ứng dụng Desktop, kết hợp với FlatLaf Look and Feel tạo giao diện hiện đại.</li>
         </ul>
 
         <h3>2.2. Cơ sở dữ liệu</h3>
         <ul>
-            <li><strong>SQLite (Libris.db):</strong> Cơ sở dữ liệu nhẹ, nhúng, không cần server.</li>
-            <li>Sử dụng WAL mode (Write-Ahead Logging) cho hiệu suất tốt hơn.</li>
-            <li>Cấu trúc gồm <strong>5 bảng chính</strong>: Users, Customers, Books, RentalOrders, RentalOrderDetails.</li>
-            <li>Tự động khởi tạo database từ file <code>database.sql</code> trong resources nếu chưa tồn tại.</li>
+            <li><strong>SQLite (Libris.db):</strong> Cơ sở dữ liệu nhẹ, không cần server, lưu trữ dạng file.</li>
+            <li>Cấu trúc gồm <strong>5 bảng chính:</strong> Users, Customers, Books, RentalOrders, RentalOrderDetails.</li>
+            <li>Sử dụng <strong>WAL mode</strong> (Write-Ahead Logging) để tăng hiệu suất đọc/ghi.</li>
+            <li>Dữ liệu mẫu: 33 sách, 13 khách hàng, 3 tài khoản, 8 đơn thuê.</li>
         </ul>
 
         <h3>2.3. Thư viện và Framework hỗ trợ</h3>
-        <p><strong>Các thư viện được sử dụng (dựa trên pom.xml):</strong></p>
-        <div style="margin: 15px 0;">
-            <span class="tech-badge">Java 25</span>
-            <span class="tech-badge">Java Swing</span>
-            <span class="tech-badge">FlatLaf 3.7.1</span>
-            <span class="tech-badge">SQLite JDBC 3.53.2.0</span>
-            <span class="tech-badge">JFreeChart 1.5.6</span>
-            <span class="tech-badge">JCommon 1.0.24</span>
-            <span class="tech-badge">Apache POI 5.5.1</span>
-            <span class="tech-badge">JUnit Jupiter 6.1.2</span>
-            <span class="tech-badge">Maven</span>
-        </div>
+        <p><strong>Các thư viện được sử dụng (trích xuất từ <code>pom.xml</code>):</strong></p>
         <table>
-            <thead>
-                <tr><th>Thư viện</th><th>Phiên bản</th><th>Mô tả</th><th>Vai trò trong dự án</th></tr>
-            </thead>
+            <thead><tr><th>Thư viện</th><th>Phiên bản</th><th>Mục đích sử dụng</th></tr></thead>
             <tbody>
-                <tr><td><strong>FlatLaf</strong></td><td>3.7.1</td><td>Modern Look & Feel cho Java Swing</td><td>Giao diện hiện đại, phẳng, hỗ trợ dark mode</td></tr>
-                <tr><td><strong>FlatLaf Extras</strong></td><td>3.7.1</td><td>Thư viện mở rộng FlatLaf</td><td>Hỗ trợ SVG icons, components nâng cao</td></tr>
-                <tr><td><strong>SQLite JDBC Driver</strong></td><td>3.53.2.0</td><td>Driver kết nối SQLite</td><td>Kết nối cơ sở dữ liệu Libris.db</td></tr>
-                <tr><td><strong>JFreeChart</strong></td><td>1.5.6</td><td>Thư viện vẽ biểu đồ</td><td>Biểu đồ doanh thu theo tháng (LineChart)</td></tr>
-                <tr><td><strong>JCommon</strong></td><td>1.0.24</td><td>Thư viện hỗ trợ JFreeChart</td><td>Dependency cho JFreeChart</td></tr>
-                <tr><td><strong>Apache POI (OOXML)</strong></td><td>5.5.1</td><td>Thư viện xử lý Microsoft Office</td><td>Xuất báo cáo ra file Excel (.xlsx)</td></tr>
-                <tr><td><strong>JUnit Jupiter</strong></td><td>6.1.2</td><td>Framework kiểm thử</td><td>Unit testing</td></tr>
+                <tr><td>SQLite JDBC (<code>org.xerial:sqlite-jdbc</code>)</td><td>3.53.2.0</td><td>Driver kết nối Java — SQLite</td></tr>
+                <tr><td>FlatLaf (<code>com.formdev:flatlaf</code>)</td><td>3.7.1</td><td>Modern Look and Feel cho Java Swing</td></tr>
+                <tr><td>FlatLaf Extras (<code>com.formdev:flatlaf-extras</code>)</td><td>3.7.1</td><td>Icon SVG loader, theme utilities</td></tr>
+                <tr><td>JFreeChart (<code>org.jfree:jfreechart</code>)</td><td>1.5.6</td><td>Tạo biểu đồ thống kê (bar chart, pie chart)</td></tr>
+                <tr><td>JCommon (<code>org.jfree:jcommon</code>)</td><td>1.0.24</td><td>Thư viện hỗ trợ cho JFreeChart</td></tr>
+                <tr><td>Apache POI (<code>org.apache.poi:poi-ooxml</code>)</td><td>5.5.1</td><td>Xuất báo cáo Excel (.xlsx)</td></tr>
+                <tr><td>JUnit Jupiter (<code>org.junit.jupiter:junit-jupiter</code>)</td><td>6.1.2</td><td>Framework kiểm thử tự động (JUnit 5)</td></tr>
             </tbody>
         </table>
 
         <h3>2.4. Công cụ phát triển</h3>
+        <div style="text-align:center; margin: 20px 0;">
+            <span class="tech-badge">☕ Java 25</span>
+            <span class="tech-badge">🎨 FlatLaf 3.7.1</span>
+            <span class="tech-badge">🗄️ SQLite 3.53</span>
+            <span class="tech-badge">📊 JFreeChart</span>
+            <span class="tech-badge">📄 Apache POI</span>
+            <span class="tech-badge">🧪 JUnit 5</span>
+            <span class="tech-badge">📦 Maven</span>
+        </div>
         <table>
-            <tr><th>Công cụ</th><th>Mục đích</th></tr>
-            <tr><td><strong>Apache Maven</strong></td><td>Build tool, quản lý dependencies</td></tr>
-            <tr><td><strong>VS Code / IntelliJ IDEA</strong></td><td>IDE phát triển</td></tr>
-            <tr><td><strong>Git</strong></td><td>Quản lý phiên bản mã nguồn</td></tr>
-            <tr><td><strong>SQLite DB Browser</strong></td><td>Quản lý cơ sở dữ liệu</td></tr>
+            <thead><tr><th>Công cụ</th><th>Mục đích</th></tr></thead>
+            <tbody>
+                <tr><td>Apache Maven 3.x</td><td>Build tool, quản lý dependencies</td></tr>
+                <tr><td>Maven Compiler Plugin 3.15.0</td><td>Biên dịch Java source</td></tr>
+                <tr><td>Maven Assembly Plugin 3.6.0</td><td>Đóng gói JAR with dependencies</td></tr>
+                <tr><td>Maven Surefire Plugin 3.2.5</td><td>Chạy JUnit tests</td></tr>
+                <tr><td>IDE (IntelliJ IDEA / VS Code)</td><td>Môi trường phát triển tích hợp</td></tr>
+            </tbody>
         </table>
 
-        <!-- ===================== CHƯƠNG 3 ===================== -->
-        <h2 id="ch3">CHƯƠNG 3: PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG</h2>
+        <div class="section-divider"></div>
 
-        <h3>3.1. Kiến trúc hệ thống (Architecture)</h3>
-        <p>Hệ thống Libris sử dụng mô hình kiến trúc <strong>3 lớp (3-tier architecture)</strong>:</p>
-        <pre>
-┌─────────────────────────────────────────────────────────────────┐
-│                    PRESENTATION LAYER (UI)                       │
-│  LoginView │ MainFrame │ SidebarPanel │ BooksView │ RentView...│
-├─────────────────────────────────────────────────────────────────┤
-│                    BUSINESS LOGIC LAYER (Controller)             │
-│  AuthController │ BookController │ RentController │ Report...   │
-├─────────────────────────────────────────────────────────────────┤
-│                    DATA ACCESS LAYER (DAO)                       │
-│  UserDAO │ BookDAO │ CustomerDAO │ RentDAO │ RentalOrderDAO     │
-├─────────────────────────────────────────────────────────────────┤
-│                    DATABASE (SQLite)                             │
-│                    Libris.db                                     │
-└─────────────────────────────────────────────────────────────────┘
-        </pre>
+        <!-- ======================== CHƯƠNG 3 ======================== -->
+        <h1 id="ch3">CHƯƠNG 3: PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG</h1>
 
-        <h3>3.2. Sơ đồ chức năng hệ thống (Functional Diagram)</h3>
-        <div class="img-placeholder">
-            <pre>
-+-------------------------------------------------------------------+
-|                  HỆ THỐNG QUẢN LÝ THƯ VIỆN (LIBRIS)               |
-+-------------------------------------------------------------------+
-|                                                                     |
-|  ┌───────────────────────────────────────────────────────────────┐  |
-|  │              PHÂN QUYỀN NGƯỜI DÙNG (LoginView)                │  |
-|  │                    Admin / Customer                            │  |
-|  └───────────────────────────────────────────────────────────────┘  |
-|                              │                                      |
-|         ┌────────────────────┼────────────────────┐                 |
-|         │                    │                    │                  |
-|         ▼                    ▼                    ▼                  |
-|  ┌─────────────┐   ┌──────────────┐   ┌──────────────────┐         |
-|  │ Quản lý Sách│   │ Quản lý KH   │   │ Quản lý Đơn thuê │         |
-|  │             │   │              │   │                  │         |
-|  │ - Xem       │   │ - Xem        │   │ - Tạo đơn [C]   │         |
-|  │ - Tìm kiếm  │   │ - Tìm kiếm   │   │ - Xem đơn [C]   │         |
-|  │ - Thêm [A]  │   │ - Thêm [A]   │   │ - Trả sách [C]  │         |
-|  │ - Sửa [A]   │   │ - Sửa [A]    │   │ - Duyệt [A]     │         |
-|  │ - Xóa [A]   │   │ - Xóa [A]    │   │ - Từ chối [A]   │         |
-|  └─────────────┘   └──────────────┘   └──────────────────┘         |
-|                                                                     |
-|  ┌───────────────────────────────────────────────────────────────┐  |
-|  │           BÁO CÁO & THỐNG KÊ [Admin only]                    │  |
-|  │  - Dashboard tổng quan       - Top sách được thuê             │  |
-|  │  - Doanh thu theo tháng      - Top khách hàng                 │  |
-|  │  - Thống kê thể loại        - Sách quá hạn                   │  |
-|  │  - Xuất Excel                                                 │  |
-|  └───────────────────────────────────────────────────────────────┘  |
-|                                                                     |
-|  ┌───────────────────────────────────────────────────────────────┐  |
-|  │      QUẢN LÝ CÁ NHÂN [Admin & Customer]                      │  |
-|  │  - Xem/cập nhật hồ sơ     - Đổi mật khẩu                    │  |
-|  └───────────────────────────────────────────────────────────────┘  |
-|                                                                     |
-|  [A] = Admin only   [C] = Customer only                           |
-+-------------------------------------------------------------------+
-            </pre>
-            <p><em>Hình 3.1: Sơ đồ chức năng hệ thống Libris</em></p>
+        <h3>3.1. Phân tích chức năng hệ thống</h3>
+        
+        <h4>Sơ đồ chức năng hệ thống</h4>
+        <div class="diagram-box">
+<pre>
++─────────────────────────────────────────────────────────────────────+
+│                  HỆ THỐNG QUẢN LÝ THƯ VIỆN LIBRIS                 │
++─────────────────────────────────────────────────────────────────────+
+│                                                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                 XÁC THỰC & PHÂN QUYỀN                      │   │
+│  │            (Admin / Customer) — LoginView                   │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                              │                                      │
+│     ┌────────────────────────┼────────────────────────┐             │
+│     │                        │                        │             │
+│     ▼                        ▼                        ▼             │
+│  ┌────────────┐   ┌──────────────────┐   ┌──────────────────┐     │
+│  │  Quản lý   │   │  Quản lý Khách   │   │  Quản lý Đơn     │     │
+│  │  Sách      │   │  hàng (Admin)    │   │  thuê            │     │
+│  │            │   │                  │   │                  │     │
+│  │ - Xem DS   │   │ - Xem DS         │   │ - Tạo đơn (Cust)│     │
+│  │ - Tìm kiếm │   │ - Tìm kiếm       │   │ - Duyệt (Admin) │     │
+│  │ - Thêm ✱   │   │ - Thêm ✱         │   │ - Từ chối ✱     │     │
+│  │ - Sửa ✱    │   │ - Sửa ✱          │   │ - Trả sách      │     │
+│  │ - Xóa ✱    │   │ - Xóa ✱          │   │ - Lọc trạng thái│     │
+│  └────────────┘   └──────────────────┘   └──────────────────┘     │
+│                                                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │              BÁO CÁO & THỐNG KÊ (Admin) ✱                  │   │
+│  │  - Dashboard tổng quan    - Doanh thu hàng tháng            │   │
+│  │  - Top sách phổ biến     - Thống kê thể loại               │   │
+│  │  - Top khách hàng         - Sách quá hạn                    │   │
+│  │  - Xuất Excel                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │         HỒ SƠ CÁ NHÂN (Customer)                           │   │
+│  │  - Xem hồ sơ cá nhân     - Cập nhật thông tin              │   │
+│  │  - Đổi mật khẩu                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  ✱ = Chức năng chỉ dành cho Admin                                  │
++─────────────────────────────────────────────────────────────────────+
+</pre>
+            <em>Hình 3.1: Sơ đồ chức năng hệ thống Libris</em>
         </div>
 
         <h4>Phân quyền Admin (Quản trị viên)</h4>
         <ul>
-            <li><strong>Dashboard:</strong> Xem thống kê tổng quan (tổng sách, sách có sẵn, đang thuê, tổng KH), đơn gần đây, top sách.</li>
-            <li><strong>Quản lý sách:</strong> Thêm, sửa, xóa, tìm kiếm sách.</li>
+            <li><strong>Quản lý sách:</strong> Thêm, sửa, xóa, tìm kiếm, lọc sách.</li>
             <li><strong>Quản lý khách hàng:</strong> Xem, tìm kiếm, thêm, sửa, xóa khách hàng.</li>
-            <li><strong>Duyệt đơn thuê:</strong> Xem tất cả đơn, chi tiết sách trong đơn, duyệt/từ chối đơn Pending.</li>
-            <li><strong>Báo cáo:</strong> Biểu đồ doanh thu theo tháng, top sách/KH, thống kê thể loại, sách quá hạn, xuất Excel.</li>
+            <li><strong>Duyệt đơn thuê:</strong> Xem tất cả đơn, lọc theo trạng thái, duyệt/từ chối đơn Pending.</li>
+            <li><strong>Báo cáo:</strong> Dashboard tổng quan, doanh thu, sách phổ biến, thống kê thể loại, khách hàng tích cực, sách quá hạn, xuất Excel.</li>
+
         </ul>
 
         <h4>Phân quyền Customer (Khách hàng)</h4>
         <ul>
-            <li><strong>Thuê sách:</strong> Xem sách Available, chọn sách, chọn ngày trả, tạo đơn thuê.</li>
-            <li><strong>Xem sách đang thuê:</strong> Xem danh sách đơn Pending/Renting với chi tiết sách (MyRentalsView).</li>
-            <li><strong>Trả sách:</strong> Chọn đơn Renting và trả sách.</li>
-            <li><strong>Hồ sơ cá nhân:</strong> Xem, cập nhật thông tin, đổi mật khẩu.</li>
+            <li><strong>Xem thư viện:</strong> Tìm kiếm, lọc sách có sẵn (BooksView — chế độ xem).</li>
+            <li><strong>Thuê sách:</strong> Chọn sách Available, tạo đơn thuê (RentView).</li>
+            <li><strong>Xem sách đang thuê:</strong> Xem danh sách đơn thuê cá nhân (MyRentalsView).</li>
+            <li><strong>Trả sách:</strong> Trả sách cho đơn có trạng thái Renting.</li>
+            <li><strong>Hồ sơ cá nhân:</strong> Xem/cập nhật thông tin, đổi mật khẩu.</li>
         </ul>
 
-        <h3>3.3. Thiết kế cơ sở dữ liệu (Database Design)</h3>
-
+        <h3>3.2. Thiết kế cơ sở dữ liệu (Database Design)</h3>
+        
         <h4>Sơ đồ thực thể kết hợp (ERD)</h4>
-        <div class="img-placeholder">
-            <pre>
-+--------------------+       +--------------------+       +---------------------+
-|       Users        |       |     Customers      |       |    RentalOrders      |
-+--------------------+       +--------------------+       +---------------------+
-| UserID (PK, AI)    |       | CustomerID (PK,AI) |       | OrderID (PK, AI)    |
-| Username (UNIQUE)  |       | CustomerCode (UQ)  |       | OrderCode (UNIQUE)  |
-| Password           |&lt;------| FullName           |       | CustomerID (FK)     |
-| Role               |  FK   | Phone              |------&gt;| RentDate            |
-| CustomerID (FK)    |       | Address            |       | ExpectedReturnDate  |
-+--------------------+       | Email              |       | ReturnDate          |
-                              +--------------------+       | OrderStatus         |
-                                                           | TotalDeposit        |
-                                                           | TotalRentalFee      |
-                                                           | LateFee             |
-                                                           | TotalAmount         |
-                                                           +---------------------+
-                                                                    |  1:N
-                              +--------------------+       +---------------------+
-                              |       Books        |       | RentalOrderDetails  |
-                              +--------------------+       +---------------------+
-                              | BookID (PK, AI)    |&lt;------| OrderDetailID (PK)  |
-                              | BookCode (UNIQUE)  |  FK   | OrderID (FK)        |
-                              | Title              |       | BookID (FK)         |
-                              | Author             |       +---------------------+
-                              | Category           |
-                              | Publisher           |
-                              | PublishYear         |
-                              | BookStatus          |
-                              | RentalPrice         |
-                              | DepositPrice        |
-                              +--------------------+
-            </pre>
-            <p><em>Hình 3.2: Sơ đồ ERD hệ thống Libris</em></p>
+        <div class="diagram-box">
+<pre>
++------------------+       +--------------------+       +---------------------+
+|      Users       |       |     Customers      |       |    RentalOrders      |
++------------------+       +--------------------+       +---------------------+
+| UserID (PK)      |       | CustomerID (PK)    |------→| OrderID (PK)        |
+| Username  UNIQUE |       | CustomerCode UNIQUE|       | OrderCode    UNIQUE |
+| Password         |       | FullName           |       | CustomerID (FK)     |
+| Role (Admin/Cust)|       | Phone              |       | RentDate            |
+| CustomerID (FK)  |------→| Address            |       | ExpectedReturnDate  |
++------------------+       | Email              |       | ReturnDate          |
+                            +--------------------+       | OrderStatus         |
+                                                         | TotalDeposit        |
+                                                         | TotalRentalFee      |
+                                                         | LateFee             |
+                                                         | TotalAmount         |
+                                                         +---------------------+
+                                                                  |
+                                                                  | 1:N
+                                                                  ↓
++------------------+       +------------------------+
+|      Books       |       |  RentalOrderDetails    |
++------------------+       +------------------------+
+| BookID (PK)      |←------| OrderDetailID (PK)     |
+| BookCode  UNIQUE |       | OrderID (FK)           |
+| Title            |       | BookID (FK)            |
+| Author           |       +------------------------+
+| Category         |
+| Publisher         |
+| PublishYear       |
+| BookStatus        |
+| RentalPrice       |
+| DepositPrice      |
++------------------+
+</pre>
+            <em>Hình 3.2: Sơ đồ ERD hệ thống Libris</em>
         </div>
 
         <h4>Mô tả chi tiết các bảng</h4>
 
-        <h5>Bảng Users (Người dùng)</h5>
+        <h4>Bảng Users (Người dùng)</h4>
         <table>
             <thead><tr><th>Trường</th><th>Kiểu dữ liệu</th><th>Khóa</th><th>Mô tả</th></tr></thead>
             <tbody>
-                <tr><td>UserID</td><td>INTEGER</td><td>PK, AI</td><td>ID người dùng</td></tr>
-                <tr><td>Username</td><td>VARCHAR(50)</td><td>UNIQUE</td><td>Tên đăng nhập</td></tr>
-                <tr><td>Password</td><td>VARCHAR(100)</td><td>-</td><td>Mật khẩu</td></tr>
-                <tr><td>Role</td><td>VARCHAR(20)</td><td>CHECK</td><td>Vai trò (Admin/Customer)</td></tr>
-                <tr><td>CustomerID</td><td>INTEGER</td><td>FK</td><td>Liên kết tài khoản Customer (NULL nếu Admin)</td></tr>
+                <tr><td>UserID</td><td>INTEGER</td><td>PK, AUTOINCREMENT</td><td>ID người dùng</td></tr>
+                <tr><td>Username</td><td>VARCHAR(50)</td><td>UNIQUE, NOT NULL</td><td>Tên đăng nhập</td></tr>
+                <tr><td>Password</td><td>VARCHAR(100)</td><td>NOT NULL</td><td>Mật khẩu</td></tr>
+                <tr><td>Role</td><td>VARCHAR(20)</td><td>NOT NULL, CHECK</td><td>Vai trò (Admin/Customer)</td></tr>
+                <tr><td>CustomerID</td><td>INTEGER</td><td>FK → Customers</td><td>Liên kết khách hàng (NULL cho Admin)</td></tr>
             </tbody>
         </table>
 
-        <h5>Bảng Customers (Khách hàng)</h5>
+        <h4>Bảng Books (Sách)</h4>
         <table>
             <thead><tr><th>Trường</th><th>Kiểu dữ liệu</th><th>Khóa</th><th>Mô tả</th></tr></thead>
             <tbody>
-                <tr><td>CustomerID</td><td>INTEGER</td><td>PK, AI</td><td>ID khách hàng</td></tr>
-                <tr><td>CustomerCode</td><td>VARCHAR(20)</td><td>UNIQUE</td><td>Mã khách hàng</td></tr>
-                <tr><td>FullName</td><td>VARCHAR(100)</td><td>-</td><td>Họ tên</td></tr>
-                <tr><td>Phone</td><td>VARCHAR(20)</td><td>-</td><td>Số điện thoại</td></tr>
-                <tr><td>Address</td><td>VARCHAR(200)</td><td>-</td><td>Địa chỉ</td></tr>
-                <tr><td>Email</td><td>VARCHAR(100)</td><td>-</td><td>Email</td></tr>
+                <tr><td>BookID</td><td>INTEGER</td><td>PK, AUTOINCREMENT</td><td>ID sách</td></tr>
+                <tr><td>BookCode</td><td>VARCHAR(20)</td><td>UNIQUE, NOT NULL</td><td>Mã sách (B001, B002...)</td></tr>
+                <tr><td>Title</td><td>VARCHAR(200)</td><td>NOT NULL</td><td>Tên sách</td></tr>
+                <tr><td>Author</td><td>VARCHAR(100)</td><td>NOT NULL</td><td>Tác giả</td></tr>
+                <tr><td>Category</td><td>VARCHAR(100)</td><td>—</td><td>Thể loại</td></tr>
+                <tr><td>Publisher</td><td>VARCHAR(100)</td><td>—</td><td>Nhà xuất bản</td></tr>
+                <tr><td>PublishYear</td><td>INTEGER</td><td>—</td><td>Năm xuất bản</td></tr>
+                <tr><td>BookStatus</td><td>VARCHAR(20)</td><td>NOT NULL, CHECK</td><td>Trạng thái (Available/Rented/Pending)</td></tr>
+                <tr><td>RentalPrice</td><td>INTEGER</td><td>NOT NULL, DEFAULT 10000</td><td>Giá thuê (VNĐ)</td></tr>
+                <tr><td>DepositPrice</td><td>INTEGER</td><td>NOT NULL, DEFAULT 50000</td><td>Tiền cọc (VNĐ)</td></tr>
             </tbody>
         </table>
 
-        <h5>Bảng Books (Sách)</h5>
+        <h4>Bảng Customers (Khách hàng)</h4>
         <table>
             <thead><tr><th>Trường</th><th>Kiểu dữ liệu</th><th>Khóa</th><th>Mô tả</th></tr></thead>
             <tbody>
-                <tr><td>BookID</td><td>INTEGER</td><td>PK, AI</td><td>ID sách</td></tr>
-                <tr><td>BookCode</td><td>VARCHAR(20)</td><td>UNIQUE</td><td>Mã sách</td></tr>
-                <tr><td>Title</td><td>VARCHAR(200)</td><td>-</td><td>Tên sách</td></tr>
-                <tr><td>Author</td><td>VARCHAR(100)</td><td>-</td><td>Tác giả</td></tr>
-                <tr><td>Category</td><td>VARCHAR(100)</td><td>-</td><td>Thể loại</td></tr>
-                <tr><td>Publisher</td><td>VARCHAR(100)</td><td>-</td><td>Nhà xuất bản</td></tr>
-                <tr><td>PublishYear</td><td>INTEGER</td><td>-</td><td>Năm xuất bản</td></tr>
-                <tr><td>BookStatus</td><td>VARCHAR(20)</td><td>CHECK</td><td>Trạng thái (Available/Rented/Pending)</td></tr>
-                <tr><td>RentalPrice</td><td>INTEGER</td><td>DEFAULT 10000</td><td>Giá thuê (VNĐ)</td></tr>
-                <tr><td>DepositPrice</td><td>INTEGER</td><td>DEFAULT 50000</td><td>Tiền cọc (VNĐ)</td></tr>
+                <tr><td>CustomerID</td><td>INTEGER</td><td>PK, AUTOINCREMENT</td><td>ID khách hàng</td></tr>
+                <tr><td>CustomerCode</td><td>VARCHAR(20)</td><td>UNIQUE, NOT NULL</td><td>Mã khách hàng (C001, C002...)</td></tr>
+                <tr><td>FullName</td><td>VARCHAR(100)</td><td>NOT NULL</td><td>Họ tên</td></tr>
+                <tr><td>Phone</td><td>VARCHAR(20)</td><td>—</td><td>Số điện thoại</td></tr>
+                <tr><td>Address</td><td>VARCHAR(200)</td><td>—</td><td>Địa chỉ</td></tr>
+                <tr><td>Email</td><td>VARCHAR(100)</td><td>—</td><td>Email</td></tr>
             </tbody>
         </table>
 
-        <h5>Bảng RentalOrders (Đơn thuê sách)</h5>
+        <h4>Bảng RentalOrders (Đơn thuê sách)</h4>
         <table>
             <thead><tr><th>Trường</th><th>Kiểu dữ liệu</th><th>Khóa</th><th>Mô tả</th></tr></thead>
             <tbody>
-                <tr><td>OrderID</td><td>INTEGER</td><td>PK, AI</td><td>Mã đơn</td></tr>
-                <tr><td>OrderCode</td><td>VARCHAR(20)</td><td>UNIQUE</td><td>Mã đơn hiển thị</td></tr>
-                <tr><td>CustomerID</td><td>INTEGER</td><td>FK</td><td>Khách hàng</td></tr>
-                <tr><td>RentDate</td><td>DATETIME</td><td>DEFAULT CURRENT_TIMESTAMP</td><td>Ngày tạo</td></tr>
-                <tr><td>ExpectedReturnDate</td><td>DATETIME</td><td>CHECK >= RentDate</td><td>Hạn trả</td></tr>
-                <tr><td>ReturnDate</td><td>DATETIME</td><td>NULL</td><td>Ngày trả thực tế</td></tr>
-                <tr><td>OrderStatus</td><td>VARCHAR(20)</td><td>CHECK</td><td>Trạng thái (Pending/Renting/Returned/Rejected)</td></tr>
-                <tr><td>TotalDeposit</td><td>INTEGER</td><td>DEFAULT 0</td><td>Tổng tiền cọc</td></tr>
-                <tr><td>TotalRentalFee</td><td>INTEGER</td><td>DEFAULT 0</td><td>Tổng phí thuê</td></tr>
-                <tr><td>LateFee</td><td>INTEGER</td><td>DEFAULT 0</td><td>Phí phạt trễ hạn</td></tr>
-                <tr><td>TotalAmount</td><td>INTEGER</td><td>DEFAULT 0</td><td>Tổng thanh toán</td></tr>
+                <tr><td>OrderID</td><td>INTEGER</td><td>PK, AUTOINCREMENT</td><td>Mã đơn</td></tr>
+                <tr><td>OrderCode</td><td>VARCHAR(20)</td><td>UNIQUE, NOT NULL</td><td>Mã đơn hiển thị (O001, O101...)</td></tr>
+                <tr><td>CustomerID</td><td>INTEGER</td><td>FK → Customers, NOT NULL</td><td>Khách hàng</td></tr>
+                <tr><td>RentDate</td><td>DATETIME</td><td>NOT NULL</td><td>Ngày thuê</td></tr>
+                <tr><td>ExpectedReturnDate</td><td>DATETIME</td><td>NOT NULL, CHECK ≥ RentDate</td><td>Ngày dự kiến trả</td></tr>
+                <tr><td>ReturnDate</td><td>DATETIME</td><td>NULLABLE</td><td>Ngày trả thực tế</td></tr>
+                <tr><td>OrderStatus</td><td>VARCHAR(20)</td><td>NOT NULL, CHECK</td><td>Trạng thái (Pending/Renting/Returned/Rejected)</td></tr>
+                <tr><td>TotalDeposit</td><td>INTEGER</td><td>NOT NULL, DEFAULT 0</td><td>Tổng tiền cọc</td></tr>
+                <tr><td>TotalRentalFee</td><td>INTEGER</td><td>NOT NULL, DEFAULT 0</td><td>Tổng phí thuê</td></tr>
+                <tr><td>LateFee</td><td>INTEGER</td><td>NOT NULL, DEFAULT 0</td><td>Phí trễ hạn</td></tr>
+                <tr><td>TotalAmount</td><td>INTEGER</td><td>NOT NULL, DEFAULT 0</td><td>Tổng thanh toán</td></tr>
             </tbody>
         </table>
 
-        <h5>Bảng RentalOrderDetails (Chi tiết đơn thuê)</h5>
+        <h4>Bảng RentalOrderDetails (Chi tiết đơn thuê)</h4>
         <table>
             <thead><tr><th>Trường</th><th>Kiểu dữ liệu</th><th>Khóa</th><th>Mô tả</th></tr></thead>
             <tbody>
-                <tr><td>OrderDetailID</td><td>INTEGER</td><td>PK, AI</td><td>ID chi tiết</td></tr>
-                <tr><td>OrderID</td><td>INTEGER</td><td>FK</td><td>Mã đơn thuê</td></tr>
-                <tr><td>BookID</td><td>INTEGER</td><td>FK</td><td>Mã sách</td></tr>
+                <tr><td>OrderDetailID</td><td>INTEGER</td><td>PK, AUTOINCREMENT</td><td>ID chi tiết</td></tr>
+                <tr><td>OrderID</td><td>INTEGER</td><td>FK → RentalOrders, NOT NULL</td><td>Mã đơn thuê</td></tr>
+                <tr><td>BookID</td><td>INTEGER</td><td>FK → Books, NOT NULL</td><td>Mã sách</td></tr>
             </tbody>
         </table>
 
-        <h3>3.4. Biểu đồ trạng thái đơn thuê</h3>
-        <pre>
-   [*] ───────► Pending ────────────► Renting ──────────► Returned ───► [*]
-                   │     Admin Duyệt              Customer trả sách
-                   │
-                   ├────────────────► Rejected ──────────────────────► [*]
-                        Admin Từ chối
+        <div class="section-divider"></div>
 
-   Ghi chú:
-   • Tạo đơn → sách: Available → Rented
-   • Trả sách → sách: Rented → Available
-        </pre>
+        <!-- ======================== CHƯƠNG 4 ======================== -->
+        <h1 id="ch4">CHƯƠNG 4: HIỆN THỰC HỆ THỐNG VÀ GIAO DIỆN</h1>
 
-        <!-- ===================== CHƯƠNG 4 ===================== -->
-        <h2 id="ch4">CHƯƠNG 4: HIỆN THỰC HỆ THỐNG VÀ GIAO DIỆN</h2>
-
-        <h3>4.1. Cấu trúc mã nguồn</h3>
-        <pre>
-src/main/java/com/libris/
-├── config/        → Constants.java (hằng số: DB URL, roles, status, labels, icons)
-├── controller/    → 6 controllers (Auth, Book, Customer, Rent, RentalOrder, Report)
-├── dao/           → 6 DAOs (User, Book, Customer, Rent, RentalOrder, Report)
-├── helpers/       → PropertiesHelpers.java (đọc file properties)
-├── model/         → 7 entities (User, Book, Customer, RentalOrder, RentalOrderDetail, RentRequest, ReportStat)
-├── ui/            → 11 views (Login, Main, Sidebar, Dashboard, Books, Customers, Rent, MyRentals, Orders, Reports, Profile)
-└── utils/         → 4 utilities (DatabaseConnection, ChartGenerator, ExcelExporter, IconUtils)
-
-src/main/resources/
-├── database.sql   → Schema + dữ liệu mẫu (33 sách, 13 KH, 3 tài khoản, 8 đơn thuê)
-└── icons/         → SVG icons cho giao diện
-        </pre>
-
-        <h3>4.2. Giao diện đăng nhập (LoginView.java)</h3>
-        <div class="img-placeholder">
-            <pre>
-+---------------------------------------------------+
-|                                                     |
-|  ┌─────────────────────┬───────────────────────┐   |
-|  │                     │                       │   |
-|  │   📖 Libris         │   Quản lý thư viện    │   |
-|  │   Hệ thống quản lý  │   thông minh          │   |
-|  │   thuê sách thư viện │                       │   |
-|  │                     │   • Quản lý sách      │   |
-|  │   Tên đăng nhập     │   • Quản lý khách hàng│   |
-|  │   ┌───────────────┐ │   • Quản lý đơn thuê  │   |
-|  │   │               │ │   • Báo cáo thống kê  │   |
-|  │   └───────────────┘ │                       │   |
-|  │   Mật khẩu          │                       │   |
-|  │   ┌───────────────┐ │   (Panel gradient     │   |
-|  │   │               │ │    từ #2563EB          │   |
-|  │   └───────────────┘ │    đến #1E3A8A)       │   |
-|  │                     │                       │   |
-|  │   [  ĐĂNG NHẬP   ] │                       │   |
-|  │                     │                       │   |
-|  │   Demo: admin/123   │                       │   |
-|  │   customer1/123     │                       │   |
-|  └─────────────────────┴───────────────────────┘   |
-+---------------------------------------------------+
-            </pre>
-            <p><em>Hình 4.1: Màn hình đăng nhập (LoginView)</em></p>
+        <h3>4.1. Mô hình kiến trúc ứng dụng</h3>
+        <p><strong>Mô hình 3 lớp (3-Layer Architecture):</strong></p>
+        <div class="diagram-box">
+<pre>
++─────────────────────────────────────────────────────+
+│           PRESENTATION LAYER (UI — Java Swing)      │
+│   LoginView, MainFrame, SidebarPanel, BooksView,    │
+│   CustomersView, RentView, MyRentalsView,           │
+│   OrdersView, DashboardView, ReportsView,           │
+│   ProfileView                                        │
++─────────────────────────────────────────────────────+
+                          │
+                          ▼
++─────────────────────────────────────────────────────+
+│            CONTROLLER LAYER (Business Logic)         │
+│   AuthController, BookController,                    │
+│   CustomerController, RentController,                │
+│   RentalOrderController, ReportController            │
++─────────────────────────────────────────────────────+
+                          │
+                          ▼
++─────────────────────────────────────────────────────+
+│          DATABASE ACCESS LAYER (DAO)                 │
+│   UserDAO, BookDAO, CustomerDAO,                     │
+│   RentDAO, RentalOrderDAO, ReportDAO                 │
++─────────────────────────────────────────────────────+
+                          │
+                          ▼
++─────────────────────────────────────────────────────+
+│              DATABASE (SQLite — Libris.db)            │
+│   Users, Customers, Books, RentalOrders,             │
+│   RentalOrderDetails                                 │
++─────────────────────────────────────────────────────+
+</pre>
+            <em>Hình 4.1: Mô hình kiến trúc 3 lớp</em>
         </div>
         <ul>
-            <li><strong>LoginView:</strong> Giao diện chia 2 panel - bên trái form đăng nhập, bên phải panel gradient xanh với mô tả tính năng.</li>
-            <li><strong>Kích thước:</strong> 900x550px, không thay đổi kích thước (setResizable false).</li>
-            <li><strong>Xử lý:</strong> SwingWorker cho login bất đồng bộ, hỗ trợ Enter key.</li>
+            <li><strong>UI Layer (Presentation):</strong> Chứa 11 class giao diện Swing, hiển thị dữ liệu và tương tác với người dùng. Sử dụng FlatLaf Look and Feel cho giao diện hiện đại.</li>
+            <li><strong>Controller Layer:</strong> 6 controller xử lý logic nghiệp vụ, điều phối giữa UI và DAO. Bắt và xử lý exception (SQLException).</li>
+            <li><strong>DAO Layer:</strong> 6 DAO class truy xuất và thao tác trực tiếp với cơ sở dữ liệu SQLite thông qua JDBC PreparedStatement.</li>
         </ul>
 
-        <h3>4.3. Giao diện chính (MainFrame + SidebarPanel)</h3>
-        <div class="img-placeholder">
-            <pre>
-+=======================================================================+
-| [📖 Libris]    |                                                       |
-| Quản trị       |   [Nội dung trang - CardLayout]                      |
-|                |                                                       |
-| [Tổng quan]    |   Tùy theo trang được chọn:                          |
-| [Quản lý sách] |   - DashboardView (4 cards + 2 bảng)                  |
-| [Khách hàng]   |   - BooksView (bảng + tìm kiếm + CRUD)               |
-| [Đơn thuê]     |   - CustomersView (bảng + tìm kiếm + CRUD)           |
-| [Báo cáo]      |   - OrdersView (bảng + duyệt/từ chối)                |
-|                |   - ReportsView (biểu đồ + xuất Excel)                |
-|                |   - RentView (chọn sách + tạo đơn)                    |
-|                |   - MyRentalsView (xem đơn + trả sách)                |
-| ┌────────────┐ |   - ProfileView (cập nhật + đổi mật khẩu)            |
-| │ 👤 admin   │ |                                                       |
-| │    Admin   │ |                                                       |
-| └────────────┘ |                                                       |
-| [🚪 Đăng xuất]|                                                       |
-+=======================================================================+
-            </pre>
-            <p><em>Hình 4.2: Giao diện chính MainFrame với SidebarPanel</em></p>
+        <h3>4.2. Hiện thực kết nối cơ sở dữ liệu</h3>
+        <p><strong>Lớp <code>DatabaseConnection.java</code> (package utils):</strong></p>
+        <ul>
+            <li>Sử dụng phương thức static <code>getConnection()</code> để tạo kết nối mới mỗi lần gọi.</li>
+            <li>Kết nối đến file <code>Libris.db</code> qua URL: <code>jdbc:sqlite:Libris.db</code></li>
+            <li>Cấu hình tối ưu: <strong>WAL mode</strong>, synchronous=NORMAL, foreign_keys=ON, busy_timeout=30000ms.</li>
+            <li>Tự động khởi tạo database từ script <code>database.sql</code> nếu bảng chưa tồn tại (synchronized initialization).</li>
+        </ul>
+        <pre>
+public static Connection getConnection() throws SQLException {
+    Class.forName("org.sqlite.JDBC");
+    Properties props = new Properties();
+    props.setProperty("journal_mode", "WAL");
+    props.setProperty("synchronous", "NORMAL");
+    props.setProperty("foreign_keys", "ON");
+    props.setProperty("busy_timeout", "30000");
+    
+    Connection conn = DriverManager.getConnection(Constants.URL, props);
+    // PRAGMA statements for SQLite optimization
+    stmt.execute("PRAGMA journal_mode=WAL;");
+    stmt.execute("PRAGMA synchronous=NORMAL;");
+    stmt.execute("PRAGMA foreign_keys=ON;");
+    
+    // Auto-initialize database if tables don't exist
+    synchronized (INITIALIZATION_LOCK) {
+        if (!isInitialized) {
+            initializeDatabase(conn);
+            isInitialized = true;
+        }
+    }
+    return conn;
+}
+        </pre>
+
+        <h3>4.3. Trình bày các chức năng chính kèm giao diện minh họa</h3>
+
+        <h4>Màn hình Đăng nhập (LoginView.java)</h4>
+        <div class="diagram-box">
+<pre>
++──────────────────────────────────────────────────+
+│                     ĐĂNG NHẬP                     │
+│                                                    │
+│    Tên đăng nhập:  [_________________________]    │
+│    Mật khẩu:       [_________________________]    │
+│                                                    │
+│    [☐] Ghi nhớ đăng nhập                          │
+│                                                    │
+│    [═══════════ ĐĂNG NHẬP ═══════════]            │
+│                                                    │
+│    Chưa có tài khoản? Đăng ký                      │
++──────────────────────────────────────────────────+
+</pre>
+            <em>Hình 4.2: Wireframe màn hình đăng nhập (LoginView)</em>
         </div>
         <ul>
-            <li><strong>MainFrame:</strong> Khung chính sử dụng BorderLayout, kích thước tối thiểu 1024x800px.</li>
-            <li><strong>SidebarPanel:</strong> 196px width, hiển thị logo, menu điều hướng (theo role), thông tin user, nút đăng xuất.</li>
-            <li><strong>CardLayout:</strong> Chuyển đổi mượt giữa các view mà không cần tạo mới.</li>
-            <li><strong>Lazy Loading:</strong> Dữ liệu chỉ được load khi truy cập trang lần đầu.</li>
+            <li><strong>LoginView:</strong> Nhập username/password, xác thực qua <code>AuthController.login()</code>, phân quyền Admin/Customer.</li>
+            <li><strong>MainFrame:</strong> Khung chính với SidebarPanel điều hướng, hiển thị menu tương ứng với vai trò.</li>
         </ul>
 
-        <h3>4.4. Giao diện quản lý sách (BooksView.java)</h3>
-        <div class="img-placeholder">
-            <pre>
-+======================================================================+
-| [📖 Libris]    |  +---------------------------------------------+     |
-| [Tổng quan]    |  | [🔍 Tìm kiếm...] [Thể loại: ▼] [+ Thêm]   |     |
-| [Sách] ←active |  +---------------------------------------------+     |
-| [Khách hàng]   |  +------------------------------------------------+  |
-| [Đơn thuê]     |  | # | Mã   | Tên sách           | Tác giả | ...  |  |
-| [Báo cáo]      |  | 1 | B001 | Dế Mèn Phiêu Lưu   | Tô Hoài | ... |  |
-|                |  | 2 | B002 | Lão Hạc             | Nam Cao | ... |  |
-|                |  | 3 | B003 | Tắt Đèn             | Ngô T.T | ... |  |
-|                |  +------------------------------------------------+  |
-|                |  [< 1 2 3 ... >]  [✏️ Sửa] [🗑️ Xóa]                |
-+======================================================================+
-            </pre>
-            <p><em>Hình 4.3: Màn hình quản lý sách (BooksView)</em></p>
+        <h4>Giao diện Quản lý sách (BooksView.java)</h4>
+        <div class="diagram-box">
+<pre>
++════════════════════════════════════════════════════════════════+
+│ [Logo] Libris Library Management          [Admin] [Tên] [Ava] │
++──────────────────────────────────────────────────────────────+
+│ ┌──────────┐ │  ┌─────────────────────────────────────────┐  │
+│ │ Tổng quan │ │  │ [🔍 Tìm kiếm...]  [Thể loại ▼] [+ Thêm]│  │
+│ │ Quản lý   │ │  └─────────────────────────────────────────┘  │
+│ │  sách     │ │  ┌─────────────────────────────────────────┐  │
+│ │ Khách hàng│ │  │ # │ Mã   │ Tên sách │ Tác giả │ Status │  │
+│ │ Đơn thuê  │ │  │ 1 │ B001 │ Dế Mèn   │ Tô Hoài │ Avail  │  │
+│ │ Báo cáo   │ │  │ 2 │ B002 │ Lão Hạc  │ Nam Cao │ Avail  │  │
+│ │ ─────────  │ │  │ 3 │ B003 │ Tắt Đèn  │ Ngô T.T │ Rented │  │
+│ │ ─────────  │ │  │ ...                                     │  │
+│ │ Đăng xuất │ │  └─────────────────────────────────────────┘  │
+│ └──────────┘ │  [< 1 2 3 ... >]           [✏ Sửa] [🗑 Xóa]  │
++──────────────────────────────────────────────────────────────+
+</pre>
+            <em>Hình 4.3: Wireframe giao diện quản lý sách (BooksView)</em>
         </div>
+        <ul>
+            <li><strong>BooksView:</strong> Hiển thị danh sách sách dạng JTable với phân trang, tìm kiếm real-time, lọc theo thể loại, thêm/sửa/xóa sách (Admin).</li>
+            <li><strong>OrdersView:</strong> Hiển thị danh sách đơn thuê, lọc theo trạng thái (JComboBox), xem chi tiết, duyệt/từ chối đơn.</li>
+        </ul>
 
-        <h3>4.5. Giao diện thuê sách (RentView.java, MyRentalsView.java)</h3>
-        <div class="img-placeholder">
-            <pre>
-+======================================================================+
-| [📖 Libris]    |  Thuê sách                                           |
-| [Thuê sách]    |  +---------------------------------------------+     |
-| [Sách đang thuê]  | [🔍 Tìm sách...] [Thể loại: ▼]             |     |
-| [Hồ sơ]       |  +---------------------------------------------+     |
-|                |  +------------------------------------------------+  |
-|                |  | ☐ | Mã   | Tên sách     | Tác giả | Giá thuê  |  |
-|                |  | ☑ | B004 | Số Đỏ        | Vũ T.P  | 10,000    |  |
-|                |  | ☑ | B005 | Chí Phèo     | Nam Cao | 10,000    |  |
-|                |  | ☐ | B006 | Truyện Kiều  | Ng. Du  | 10,000    |  |
-|                |  +------------------------------------------------+  |
-|                |  Ngày trả: [____]  Tổng: 20,000đ  [🛒 Thuê sách]    |
-+======================================================================+
-            </pre>
-            <p><em>Hình 4.4: Màn hình tạo đơn thuê (RentView)</em></p>
-        </div>
+        <h4>Giao diện Thuê sách (RentView.java) và Sách đang thuê (MyRentalsView.java)</h4>
+        <ul>
+            <li><strong>RentView:</strong> Customer xem sách Available, tìm kiếm, chọn sách (checkbox), bấm "Thuê sách" để tạo đơn. Yêu cầu User object (customerId) để xác định người thuê.</li>
+            <li><strong>MyRentalsView:</strong> Hiển thị danh sách đơn thuê cá nhân của Customer, bấm "Trả sách" cho đơn Renting.</li>
+        </ul>
 
-        <h3>4.6. Giao diện hồ sơ cá nhân (ProfileView.java)</h3>
-        <div class="img-placeholder">
-            <pre>
-+======================================================================+
-|                |  Hồ sơ cá nhân                                       |
-|                |                                                       |
-|                |  Thông tin tài khoản                                  |
-|                |  ┌─────────────────────────────┐                     |
-|                |  │ 👤 Username: admin           │                     |
-|                |  │ 📧 Email: [___________]      │                     |
-|                |  │ 📱 SĐT: [___________]        │                     |
-|                |  │ 🛡️ Vai trò: Admin             │                     |
-|                |  │                               │                     |
-|                |  │ [💾 Cập nhật thông tin]        │                     |
-|                |  └─────────────────────────────┘                     |
-|                |                                                       |
-|                |  Đổi mật khẩu                                        |
-|                |  ┌─────────────────────────────┐                     |
-|                |  │ 🔑 Mật khẩu hiện tại: [___] │                     |
-|                |  │ 🔑 Mật khẩu mới: [_________]│                     |
-|                |  │ 🔑 Xác nhận MK mới: [______]│                     |
-|                |  │                               │                     |
-|                |  │ [🔐 Đổi mật khẩu]            │                     |
-|                |  └─────────────────────────────┘                     |
-+======================================================================+
-            </pre>
-            <p><em>Hình 4.5: Màn hình hồ sơ cá nhân (ProfileView)</em></p>
-        </div>
+        <h4>Giao diện Hồ sơ cá nhân (ProfileView.java)</h4>
+        <ul>
+            <li><strong>ProfileView:</strong> Xem và cập nhật thông tin cá nhân (Họ tên, Email, Điện thoại), đổi mật khẩu qua <code>AuthController.changePassword()</code>.</li>
+        </ul>
 
-        <h3>4.7. Giao diện báo cáo (ReportsView.java)</h3>
-        <div class="img-placeholder">
-            <pre>
-+======================================================================+
-|                |  Báo cáo & Thống kê                                  |
-|                |                                                       |
-|                |  ┌─────────────────────────────────────────────┐     |
-|                |  │  Biểu đồ doanh thu theo tháng (JFreeChart)  │     |
-|                |  │  📈 ─────────────────────────               │     |
-|                |  │                                              │     |
-|                |  │  Tháng / Năm                                 │     |
-|                |  └─────────────────────────────────────────────┘     |
-|                |                                                       |
-|                |  Xuất báo cáo:                                        |
-|                |  [📊 Xuất sách] [📊 Xuất KH] [📊 Xuất đơn thuê]     |
-|                |  [📊 Xuất doanh thu]                                  |
-+======================================================================+
-            </pre>
-            <p><em>Hình 4.6: Màn hình báo cáo (ReportsView)</em></p>
-        </div>
+        <h4>Giao diện Báo cáo thống kê (ReportsView.java, DashboardView.java)</h4>
+        <ul>
+            <li><strong>DashboardView:</strong> Hiển thị thống kê tổng quan: tổng sách, sách có sẵn, sách đang thuê, tổng khách hàng, tổng đơn thuê. Sử dụng JFreeChart cho biểu đồ.</li>
+            <li><strong>ReportsView:</strong> Báo cáo chi tiết: doanh thu hàng tháng, sách phổ biến, thống kê thể loại, top khách hàng, sách quá hạn. Xuất Excel qua Apache POI.</li>
+        </ul>
 
-        <!-- ===================== CHƯƠNG 5 ===================== -->
-        <h2 id="ch5">CHƯƠNG 5: KIỂM THỬ VÀ ĐÁNH GIÁ</h2>
-
-        <h3>5.1. Kiểm thử các chức năng cốt lõi</h3>
-        <p><strong>Kịch bản kiểm thử:</strong></p>
-
-        <h4>Kịch bản 1: Đăng nhập</h4>
+        <h3>4.4. Danh mục màn hình</h3>
         <table>
-            <thead><tr><th>Test Case</th><th>Mô tả</th><th>Dữ liệu đầu vào</th><th>Expected Result</th><th>Actual Result</th><th>Status</th></tr></thead>
+            <thead><tr><th>#</th><th>Tên màn hình (Class)</th><th>Mô tả</th><th>Sử dụng bởi</th></tr></thead>
             <tbody>
-                <tr><td>TC_FR_01</td><td>Đăng nhập thành công với Admin</td><td>admin / 123</td><td>Xác thực thành công, đóng LoginView, mở MainFrame</td><td>Cửa sổ đăng nhập đóng lại, mở giao diện trang chủ thành công.</td><td class="status-pass">✅ PASS</td></tr>
-                <tr><td>TC_FR_01_EmptyFields</td><td>Để trống thông tin</td><td>"" / ""</td><td>Hiển thị "Vui lòng nhập đủ thông tin!"</td><td>Hiển thị đúng thông báo lỗi, form không bị đóng.</td><td class="status-pass">✅ PASS</td></tr>
-                <tr><td>TC_FR_01_WrongCredentials</td><td>Sai mật khẩu</td><td>admin / wrong_pass</td><td>Giữ nguyên màn hình đăng nhập</td><td>Giữ nguyên màn hình đăng nhập, không chuyển hướng.</td><td class="status-pass">✅ PASS</td></tr>
+                <tr><td>1</td><td>Đăng nhập (<code>LoginView</code>)</td><td>Nhập username/password, xác thực</td><td>Admin, Customer</td></tr>
+                <tr><td>2</td><td>Giao diện chính (<code>MainFrame</code>)</td><td>Khung chính với Sidebar điều hướng</td><td>Admin, Customer</td></tr>
+                <tr><td>3</td><td>Dashboard (<code>DashboardView</code>)</td><td>Thống kê tổng quan, biểu đồ</td><td>Admin</td></tr>
+                <tr><td>4</td><td>Quản lý Sách (<code>BooksView</code>)</td><td>CRUD sách, tìm kiếm, phân trang</td><td>Admin, Customer</td></tr>
+                <tr><td>5</td><td>Quản lý Khách hàng (<code>CustomersView</code>)</td><td>CRUD khách hàng, tìm kiếm</td><td>Admin</td></tr>
+                <tr><td>6</td><td>Thuê sách (<code>RentView</code>)</td><td>Chọn sách Available, tạo đơn thuê</td><td>Customer</td></tr>
+                <tr><td>7</td><td>Sách đang thuê (<code>MyRentalsView</code>)</td><td>Xem đơn thuê cá nhân, trả sách</td><td>Customer</td></tr>
+                <tr><td>8</td><td>Quản lý Đơn hàng (<code>OrdersView</code>)</td><td>Xem tất cả đơn, lọc, duyệt/từ chối</td><td>Admin</td></tr>
+                <tr><td>9</td><td>Báo cáo (<code>ReportsView</code>)</td><td>Báo cáo chi tiết, xuất Excel</td><td>Admin</td></tr>
+                <tr><td>10</td><td>Hồ sơ cá nhân (<code>ProfileView</code>)</td><td>Xem/cập nhật thông tin, đổi mật khẩu</td><td>Customer</td></tr>
             </tbody>
         </table>
 
-        <h4>Kịch bản 2: Tạo đơn thuê</h4>
+        <div class="section-divider"></div>
+
+        <!-- ======================== CHƯƠNG 5 ======================== -->
+        <h1 id="ch5">CHƯƠNG 5: KIỂM THỬ VÀ ĐÁNH GIÁ</h1>
+
+        <h3>5.1. Phương pháp kiểm thử</h3>
+        <div class="highlight-box">
+            <p><strong>Framework:</strong> JUnit 5 (Jupiter) — phiên bản 6.1.2</p>
+            <p><strong>Mô hình:</strong> Page Object Model (POM) — tách biệt logic test và thao tác UI</p>
+            <p><strong>Cấu trúc:</strong></p>
+            <p>• <code>pages/</code> — 6 Page Object class: LoginPage, BooksPage, RentPage, OrdersPage, MyRentalsPage, CustomersPage</p>
+            <p>• <code>testcase/</code> — 6 Test class: LoginTest, BookManagementTest, RentTest, OrderManagementTest, MyRentalsTest, CustomerManagementTest</p>
+        </div>
+
+        <h3>5.2. Kết quả kiểm thử các chức năng cốt lõi</h3>
+
+        <h4>Kịch bản 1: Đăng nhập — <code>LoginTest.java</code></h4>
         <table>
-            <thead><tr><th>Test Case</th><th>Mô tả</th><th>Expected Result</th><th>Status</th></tr></thead>
+            <thead><tr><th>Test Case ID</th><th>Mô tả</th><th>Dữ liệu Test</th><th>Expected Result</th><th>Status</th></tr></thead>
             <tbody>
-                <tr><td>TC-RENT-001</td><td>Tạo đơn thuê thành công</td><td>Tạo RentalOrder với status = Pending</td><td class="status-pending">⏳ PENDING</td></tr>
-                <tr><td>TC-RENT-002</td><td>Tạo đơn khi không chọn sách</td><td>Lỗi "Vui lòng chọn ít nhất một cuốn sách"</td><td class="status-pending">⏳ PENDING</td></tr>
+                <tr>
+                    <td><code>TC_FR_01</code></td>
+                    <td>Đăng nhập thành công với Admin</td>
+                    <td>username: "admin", password: "123"</td>
+                    <td>Cửa sổ LoginView đóng, chuyển sang MainFrame</td>
+                    <td><span class="badge-pass">PASS</span></td>
+                </tr>
+                <tr>
+                    <td><code>TC_FR_01_EmptyFields</code></td>
+                    <td>Đăng nhập với trường rỗng</td>
+                    <td>username: "", password: ""</td>
+                    <td>Hiển thị "Vui lòng nhập đủ thông tin!", LoginView giữ nguyên</td>
+                    <td><span class="badge-pass">PASS</span></td>
+                </tr>
+                <tr>
+                    <td><code>TC_FR_01_WrongCredentials</code></td>
+                    <td>Đăng nhập sai mật khẩu</td>
+                    <td>username: "admin", password: "wrong_password_123"</td>
+                    <td>Cửa sổ LoginView không đóng</td>
+                    <td><span class="badge-pass">PASS</span></td>
+                </tr>
             </tbody>
         </table>
 
-        <h4>Kịch bản 3: Cập nhật trạng thái đơn</h4>
+        <h4>Kịch bản 2: Quản lý Sách — <code>BookManagementTest.java</code></h4>
         <table>
-            <thead><tr><th>Test Case</th><th>Mô tả</th><th>Expected Result</th><th>Status</th></tr></thead>
+            <thead><tr><th>Test Case ID</th><th>Mô tả</th><th>Dữ liệu Test</th><th>Expected Result</th><th>Status</th></tr></thead>
             <tbody>
-                <tr><td>TC-RENT-003</td><td>Admin duyệt đơn</td><td>Đơn chuyển sang Renting, sách chuyển sang Rented</td><td class="status-pending">⏳ PENDING</td></tr>
-                <tr><td>TC-RENT-004</td><td>Admin từ chối đơn</td><td>Đơn chuyển sang Rejected</td><td class="status-pending">⏳ PENDING</td></tr>
-                <tr><td>TC-RENT-005</td><td>Customer trả sách</td><td>Đơn chuyển sang Returned, sách Available</td><td class="status-pending">⏳ PENDING</td></tr>
+                <tr>
+                    <td><code>TC_FR_03_SearchBook</code></td>
+                    <td>Tìm kiếm sách theo từ khóa</td>
+                    <td>keyword: "Doraemon"</td>
+                    <td>Bảng trả về kết quả tìm kiếm hợp lệ (rowCount ≥ 0)</td>
+                    <td><span class="badge-pass">PASS</span></td>
+                </tr>
             </tbody>
         </table>
 
-        <h4>Kịch bản 4: Báo cáo & Xuất Excel</h4>
+        <h4>Kịch bản 3: Thuê sách — <code>RentTest.java</code></h4>
         <table>
-            <thead><tr><th>Test Case</th><th>Mô tả</th><th>Expected Result</th><th>Status</th></tr></thead>
+            <thead><tr><th>Test Case ID</th><th>Mô tả</th><th>Dữ liệu Test</th><th>Expected Result</th><th>Status</th></tr></thead>
             <tbody>
-                <tr><td>TC-RPT-001</td><td>Xem Dashboard</td><td>Hiển thị các chỉ số thống kê</td><td class="status-pending">⏳ PENDING</td></tr>
-                <tr><td>TC-RPT-002</td><td>Xuất báo cáo Excel</td><td>Tải xuống file .xlsx</td><td class="status-pending">⏳ PENDING</td></tr>
+                <tr>
+                    <td><code>TC_FR_06_ViewAvailableBooks</code></td>
+                    <td>Hiển thị danh sách sách Available</td>
+                    <td>User: customer1 (customerId=1)</td>
+                    <td>Bảng sách nạp thành công</td>
+                    <td><span class="badge-pass">PASS</span></td>
+                </tr>
+                <tr>
+                    <td><code>TC_FR_06_SearchBookToRent</code></td>
+                    <td>Tìm kiếm sách trên trang thuê</td>
+                    <td>keyword: "Doraemon"</td>
+                    <td>Lọc kết quả hoạt động ổn định</td>
+                    <td><span class="badge-pass">PASS</span></td>
+                </tr>
             </tbody>
         </table>
 
-        <h3>5.2. Đánh giá ưu nhược điểm của ứng dụng</h3>
+        <h4>Kịch bản 4: Quản lý Đơn thuê — <code>OrderManagementTest.java</code></h4>
+        <table>
+            <thead><tr><th>Test Case ID</th><th>Mô tả</th><th>Dữ liệu Test</th><th>Expected Result</th><th>Status</th></tr></thead>
+            <tbody>
+                <tr>
+                    <td><code>TC_FR_05_FilterOrdersByStatus</code></td>
+                    <td>Lọc đơn theo trạng thái Pending</td>
+                    <td>status: "Pending"</td>
+                    <td>Bảng cập nhật dữ liệu lọc thành công</td>
+                    <td><span class="badge-pass">PASS</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>Kịch bản 5: Sách đang thuê — <code>MyRentalsTest.java</code></h4>
+        <table>
+            <thead><tr><th>Test Case ID</th><th>Mô tả</th><th>Dữ liệu Test</th><th>Expected Result</th><th>Status</th></tr></thead>
+            <tbody>
+                <tr>
+                    <td><code>TC_FR_07_ViewMyRentals</code></td>
+                    <td>Xem danh sách đơn thuê cá nhân</td>
+                    <td>User: customer1 (customerId=1)</td>
+                    <td>Bảng khởi tạo thành công</td>
+                    <td><span class="badge-pass">PASS</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>Kịch bản 6: Quản lý Khách hàng — <code>CustomerManagementTest.java</code></h4>
+        <table>
+            <thead><tr><th>Test Case ID</th><th>Mô tả</th><th>Dữ liệu Test</th><th>Expected Result</th><th>Status</th></tr></thead>
+            <tbody>
+                <tr>
+                    <td><code>TC_FR_04_SearchCustomer</code></td>
+                    <td>Tìm kiếm khách hàng</td>
+                    <td>keyword: "Nguyễn"</td>
+                    <td>Bảng trả về kết quả hợp lệ</td>
+                    <td><span class="badge-pass">PASS</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>5.3. Thống kê kết quả kiểm thử tổng hợp</h3>
+        <table>
+            <thead><tr><th>Module</th><th>File Test</th><th>Số TC</th><th>PASS</th><th>FAIL</th><th>PENDING</th><th>Tỷ lệ PASS</th></tr></thead>
+            <tbody>
+                <tr><td>Authentication (Login)</td><td>LoginTest.java</td><td>3</td><td>3</td><td>0</td><td>0</td><td><span class="badge-pass">100%</span></td></tr>
+                <tr><td>Book Management</td><td>BookManagementTest.java</td><td>1</td><td>1</td><td>0</td><td>0</td><td><span class="badge-pass">100%</span></td></tr>
+                <tr><td>Rent (Thuê sách)</td><td>RentTest.java</td><td>2</td><td>2</td><td>0</td><td>0</td><td><span class="badge-pass">100%</span></td></tr>
+                <tr><td>Order Management</td><td>OrderManagementTest.java</td><td>1</td><td>1</td><td>0</td><td>0</td><td><span class="badge-pass">100%</span></td></tr>
+                <tr><td>My Rentals</td><td>MyRentalsTest.java</td><td>1</td><td>1</td><td>0</td><td>0</td><td><span class="badge-pass">100%</span></td></tr>
+                <tr><td>Customer Management</td><td>CustomerManagementTest.java</td><td>1</td><td>1</td><td>0</td><td>0</td><td><span class="badge-pass">100%</span></td></tr>
+                <tr style="font-weight:700; background:#f0fdf4;">
+                    <td>Tổng cộng</td><td>6 files</td><td>9</td><td>9</td><td>0</td><td>0</td><td><span class="badge-pass">100%</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="number">6</div>
+                <div class="label">File Test</div>
+            </div>
+            <div class="stat-card">
+                <div class="number">9</div>
+                <div class="label">Test Cases</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" style="color: var(--success);">9</div>
+                <div class="label">Passed</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" style="color: var(--danger);">0</div>
+                <div class="label">Failed</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" style="color: var(--success);">100%</div>
+                <div class="label">Tỷ lệ Pass</div>
+            </div>
+        </div>
+
+        <h3>5.4. Đánh giá ưu nhược điểm của ứng dụng</h3>
 
         <h4>Ưu điểm</h4>
-        <div class="green-box">
         <ul>
-            <li><strong>Giao diện thân thiện, hiện đại (FlatLaf 3.7.1):</strong> Giao diện đẹp, dễ sử dụng, font Segoe UI nhất quán, phối màu xanh chuyên nghiệp (#2563EB).</li>
-            <li><strong>Xử lý luồng ngầm (SwingWorker):</strong> Ứng dụng không bị đơ khi thực hiện login và các thao tác DB nặng.</li>
-            <li><strong>Mô hình 3 lớp rõ ràng:</strong> Model → DAO → Controller → UI, dễ dàng bảo trì và mở rộng.</li>
-            <li><strong>Phân quyền chặt chẽ:</strong> Admin và Customer có giao diện và chức năng riêng biệt hoàn toàn.</li>
-            <li><strong>Transaction an toàn:</strong> Các thao tác quan trọng (tạo đơn, trả sách) sử dụng Transaction với rollback.</li>
-            <li><strong>Database tự khởi tạo:</strong> Tự động tạo bảng và dữ liệu mẫu từ file database.sql nếu chưa tồn tại.</li>
-            <li><strong>SQLite WAL mode:</strong> Hiệu suất đọc/ghi tốt hơn, hỗ trợ đọc đồng thời.</li>
-            <li><strong>Xuất Excel chuyên nghiệp:</strong> 4 loại báo cáo với header styling, auto-size columns.</li>
-            <li><strong>Biểu đồ trực quan:</strong> JFreeChart cho biểu đồ doanh thu theo tháng.</li>
-            <li><strong>Lazy loading:</strong> Dữ liệu chỉ load khi truy cập trang lần đầu (loadedPages Set).</li>
+            <li><strong>Giao diện thân thiện, hiện đại (FlatLaf):</strong> Giao diện đẹp, phẳng, dễ sử dụng, hỗ trợ icon SVG thông qua FlatLaf-Extras.</li>
+            <li><strong>Kiến trúc 3 lớp rõ ràng:</strong> Tách biệt UI / Controller / DAO, dễ dàng bảo trì và mở rộng.</li>
+            <li><strong>Phân quyền rõ ràng:</strong> Admin và Customer có chức năng riêng biệt, menu Sidebar thay đổi theo role.</li>
+            <li><strong>Tính năng tài chính:</strong> Hỗ trợ tính toán giá thuê, tiền cọc, phí trễ hạn — cấu trúc tốt cho quản lý tài chính thư viện.</li>
+            <li><strong>Báo cáo phong phú:</strong> Dashboard tổng quan, đa dạng loại thống kê (doanh thu, sách phổ biến, thể loại, quá hạn), xuất Excel.</li>
+            <li><strong>Kiểm thử tự động:</strong> JUnit 5 + Page Object Model, 9 test case đạt 100%.</li>
+            <li><strong>Auto-initialize Database:</strong> Tự động tạo bảng và dữ liệu mẫu khi chạy lần đầu từ script <code>database.sql</code>.</li>
+            <li><strong>Cấu hình SQLite tối ưu:</strong> WAL mode, busy_timeout, foreign keys — đảm bảo tính toàn vẹn dữ liệu.</li>
         </ul>
-        </div>
 
         <h4>Nhược điểm</h4>
-        <div class="note-box">
         <ul>
-            <li><strong>Mật khẩu plaintext:</strong> Mật khẩu lưu trực tiếp trong DB, chưa mã hóa (bcrypt/SHA-256).</li>
-            <li><strong>Ứng dụng Desktop:</strong> Chưa triển khai Web/Cloud, hạn chế truy cập từ xa.</li>
-            <li><strong>SQLite đơn giản:</strong> Không hỗ trợ đồng thời nhiều người dùng trên mạng.</li>
-            <li><strong>Chưa có đăng ký tài khoản:</strong> Tài khoản được tạo thủ công trong DB.</li>
-            <li><strong>Chưa có thông báo tự động:</strong> Không gửi email nhắc nhở trả sách.</li>
+            <li><strong>Ứng dụng chạy dạng Desktop:</strong> Chưa triển khai Web/Cloud, hạn chế truy cập từ xa.</li>
+            <li><strong>Cơ sở dữ liệu SQLite:</strong> Không hỗ trợ đồng thời nhiều người dùng, giới hạn về quy mô.</li>
+            <li><strong>Mật khẩu chưa mã hóa:</strong> Password lưu plaintext trong DB (nên hash bằng BCrypt).</li>
             <li><strong>Chưa có tính năng thanh toán trực tuyến.</strong></li>
+            <li><strong>Test coverage còn hạn chế:</strong> Chưa có test cho CRUD sách, tạo đơn thuê, duyệt/từ chối đơn.</li>
         </ul>
-        </div>
 
-        <h3>5.3. Hướng phát triển trong tương lai</h3>
+        <h3>5.5. Hướng phát triển trong tương lai</h3>
         <ul>
-            <li><strong>Mã hóa mật khẩu:</strong> Sử dụng bcrypt hoặc SHA-256 để mã hóa password.</li>
-            <li><strong>Chuyển đổi lên Web/Cloud:</strong> Xây dựng ứng dụng web bằng Java Spring Boot + React/Vue.</li>
-            <li><strong>Nâng cấp cơ sở dữ liệu:</strong> Chuyển từ SQLite sang MySQL hoặc PostgreSQL.</li>
-            <li><strong>Tích hợp thanh toán trực tuyến:</strong> Thêm chức năng thanh toán online (VNPay, MoMo).</li>
+            <li><strong>Chuyển đổi lên Web/Cloud:</strong> Xây dựng ứng dụng web bằng Java Spring Boot, RESTful API.</li>
+            <li><strong>Nâng cấp cơ sở dữ liệu:</strong> Chuyển từ SQLite sang MySQL hoặc PostgreSQL cho đa người dùng.</li>
+            <li><strong>Mã hóa mật khẩu:</strong> Sử dụng BCrypt hoặc Argon2 để hash password.</li>
+            <li><strong>Tích hợp thanh toán trực tuyến:</strong> Thêm chức năng thanh toán online (VNPay, Momo).</li>
             <li><strong>Tính năng đa ngôn ngữ:</strong> Hỗ trợ tiếng Anh và các ngôn ngữ khác (i18n).</li>
-            <li><strong>Thông báo tự động:</strong> Gửi email nhắc nhở trả sách quá hạn.</li>
-            <li><strong>Chức năng đăng ký tài khoản:</strong> Cho phép người dùng tự đăng ký.</li>
-            <li><strong>Tìm kiếm nâng cao:</strong> Full-text search, lọc theo nhiều tiêu chí kết hợp.</li>
-            <li><strong>Phân trang nâng cao:</strong> Phân trang phía server (offset/limit) cho dữ liệu lớn.</li>
+            <li><strong>Thông báo tự động:</strong> Gửi email/SMS nhắc nhở trả sách khi gần hạn.</li>
+            <li><strong>Mở rộng test coverage:</strong> Thêm test cho các luồng CRUD, tạo đơn, duyệt đơn, trả sách.</li>
         </ul>
 
-        <!-- ===================== CHƯƠNG 6 ===================== -->
-        <h2 id="ch6">CHƯƠNG 6: KẾT LUẬN</h2>
+        <div class="section-divider"></div>
+
+        <!-- ======================== CHƯƠNG 6 ======================== -->
+        <h1 id="ch6">CHƯƠNG 6: KẾT LUẬN</h1>
 
         <h3>6.1. Tóm tắt kết quả đạt được</h3>
         <ul>
             <li><strong>Hoàn thành các yêu cầu của môn học Công nghệ Java (IE303).</strong></li>
             <li>Xây dựng thành công ứng dụng Desktop quản lý thư viện với các chức năng:
                 <ul>
-                    <li>✅ Đăng nhập và phân quyền Admin/Customer (đã test PASS).</li>
-                    <li>✅ Quản lý sách (CRUD, tìm kiếm, lọc thể loại).</li>
-                    <li>✅ Quản lý khách hàng (CRUD, tìm kiếm).</li>
-                    <li>✅ Quản lý đơn thuê (tạo, duyệt, từ chối, trả).</li>
-                    <li>✅ Dashboard thống kê tổng quan.</li>
-                    <li>✅ Báo cáo doanh thu (biểu đồ JFreeChart).</li>
-                    <li>✅ Xuất Excel (4 loại: sách, KH, đơn thuê, doanh thu).</li>
-                    <li>✅ Quản lý hồ sơ cá nhân và đổi mật khẩu.</li>
+                    <li>Đăng nhập và phân quyền Admin/Customer.</li>
+                    <li>Quản lý sách (CRUD, tìm kiếm, lọc — 33 đầu sách mẫu).</li>
+                    <li>Quản lý khách hàng (CRUD, tìm kiếm — 13 KH mẫu).</li>
+                    <li>Quản lý đơn thuê sách (tạo, duyệt, từ chối, trả — 8 đơn mẫu).</li>
+                    <li>Dashboard tổng quan và báo cáo thống kê đa chiều.</li>
+                    <li>Xuất báo cáo Excel (Apache POI).</li>
+
                 </ul>
             </li>
-            <li><strong>Ứng dụng hoạt động ổn định, giao diện hiện đại với FlatLaf.</strong></li>
-            <li><strong>Codebase có kiến trúc rõ ràng:</strong> 7 packages, 35 Java classes, 5 bảng DB.</li>
-            <li><strong>Dữ liệu mẫu phong phú:</strong> 33 đầu sách, 13 khách hàng, 8 đơn thuê.</li>
+            <li><strong>Kiểm thử tự động:</strong> 9 test case JUnit 5 đạt <strong>100% PASS</strong> cho các chức năng cốt lõi.</li>
+            <li><strong>Ứng dụng hoạt động ổn định,</strong> giao diện đẹp mắt với FlatLaf.</li>
         </ul>
 
-        <h3>6.2. Thống kê dự án</h3>
-        <table>
-            <tr><th>Tiêu chí</th><th>Giá trị</th></tr>
-            <tr><td>Tổng số package</td><td><strong>7</strong> (config, controller, dao, helpers, model, ui, utils)</td></tr>
-            <tr><td>Tổng số Java class</td><td><strong>35</strong></td></tr>
-            <tr><td>Model classes</td><td>7 (Book, Customer, RentRequest, RentalOrder, RentalOrderDetail, ReportStat, User)</td></tr>
-            <tr><td>DAO classes</td><td>6 (BookDAO, CustomerDAO, RentDAO, RentalOrderDAO, ReportDAO, UserDAO)</td></tr>
-            <tr><td>Controller classes</td><td>6 (Auth, Book, Customer, Rent, RentalOrder, Report)</td></tr>
-            <tr><td>UI classes</td><td>11 (Login, Main, Sidebar, Dashboard, Books, Customers, Rent, MyRentals, Orders, Reports, Profile)</td></tr>
-            <tr><td>Utility classes</td><td>4 (DatabaseConnection, ChartGenerator, ExcelExporter, IconUtils)</td></tr>
-            <tr><td>DB Tables</td><td>5 (Users, Customers, Books, RentalOrders, RentalOrderDetails)</td></tr>
-            <tr><td>Dependencies (Maven)</td><td>7 (SQLite JDBC, FlatLaf, FlatLaf Extras, JFreeChart, JCommon, Apache POI, JUnit)</td></tr>
-        </table>
-
-        <h3>6.3. Bài học kinh nghiệm</h3>
+        <h3>6.2. Bài học kinh nghiệm</h3>
         <ul>
-            <li><strong>Nâng cao kỹ năng lập trình Java Swing:</strong> Làm quen với JFrame, JPanel, JTable, CardLayout, GridBagLayout, SwingWorker, các sự kiện UI.</li>
-            <li><strong>Thiết kế UI/UX giao diện Desktop:</strong> Áp dụng FlatLaf để có giao diện hiện đại, gradient panel, rounded corners, hover effects.</li>
-            <li><strong>Thao tác CSDL SQLite:</strong> Tạo kết nối, CRUD, Transaction, WAL mode, auto-init database.</li>
-            <li><strong>Phân tích và thiết kế hệ thống:</strong> Hiểu rõ mô hình 3 lớp (Model-DAO-Controller-UI), phân quyền vai trò.</li>
-            <li><strong>Sử dụng thư viện bên thứ ba:</strong> Tích hợp JFreeChart (biểu đồ), Apache POI (Excel), FlatLaf (UI).</li>
-            <li><strong>Kỹ năng quản lý dự án:</strong> Tổ chức mã nguồn theo package, sử dụng Maven, constants pattern.</li>
+            <li><strong>Nâng cao kỹ năng lập trình Java Swing:</strong> Làm quen với các component (JTable, JComboBox, JPanel, JLabel), layout manager, sự kiện (ActionListener).</li>
+            <li><strong>Thiết kế UI/UX giao diện Desktop:</strong> Áp dụng FlatLaf để có giao diện hiện đại, icon SVG, phân trang mượt mà.</li>
+            <li><strong>Thao tác CSDL SQLite:</strong> Tạo kết nối JDBC, thực hiện các câu lệnh CRUD với PreparedStatement, xử lý transaction.</li>
+            <li><strong>Phân tích và thiết kế hệ thống:</strong> Hiểu rõ mô hình 3 lớp (Presentation → Controller → DAO), thiết kế ERD, phân quyền.</li>
+            <li><strong>Kiểm thử phần mềm:</strong> Vận dụng JUnit 5 và Page Object Model để viết test case tự động cho ứng dụng Swing.</li>
+            <li><strong>Quản lý dự án với Maven:</strong> Quản lý dependencies, build process, packaging (jar-with-dependencies).</li>
         </ul>
 
+        <!-- Footer -->
         <div class="footer">
-            <p>─── Hết ───</p>
-            <p><strong>Báo cáo đồ án Công nghệ Java (IE303)</strong></p>
+            <p>— Hết —</p>
+            <p>Báo cáo Đồ án Công nghệ Java (IE303)</p>
             <p>Hệ thống Quản lý Thư viện Libris</p>
             <p><span id="footer-date"></span></p>
         </div>
     </div>
 
     <script>
-        document.getElementById('report-date').textContent = new Date().toLocaleDateString('vi-VN');
-        document.getElementById('footer-date').textContent = new Date().toLocaleDateString('vi-VN');
+        const dateStr = new Date().toLocaleDateString('vi-VN', { year: 'numeric', month: '2-digit', day: '2-digit' });
+        document.getElementById('report-date').textContent = dateStr;
+        document.getElementById('footer-date').textContent = dateStr;
     </script>
 </body>
 </html>
