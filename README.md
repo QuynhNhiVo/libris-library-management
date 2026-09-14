@@ -188,6 +188,7 @@ libris-library-management/
 ├── docs/                      # Tài liệu tài nguyên dự án (SRS, Reports, Testcases)
 ├── Libris.db                  # File Cơ sở dữ liệu SQLite chính
 ├── pom.xml                    # Cấu hình Maven dependencies & build plugins
+├── pom.test.xml               # Cấu hình Maven dependencies & build plugins thực hiện các kiểm thử
 └── run.bat                    # Script khởi chạy nhanh ứng dụng trên Windows
 ```
 
