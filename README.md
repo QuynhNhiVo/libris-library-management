@@ -3,7 +3,7 @@
 # 📚 LIBRIS - HỆ THỐNG QUẢN LÝ THƯ VIỆN THÔNG MINH
 ### Smart Library Management System (Desktop Application)
 
-**Đồ án môn học IE303 - Công nghệ Java | Trường Đại học Công nghệ Thông tin (UIT - VNUHCM)**
+**Đồ án môn học IE303 - Công nghệ Java | Trường Đại học Công nghệ Thông tin (UIT)**
 
 [![Java](https://img.shields.io/badge/Java-25-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)](https://www.oracle.com/java/)
 [![GUI](https://img.shields.io/badge/GUI-Java%20Swing-007396?style=for-the-badge&logo=java&logoColor=white)](https://docs.oracle.com/javase/tutorial/uiswing/)
@@ -189,10 +189,15 @@ Nếu sử dụng hệ điều hành Windows, bạn chỉ cần nhấp đôi chu
    ```
 
 ### 🧪 Chạy Kiểm thử Tự động (Unit & Integration Tests)
-Để thực thi toàn bộ bộ test tự động (Database Integration Test & Controllers Unit Test):
-```bash
-mvn test
-```
+Ứng dụng hỗ trợ 2 file cấu hình Maven cho kiểm thử:
+- Chạy kiểm thử tiêu chuẩn với `pom.xml`:
+  ```bash
+  mvn test
+  ```
+- Chạy kiểm thử mở rộng (bao gồm cả Mockito & AssertJ Swing) với `pom.test.xml`:
+  ```bash
+  mvn test -f pom.test.xml
+  ```
 
 ---
 
@@ -228,7 +233,8 @@ libris-library-management/
 │   └── test/                   # Kịch bản kiểm thử tự động (DatabaseIntegrationTest,...)
 ├── docs/                       # Tài liệu dự án (SRS, Reports, Test Cases HTML)
 ├── Libris.db                   # File Cơ sở dữ liệu SQLite chính (Seed Database)
-├── pom.xml                     # Cấu hình Maven dependencies & build plugins
+├── pom.xml                     # Cấu hình Maven dependencies & build plugins chính
+├── pom.test.xml                # Cấu hình Maven mở rộng cho kiểm thử (Mockito, AssertJ Swing, JUnit 5)
 ├── run.bat                     # Script khởi chạy nhanh ứng dụng trên Windows
 └── README.md                   # Tài liệu hướng dẫn dự án
 ```
@@ -238,8 +244,8 @@ libris-library-management/
 ## 9. Đóng góp & Bản quyền (License & Credits)
 
 * **Dự án**: Đồ án môn học **IE303 - Công nghệ Java**
-* **Trường**: Đại học Công nghệ Thông tin - ĐHQG-HCM (UIT - VNUHCM)
-* **Bản quyền**: Dự án thuộc sở hữu của Nhóm phát triển sinh viên và Giảng viên hướng dẫn môn học IE303.
+* **Trường**: Đại học Công nghệ Thông tin - ĐHQG-HCM (UIT)
+* **Bản quyền**: Dự án thuộc sở hữu của Nhóm phát triển sinh viên môn học IE303.
 * **Giấy phép**: Đồ án được phát hành theo giấy phép mở [MIT License](LICENSE).
 
 <div align="center">
