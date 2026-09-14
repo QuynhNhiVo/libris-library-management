@@ -1,16 +1,13 @@
-# Compiled class file
+# Compiled class files
 *.class
 
-# Log file
+# Log files & dumps
 *.log
+hs_err_pid*
+replay_pid*
 
-# BlueJ files
-*.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
+# Package & Build artifacts
+target/
 *.jar
 *.war
 *.nar
@@ -18,17 +15,29 @@
 *.zip
 *.tar.gz
 *.rar
-target/
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-replay_pid*
+# IDE & Editor files
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+.factorypath
+
+# AI Agent / System Scratch files
+.gemini/
+.agents/
+
+# OS specific files
+.DS_Store
+Thumbs.db
 
 # SQLite Database Files
 *.db
 *.db-wal
 *.db-shm
+Libris.test.db
 
-# Exception: Keep main database for GitHub
+# Exception: Keep seed/initial database for GitHub repository
 !Libris.db
-
