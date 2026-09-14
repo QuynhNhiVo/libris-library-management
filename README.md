@@ -1,207 +1,248 @@
 <div align="center">
 
 # 📚 LIBRIS - HỆ THỐNG QUẢN LÝ THƯ VIỆN THÔNG MINH
-### Smart Library Management System
+### Smart Library Management System (Desktop Application)
 
-**Đồ án môn học IE303 - Công nghệ Java**
+**Đồ án môn học IE303 - Công nghệ Java | Trường Đại học Công nghệ Thông tin (UIT - VNUHCM)**
 
 [![Java](https://img.shields.io/badge/Java-25-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)](https://www.oracle.com/java/)
 [![GUI](https://img.shields.io/badge/GUI-Java%20Swing-007396?style=for-the-badge&logo=java&logoColor=white)](https://docs.oracle.com/javase/tutorial/uiswing/)
 [![UI Theme](https://img.shields.io/badge/Look%20%26%20Feel-FlatLaf%203.7.1-4A154B?style=for-the-badge)](https://www.formdev.com/flatlaf/)
 [![Database](https://img.shields.io/badge/Database-SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white)](https://www.sqlite.org/)
 [![Build Tool](https://img.shields.io/badge/Build-Maven-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white)](https://maven.apache.org/)
+[![Excel](https://img.shields.io/badge/Export-Apache%20POI%205.5.1-217346?style=for-the-badge&logo=microsoftexcel&logoColor=white)](https://poi.apache.org/)
 [![Chart](https://img.shields.io/badge/Charts-JFreeChart-FF6F00?style=for-the-badge)](https://www.jfree.org/jfreechart/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](LICENSE)
 
-*Một giải pháp phần mềm Desktop hiện đại, tối ưu hóa toàn bộ quy trình quản lý sách, độc giả, mượn/trả và thống kê báo cáo cho thư viện số.*
+*Giải pháp phần mềm Desktop quản lý thư viện hiện đại, tối ưu hóa quy trình quản lý sách, độc giả, giao dịch mượn/trả, tự động hóa tính phạt trễ hạn và trực quan hóa báo cáo tài chính.*
 
 ---
 
 </div>
 
 ## 📑 Mục lục (Table of Contents)
-- [1. Giới thiệu tổng quan](#1-giới-thiệu-tổng-quan)
-- [2. Vấn đề & Giải pháp](#2-vấn-đề--giải-pháp)
-- [3. Kiến trúc hệ thống (Architecture)](#3-kiến-trúc-hệ-thống-architecture)
-- [4. Tính năng cốt lõi (Key Features)](#4-tính-năng-cốt-lõi-key-features)
-- [5. Công nghệ sử dụng (Tech Stack)](#5-công-nghệ-sử-dụng-tech-stack)
-- [6. Hướng dẫn cài đặt & Chạy ứng dụng (Getting Started)](#6-hướng-dẫn-cài-đặt--chạy-ứng-dụng-getting-started)
-- [7. Demo & Hình ảnh giao diện](#7-demo--hình-ảnh-giao-diện)
-- [8. Cấu trúc thư mục dự án](#8-cấu-trúc-thư-mục-dự-án)
-- [9. Đóng góp & Bản quyền (License)](#9-đóng-góp--bản-quyền-license)
+- [1. Giới thiệu tổng quan (Overview)](#1-giới-thiệu-tổng-quan-overview)
+- [2. Vấn đề giải quyết & Giá trị mang lại](#2-vấn-đề-giải-quyết--giá-trị-mang-lại)
+- [3. Kiến trúc Hệ thống (System Architecture)](#3-kiến-trúc-hệ-thống-system-architecture)
+- [4. Các Tính năng Cốt lõi (Key Features)](#4-các-tính-năng-cốt-lõi-key-features)
+- [5. Công nghệ & Thư viện (Tech Stack)](#5-công-nghệ--thư-viện-tech-stack)
+- [6. Hướng dẫn Cài đặt (Getting Started)](#6-hướng-dẫn-cài-đặt-getting-started)
+- [7. Hướng dẫn Chi tiết các Cách Chạy Ứng dụng](#7-hướng-dẫn-chi-tiết-các-cách-chạy-ứng-dụng)
+- [8. Cấu trúc Thư mục Dự án (Directory Structure)](#8-cấu-trúc-thư-mục-dự-án-directory-structure)
+- [9. Đóng góp & Bản quyền (License & Credits)](#9-đóng-góp--bản-quyền-license--credits)
 
 ---
 
-## 1. Giới thiệu tổng quan
-**Libris** là hệ thống phần mềm quản lý thư viện trên nền tảng Desktop được phát triển trong khuôn khổ môn học **IE303 - Công nghệ Java**. 
+## 1. Giới thiệu tổng quan (Overview)
 
-Ứng dụng kết hợp sức mạnh xử lý của **Java 25**, giao diện thiết kế hiện đại với **FlatLaf**, cùng cơ sở dữ liệu **SQLite** gọn nhẹ nhưng mạnh mẽ. Libris giúp các trường học, trung tâm thông tin hoặc thư viện số hóa toàn bộ quy trình quản lý thủ công một cách chính xác, nhanh chóng và trực quan.
+**Libris Library Management System** là ứng dụng quản lý thư viện máy trạm (Desktop Application) được phát triển trong khuôn khổ môn học **IE303 - Công nghệ Java**. 
+
+Ứng dụng được xây dựng trên nền tảng **Java 25**, tích hợp bộ giao diện hiện đại **FlatLaf 3.7.1 Look and Feel**, hệ quản trị cơ sở dữ liệu nhúng **SQLite 3**, công cụ vẽ biểu đồ **JFreeChart** và thư viện xuất báo cáo **Apache POI**. Libris mang đến một giải pháp số hóa toàn diện, thay thế phương thức quản lý thư viện thủ công truyền thống bằng quy trình tự động, chính xác và trực quan.
 
 ---
 
-## 2. Vấn đề & Giải pháp
+## 2. Vấn đề giải quyết & Giá trị mang lại
 
-| 🛑 Thách thức trong thư viện truyền thống | 💡 Giải pháp số hóa của Libris |
+| 🛑 Thách thức Thư viện Truyền thống | 💡 Giải pháp Số hóa của Libris |
 | :--- | :--- |
-| **Tìm kiếm thủ công**: Tốn thời gian tra cứu vị trí và tình trạng sách trong kho. | **Tìm kiếm tức thì**: Tra cứu sách theo từ khóa, thể loại, tác giả với bộ lọc đa tiêu chí. |
-| **Ghi chép mượn/trả phức tạp**: Dễ sai sót ngày hẹn trả, tính sai phí phạt trễ hạn. | **Mượn/Trả tự động**: Tự động tính hạn trả, tính tiền phạt trễ hạn và quản lý trạng thái phiếu mượn. |
-| **Báo cáo dữ liệu thụ động**: Khó thống kê danh mục sách mượn nhiều nhất hay doanh thu phạt. | **Dashboard trực quan**: Tích hợp **JFreeChart** vẽ biểu đồ báo cáo và xuất file **Excel (.xlsx)** nhanh chóng. |
-| **Giao diện thô cứng**: Ứng dụng Desktop Java truyền thống thường có giao diện lỗi thời. | **Thiết kế FlatLaf sang trọng**: Chuẩn UX/UI hiện đại với trải nghiệm mượt mà, chuyên nghiệp. |
+| **Tra cứu thủ công tốn thời gian**: Tìm kiếm sách qua sổ sách hoặc thẻ giấy mất nhiều chi phí cơ hội. | **Tìm kiếm đa tiêu chí tức thì**: Tra cứu danh mục sách theo Tiêu đề, Tác giả, Thể loại, Nhà xuất bản với tốc độ dưới **50ms**. |
+| **Sai sót quản lý mượn/trả**: Nhầm lẫn ngày hẹn trả, tính sai tiền phạt quá hạn thủ công. | **Tự động hóa giao dịch DB**: Cập nhật tồn kho nguyên tố (Atomic Transaction), tự động tính tiền phạt trễ hạn **$0.5/ngày**. |
+| **Thiếu báo cáo trực quan**: Ban quản lý không nắm bắt được xu hướng đọc và doanh thu phạt. | **Dashboard trực quan hóa**: 6 thẻ KPI chỉ số, 3 biểu đồ **JFreeChart** phân tích chi tiết và xuất báo cáo **Excel (.xlsx)**. |
+| **Giao diện Desktop cũ kỹ**: Ứng dụng Swing mặc định có thiết kế thô cứng, thiếu trải nghiệm người dùng. | **Giao diện FlatLaf phẳng cao cấp**: Chuẩn UX/UI sang trọng, giao diện responsive mượt mà với hiệu ứng hover và icon sắc nét. |
 
 ---
 
-## 3. Kiến trúc hệ thống (Architecture)
+## 3. Kiến trúc Hệ thống (System Architecture)
 
-Dự án được xây dựng tuân thủ theo mô hình thiết kế chuẩn **MVC (Model - View - Controller)** kết hợp với **DAO (Data Access Object) Pattern**, đảm bảo tính bóc tách trách nhiệm (Separation of Concerns), dễ bảo trì và mở rộng code.
+Dự án tuân thủ nghiêm ngặt mô hình kiến trúc **3 tầng (Layered Architecture)** kết hợp với hai mẫu thiết kế **MVC (Model - View - Controller)** và **DAO (Data Access Object)**, giúp tách biệt hoàn toàn giữa giao diện, logic xử lý nghiệp vụ và truy xuất dữ liệu:
 
 ```
-┌──────────────────────────────────────────────────────────┐
-│                      VIEW (GUI Layer)                    │
-│   (Java Swing + FlatLaf + Custom UI Components)          │
-└────────────┬──────────────────────────────▲──────────────┘
-             │ User Actions                 │ UI Update
-             ▼                              │
-┌───────────────────────────────────────────┴──────────────┐
-│                    CONTROLLER Layer                      │
-│   (Business Logic Validation, Event Listeners)           │
-└────────────┬──────────────────────────────▲──────────────┘
-             │ Operations                   │ Data Objects
-             ▼                              │
-┌───────────────────────────────────────────┴──────────────┐
-│                      DAO Layer                           │
-│   (Data Access Objects: BookDAO, CustomerDAO, etc.)      │
-└────────────┬──────────────────────────────▲──────────────┘
-             │ SQL Queries / JDBC           │ ResultSet
-             ▼                              │
-┌───────────────────────────────────────────┴──────────────┐
-│                  DATABASE (SQLite Engine)                │
-│   (Libris.db - Write-Ahead Logging WAL Enabled)          │
-└──────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────┐
+│                          PRESENTATION LAYER (View)                      │
+│        Java Swing + FlatLaf Theme + CardLayout Single-Window Frame      │
+│   (LoginView, DashboardView, BookView, CustomerView, RentalOrderView)   │
+└────────────────────────────────────┬────────────────────────────────────┘
+                                     │ User Action Events / Data Binding
+                                     ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│                         BUSINESS LOGIC LAYER (Controller)               │
+│      Business Rules Validation, Event Handling & Chart Rendering        │
+│ (UserController, BookController, CustomerController, RentalController)  │
+└────────────────────────────────────┬────────────────────────────────────┘
+                                     │ DTO Objects / Logic Requests
+                                     ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│                          PERSISTENCE LAYER (DAO)                        │
+│             Data Access Objects & Singleton Connection Pool             │
+│    (UserDAO, BookDAO, CustomerDAO, RentalOrderDAO, DatabaseConnection)  │
+└────────────────────────────────────┬────────────────────────────────────┘
+                                     │ SQL Queries (JDBC Driver)
+                                     ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│                        DATA STORAGE (SQLite Engine)                     │
+│               Embedded Relational DB (Libris.db / WAL Mode)             │
+│             [Users] ◄─── [RentalOrders] ───► [Customers]                │
+│                                  │                                      │
+│                                  ▼                                      │
+│                               [Books]                                   │
+└─────────────────────────────────────────────────────────────────────────┘
 ```
 
-> 📌 **Architecture Diagram Placeholder**:
-> ```
-> [Client UI] ---> [Controllers] ---> [DAO Services] ---> [SQLite JDBC] ---> [Libris.db]
-> ```
+---
+
+## 4. Các Tính năng Cốt lõi (Key Features)
+
+* 🔐 **Đăng nhập & Phân quyền Đa vai trò (RBAC Authentication)**:
+  * **Role Admin (Thủ thư)**: Toàn quyền quản lý sách, độc giả, duyệt/xử lý đơn mượn trả và xem báo cáo tài chính.
+  * **Role Customer (Độc giả)**: Đăng nhập cá nhân, tra cứu sách online, gửi yêu cầu mượn sách trực tuyến và theo dõi lịch sử mượn trả.
+
+* 📚 **Quản lý Kho Sách (Book Catalog Management)**:
+  * Quản lý CRUD (Thêm, Sửa, Xóa, Cập nhật số lượng & giá mượn).
+  * Tìm kiếm linh hoạt tức thì theo Mã sách, Tiêu đề, Tác giả, Thể loại, Nhà xuất bản.
+  * Ràng buộc toàn vẹn khóa ngoại (Prevent delete if book has active rental orders).
+
+* 👥 **Quản lý Độc giả (Customer Management)**:
+  * Quản lý thông tin độc giả, số điện thoại (Unique constraint), email, địa chỉ và ngày đăng ký.
+  * Theo dõi lịch sử mượn trả và công nợ phạt của từng độc giả.
+
+* 🔄 **Quản lý Mượn / Trả Sách & Xử lý Giao dịch (Rental Transactions)**:
+  * Tạo đơn mượn sách mới với cơ chế **Transaction Rollback** nguyên tố (Tự động trừ 1 số lượng sách trong kho).
+  * Xử lý trả sách, tự động tính toán số ngày quá hạn và tiền phạt quá hạn (**$0.5 / ngày**).
+  * Duyệt hoặc Từ chối các đơn mượn đăng ký trực tuyến từ phía Độc giả.
+
+* 💻 **Cổng Tra cứu Độc giả (Customer Self-Service Portal)**:
+  * Độc giả tự tra cứu danh mục sách khả dụng.
+  * Đăng ký mượn sách trực tuyến (Tạo phiếu trạng thái `Pending` chờ Thủ thư phê duyệt).
+
+* 📊 **Dashboard & Báo cáo Thống kê Trực quan (Analytics & Reports)**:
+  * 6 Thẻ KPI chỉ số tổng quan: Tổng số sách, Sách đang mượn, Tổng độc giả, Đơn chờ duyệt, Doanh thu phạt,...
+  * 3 Biểu đồ đồ họa **JFreeChart**: Biểu đồ doanh thu tháng, Thống kê thể loại sách, Top 5 sách mượn nhiều nhất.
+  * Xuất toàn bộ báo cáo và danh mục ra file **Excel (.xlsx)** thông qua **Apache POI**.
 
 ---
 
-## 4. Tính năng cốt lõi (Key Features)
+## 5. Công nghệ & Thư viện (Tech Stack)
 
-* 🔐 **Đăng nhập & Phân quyền tài khoản (Authentication & Authorization)**:
-  * Phân quyền người dùng rõ ràng giữa **Thủ thư (Admin)** và **Độc giả (Customer)**.
-  * Tính năng đổi mật khẩu, cập nhật hồ sơ cá nhân an toàn.
-* 📚 **Quản lý Kho Sách (Books Management)**:
-  * Thêm, sửa, xóa, cập nhật số lượng và danh mục sách.
-  * Tìm kiếm linh hoạt theo mã sách, tên sách, tác giả, nhà xuất bản, thể loại.
-* 👥 **Quản lý Độc giả (Customers Management)**:
-  * Quản lý danh sách thẻ thư viện, thông tin liên lạc, lịch sử mượn sách của từng độc giả.
-  * Khóa/Mở khóa tài khoản khi vi phạm quy định thư viện.
-* 🔄 **Quản lý Mượn / Trả Sách (Rentals & Orders)**:
-  * Lập phiếu mượn sách với thông tin ngày mượn và hạn trả.
-  * Xử lý trả sách, kiểm tra trễ hạn và tự động tính phí phạt trễ hạn.
-* 📊 **Báo cáo & Thống kê trực quan (Reports & Dashboard)**:
-  * Tổng quan chỉ số trên Dashboard: Số lượng sách, độc giả active, phiếu mượn đang lưu hành.
-  * Biểu đồ thống kê **JFreeChart** trực quan theo khoảng thời gian.
-* 📑 **Xuất/Nhập dữ liệu Excel (Export & Import)**:
-  * Xuất danh sách sách, danh sách độc giả và báo cáo mượn trả ra định dạng **Excel (.xlsx)** bằng Apache POI.
+| Thành phần | Công nghệ / Thư viện | Phiên bản | Mô tả chi tiết |
+| :--- | :--- | :---: | :--- |
+| **Language Runtime** | **OpenJDK / Java** | `25` | Môi trường thực thi Java mới nhất. |
+| **GUI Framework** | **Java Swing** | Standard | Khung phát triển giao diện desktop ứng dụng. |
+| **UI Theme** | **FlatLaf & Extras** | `3.7.1` | Bộ giao diện phẳng sang trọng, hỗ trợ SVG vector icon. |
+| **Database Engine** | **SQLite JDBC** | `3.53.2.0` | Cơ sở dữ liệu quan hệ nhúng cục bộ siêu nhẹ. |
+| **Data Export** | **Apache POI (ooxml)** | `5.5.1` | Thư viện xử lý và xuất file Excel (.xlsx). |
+| **Data Visualization** | **JFreeChart & JCommon** | `1.5.6` | Thư viện tạo biểu đồ đồ họa phân tích dữ liệu. |
+| **Build & Dependency** | **Apache Maven** | `3.8+` | Trình quản lý dependency và đóng gói tự động. |
+| **Automated Testing** | **JUnit 5 & AssertJ** | `5.10.2` | Khung kiểm thử tự động Unit Test & Integration Test. |
 
 ---
 
-## 5. Công nghệ sử dụng (Tech Stack)
+## 6. Hướng dẫn Cài đặt (Getting Started)
 
-* **Core Runtime**: Java 25 (OpenJDK 25)
-* **GUI Engine**: Java Swing (javax.swing)
-* **UI Theme & Look and Feel**: FlatLaf 3.7.1
-* **Database**: SQLite 3 (Driver `org.xerial:sqlite-jdbc:3.53.2.0`)
-* **Charting**: JFreeChart 1.5.6 & JCommon
-* **File Export**: Apache POI 5.5.1 (OOXML Excel Processor)
-* **Build System**: Apache Maven 3.x
-* **Testing Framework**: JUnit 5 Jupiter & AssertJ Swing
+### Yêu cầu Hệ thống (Prerequisites)
+* **Java Development Kit (JDK)**: Phiên bản **Java 17** trở lên (Khuyên dùng **JDK 25**).
+* **Apache Maven**: Phiên bản **3.8.0** trở lên.
+* **Hệ điều hành**: Windows 10/11, macOS, hoặc Linux.
+
+### Các bước chuẩn bị dự án
+
+1. **Clone repository về máy cục bộ**:
+   ```bash
+   git clone https://github.com/your-username/libris-library-management.git
+   cd libris-library-management
+   ```
+
+2. **Kiểm tra file Cơ sở Dữ liệu**:
+   * File cơ sở dữ liệu mẫu `Libris.db` đã được đính kèm sẵn ở thư mục gốc của repository (chứa dữ liệu mẫu người dùng, sách và đơn mượn).
 
 ---
 
-## 6. Hướng dẫn cài đặt & Chạy ứng dụng (Getting Started)
+## 7. Hướng dẫn Chi tiết các Cách Chạy Ứng dụng
 
-### Yêu cầu hệ thống (Prerequisites)
-* **JDK**: Java Development Kit 25 trở lên.
-* **Build Tool**: Apache Maven 3.8+ (đã được cài đặt và cấu hình `PATH`).
-* **OS**: Windows / macOS / Linux.
+Bạn có thể chạy ứng dụng Libris bằng một trong các cách dưới đây:
 
-### Các bước khởi chạy ứng dụng
-
-#### Bước 1: Clone dự án về máy cục bộ
+### 🔹 Cách 1: Chạy bằng lệnh Maven CLI (Khuyên dùng)
+Biên dịch và chạy trực tiếp màn hình Đăng nhập `LoginView` thông qua plugin `exec-maven-plugin`:
 ```bash
-git clone https://github.com/your-username/libris-library-management.git
-cd libris-library-management
+mvn clean compile exec:java -Dexec.mainClass="com.libris.view.LoginView"
 ```
 
-#### Bước 2: Biên dịch dự án bằng Maven
-```bash
-mvn clean compile
-```
+### 🔹 Cách 2: Chạy trực tiếp từ IDE (IntelliJ IDEA / Eclipse / VS Code)
+1. Mở dự án `libris-library-management` trong IDE của bạn dưới dạng **Maven Project**.
+2. Tìm đến file chứa hàm `main`:
+   `src/main/java/com/libris/view/LoginView.java`
+3. Nhấp chuột phải vào file `LoginView.java` và chọn **Run 'LoginView.main()'** (hoặc nhấn `Shift + F10` trong IntelliJ).
 
-#### Bước 3: Chạy ứng dụng
-
-##### 🔹 Cách 1: Sử dụng lệnh Maven (Khuyên dùng)
-```bash
-mvn compile exec:java -Dexec.mainClass=com.libris.view.LoginView
-```
-
-##### 🔹 Cách 2: Sử dụng file kịch bản Windows (`run.bat`)
-Chỉ cần nhấp đôi chuột vào file `run.bat` hoặc chạy lệnh trong Command Prompt / PowerShell:
+### 🔹 Cách 3: Chạy bằng Script kịch bản Windows (`run.bat`)
+Nếu sử dụng hệ điều hành Windows, bạn chỉ cần nhấp đôi chuột vào file `run.bat` ở thư mục gốc hoặc chạy lệnh sau trong PowerShell / Command Prompt:
 ```cmd
 .\run.bat
 ```
 
-##### 🔹 Cách 3: Đóng gói thành file `.jar` hoàn chỉnh
-```bash
-mvn clean package
-java -jar target/library-management-system-1.0-SNAPSHOT.jar
-```
+### 🔹 Cách 4: Đóng gói Fat JAR & Chạy độc lập
+1. Đóng gói ứng dụng thành file `.jar` chứa đầy đủ thư viện phụ thuộc:
+   ```bash
+   mvn clean package
+   ```
+2. Chạy file `.jar` đã đóng gói trong thư mục `target/`:
+   ```bash
+   java -jar target/library-management-system-1.0-SNAPSHOT.jar
+   ```
 
-#### 🧪 Chạy Kiểm thử (Unit Tests & Integration Tests)
+### 🧪 Chạy Kiểm thử Tự động (Unit & Integration Tests)
+Để thực thi toàn bộ bộ test tự động (Database Integration Test & Controllers Unit Test):
 ```bash
 mvn test
 ```
 
 ---
 
-## 7. Cấu trúc thư mục dự án
+## 🔑 Tài khoản Đăng nhập Mặc định (Seed Accounts)
+
+Sau khi khởi chạy ứng dụng, bạn có thể đăng nhập bằng các tài khoản mẫu có sẵn trong `Libris.db`:
+
+| Vai trò (Role) | Tên tài khoản (Username) | Mật khẩu (Password) | Quyền hạn chính |
+| :--- | :---: | :---: | :--- |
+| **Thủ thư (Admin)** | `admin` | `123` | Quyền Quản trị viên tối cao (Quản lý Sách, Độc giả, Duyệt đơn, Xem Báo cáo Dashboard). |
+| **Độc giả (Customer)** | `customer1` | `123` | Quyền Khách hàng (Tra cứu danh mục sách, Đăng ký mượn online, Xem lịch sử cá nhân). |
+
+---
+
+## 8. Cấu trúc Thư mục Dự án (Directory Structure)
 
 ```
 libris-library-management/
 ├── src/
 │   ├── main/
 │   │   ├── java/com/libris/
-│   │   │   ├── config/        # Cấu hình kết nối Database & Hệ thống
-│   │   │   ├── controller/    # Xử lý logic điều hướng & sự kiện
-│   │   │   ├── dao/           # Các lớp truy xuất dữ liệu SQLite (Data Access Object)
-│   │   │   ├── helpers/       # Helper xử lý Excel, mã hóa, định dạng
-│   │   │   ├── model/         # Các đối tượng dữ liệu Entity (Book, Customer, Rent,...)
-│   │   │   ├── utils/         # Các tiện ích hệ thống
-│   │   │   └── view/          # Giao diện người dùng Java Swing & FlatLaf Theme
+│   │   │   ├── config/         # Cấu hình hằng số & kết nối DB (Constants, ConstantsTest)
+│   │   │   ├── controller/     # Controllers xử lý sự kiện & nghiệp vụ (BookController,...)
+│   │   │   ├── dao/            # Data Access Objects kết nối SQLite (BookDAO, UserDAO,...)
+│   │   │   ├── helpers/        # Lớp tiện ích hỗ trợ (ExcelExporter, DateUtils,...)
+│   │   │   ├── model/          # Các đối tượng Entity (Book, Customer, RentalOrder, User)
+│   │   │   ├── utils/          # Tiện ích giao diện & biểu đồ (ChartGenerator, IconUtils)
+│   │   │   └── view/           # Màn hình giao diện Swing (LoginView, MainFrame,...)
 │   │   └── resources/
-│   │       ├── database.sql   # Script khởi tạo cấu trúc bảng SQLite
-│   │       └── icons/         # Tài nguyên hình ảnh, icon
-│   └── test/                  # Các kịch bản kiểm thử tự động (Unit & Integration Tests)
-├── docs/                      # Tài liệu tài nguyên dự án (SRS, Reports, Testcases)
-├── Libris.db                  # File Cơ sở dữ liệu SQLite chính
-├── pom.xml                    # Cấu hình Maven dependencies & build plugins
-├── pom.test.xml               # Cấu hình Maven dependencies & build plugins thực hiện các kiểm thử
-└── run.bat                    # Script khởi chạy nhanh ứng dụng trên Windows
+│   │       ├── database.sql    # Script khởi tạo cơ sở dữ liệu SQLite
+│   │       └── icons/          # Tài nguyên biểu tượng SVG / PNG
+│   └── test/                   # Kịch bản kiểm thử tự động (DatabaseIntegrationTest,...)
+├── docs/                       # Tài liệu dự án (SRS, Reports, Test Cases HTML)
+├── Libris.db                   # File Cơ sở dữ liệu SQLite chính (Seed Database)
+├── pom.xml                     # Cấu hình Maven dependencies & build plugins
+├── run.bat                     # Script khởi chạy nhanh ứng dụng trên Windows
+└── README.md                   # Tài liệu hướng dẫn dự án
 ```
 
 ---
 
-## 9. Đóng góp & Bản quyền (License)
+## 9. Đóng góp & Bản quyền (License & Credits)
 
-* **Tên đồ án**: Đồ án môn học IE303 - Công nghệ Java
-* **Bản quyền**: Dự án thuộc sở hữu của Nhóm phát triển sinh viên và giảng viên hướng dẫn môn học IE303.
-* **Giấy phép**: Phát hành theo giấy phép [MIT License](LICENSE).
+* **Dự án**: Đồ án môn học **IE303 - Công nghệ Java**
+* **Trường**: Đại học Công nghệ Thông tin - ĐHQG-HCM (UIT - VNUHCM)
+* **Bản quyền**: Dự án thuộc sở hữu của Nhóm phát triển sinh viên và Giảng viên hướng dẫn môn học IE303.
+* **Giấy phép**: Đồ án được phát hành theo giấy phép mở [MIT License](LICENSE).
+
+<div align="center">
 
 ---
 
-<div align="center">
-  <sub>Báo lỗi hoặc đóng góp ý kiến? Vui lòng tạo <a href="https://github.com/your-username/libris-library-management/issues">Issue</a> hoặc gửi <a href="https://github.com/your-username/libris-library-management/pulls">Pull Request</a>.</sub>
 </div>
