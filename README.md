@@ -204,6 +204,7 @@ Sau khi khởi chạy ứng dụng, bạn có thể đăng nhập bằng các t�
 | :--- | :---: | :---: | :--- |
 | **Thủ thư (Admin)** | `admin` | `123` | Quyền Quản trị viên tối cao (Quản lý Sách, Độc giả, Duyệt đơn, Xem Báo cáo Dashboard). |
 | **Độc giả (Customer)** | `customer1` | `123` | Quyền Khách hàng (Tra cứu danh mục sách, Đăng ký mượn online, Xem lịch sử cá nhân). |
+| **Độc giả (Customer)** | `customer2` | `123` | Quyền Khách hàng (Tra cứu danh mục sách, Đăng ký mượn online, Xem lịch sử cá nhân). |
 
 ---
 
