@@ -3,7 +3,7 @@
 # 📚 LIBRIS - HỆ THỐNG QUẢN LÝ THƯ VIỆN THÔNG MINH
 ### Smart Library Management System (Desktop Application)
 
-**Đồ án môn học IE303 - Công nghệ Java | Trường Đại học Công nghệ Thông tin (UIT)**
+**Đồ án môn học IE303 - Công nghệ Java | Trường Đại học Công nghệ Thông tin (UIT - VNUHCM)**
 
 [![Java](https://img.shields.io/badge/Java-25-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)](https://www.oracle.com/java/)
 [![GUI](https://img.shields.io/badge/GUI-Java%20Swing-007396?style=for-the-badge&logo=java&logoColor=white)](https://docs.oracle.com/javase/tutorial/uiswing/)
@@ -28,8 +28,9 @@
 - [5. Công nghệ & Thư viện (Tech Stack)](#5-công-nghệ--thư-viện-tech-stack)
 - [6. Hướng dẫn Cài đặt (Getting Started)](#6-hướng-dẫn-cài-đặt-getting-started)
 - [7. Hướng dẫn Chi tiết các Cách Chạy Ứng dụng](#7-hướng-dẫn-chi-tiết-các-cách-chạy-ứng-dụng)
-- [8. Cấu trúc Thư mục Dự án (Directory Structure)](#8-cấu-trúc-thư-mục-dự-án-directory-structure)
-- [9. Đóng góp & Bản quyền (License & Credits)](#9-đóng-góp--bản-quyền-license--credits)
+- [8. Tài liệu Dự án & Báo cáo Trực tuyến (Online Documentation)](#8-tài-liệu-dự-án--báo-cáo-trực-tuyến-online-documentation)
+- [9. Cấu trúc Thư mục Dự án (Directory Structure)](#9-cấu-trúc-thư-mục-dự-án-directory-structure)
+- [10. Đóng góp & Bản quyền (License & Credits)](#10-đóng-góp--bản-quyền-license--credits)
 
 ---
 
@@ -213,7 +214,22 @@ Sau khi khởi chạy ứng dụng, bạn có thể đăng nhập bằng các t�
 
 ---
 
-## 8. Cấu trúc Thư mục Dự án (Directory Structure)
+## 8. Tài liệu Dự án & Báo cáo Trực tuyến (Online Documentation)
+
+Toàn bộ tài liệu phân tích thiết kế, đặc tả yêu cầu và báo cáo kiểm thử của dự án đã được xuất bản trực tuyến tại các liên kết dưới đây:
+
+* 📊 **Báo cáo Tổng kết Đồ án (Project Summary Report)**:  
+  [https://quynhnhivo.github.io/libris-library-management/report.html](https://quynhnhivo.github.io/libris-library-management/report.html)
+
+* 📜 **Đặc tả Yêu cầu Phần mềm (Software Requirements Specification - SRS)**:  
+  [https://quynhnhivo.github.io/libris-library-management/srs.html](https://quynhnhivo.github.io/libris-library-management/srs.html)
+
+* 🧪 **Danh sách & Kết quả Kiểm thử Chi tiết (Full Test Cases & QA Matrix)**:  
+  [https://quynhnhivo.github.io/libris-library-management/test-cases.html](https://quynhnhivo.github.io/libris-library-management/test-cases.html)
+
+---
+
+## 9. Cấu trúc Thư mục Dự án (Directory Structure)
 
 ```
 libris-library-management/
@@ -231,7 +247,10 @@ libris-library-management/
 │   │       ├── database.sql    # Script khởi tạo cơ sở dữ liệu SQLite
 │   │       └── icons/          # Tài nguyên biểu tượng SVG / PNG
 │   └── test/                   # Kịch bản kiểm thử tự động (DatabaseIntegrationTest,...)
-├── docs/                       # Tài liệu dự án (SRS, Reports, Test Cases HTML)
+├── docs/                       # Thư mục chứa tài liệu báo cáo HTML & đặc tả dự án
+│   ├── report.html             # Báo cáo tổng kết đồ án (Project Summary Report)
+│   ├── srs.html                # Tài liệu Đặc tả Yêu cầu Phần mềm (SRS)
+│   └── test-cases.html         # Báo cáo kết quả 35 Test Cases chi tiết
 ├── Libris.db                   # File Cơ sở dữ liệu SQLite chính (Seed Database)
 ├── pom.xml                     # Cấu hình Maven dependencies & build plugins chính
 ├── pom.test.xml                # Cấu hình Maven mở rộng cho kiểm thử (Mockito, AssertJ Swing, JUnit 5)
@@ -241,11 +260,11 @@ libris-library-management/
 
 ---
 
-## 9. Đóng góp & Bản quyền (License & Credits)
+## 10. Đóng góp & Bản quyền (License & Credits)
 
 * **Dự án**: Đồ án môn học **IE303 - Công nghệ Java**
-* **Trường**: Đại học Công nghệ Thông tin - ĐHQG-HCM (UIT)
-* **Bản quyền**: Dự án thuộc sở hữu của Nhóm phát triển sinh viên môn học IE303.
+* **Trường**: Đại học Công nghệ Thông tin - ĐHQG-HCM (UIT - VNUHCM)
+* **Bản quyền**: Dự án thuộc sở hữu của Nhóm phát triển sinh viên và Giảng viên hướng dẫn môn học IE303.
 * **Giấy phép**: Đồ án được phát hành theo giấy phép mở [MIT License](LICENSE).
 
 <div align="center">
