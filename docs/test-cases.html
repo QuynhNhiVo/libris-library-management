@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh Sách Test Case Đầy Đủ - Libris Library Management System</title>
+    <style>
+        :root {
+            --primary-color: #0f172a;
+            --primary-light: #1e293b;
+            --accent-blue: #0284c7;
+            --accent-green: #10b981;
+            --accent-amber: #d97706;
+            --accent-red: #ef4444;
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #334155;
+            --text-dark: #0f172a;
+            --border-color: #e2e8f0;
+            --code-bg: #f1f5f9;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.5;
+            color: var(--text-main);
+            background-color: var(--bg-body);
+            padding: 0;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1320px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #ffffff;
+            padding: 35px 40px;
+            border-bottom: 4px solid var(--accent-blue);
+        }
+
+        .header h1 { font-size: 2.1rem; margin-bottom: 8px; font-weight: 700; }
+        .header p { color: #94a3b8; font-size: 1rem; }
+
+        .metadata-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #334155;
+            font-size: 0.88rem;
+        }
+        .metadata-item span { color: #94a3b8; display: block; font-size: 0.78rem; text-transform: uppercase; }
+        .metadata-item strong { color: #f8fafc; }
+
+        .main-content { padding: 35px 40px; }
+
+        /* Summary Dashboard */
+        .summary-card {
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 35px;
+        }
+
+        .summary-card h2 {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-box {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 15px;
+            text-align: center;
+        }
+        .stat-box .number { font-size: 1.8rem; font-weight: bold; color: var(--primary-color); }
+        .stat-box .label { font-size: 0.82rem; color: #64748b; text-transform: uppercase; }
+
+        /* Module Sections & Tables */
+        .module-section { margin-bottom: 45px; }
+
+        h2.module-title {
+            font-size: 1.35rem;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 8px;
+            margin-bottom: 18px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+            font-size: 0.88rem;
+            background: #ffffff;
+        }
+
+        th, td {
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th { background-color: var(--primary-color); color: #ffffff; font-weight: 600; }
+        tr:nth-child(even) { background-color: #f8fafc; }
+
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 0.78rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .badge-pos { background: #dcfce7; color: #15803d; }
+        .badge-neg { background: #fee2e2; color: #b91c1c; }
+        .badge-bound { background: #e0e7ff; color: #4338ca; }
+        .badge-sec { background: #fef3c7; color: #b45309; }
+
+        .badge-high { background: #fee2e2; color: #b91c1c; }
+        .badge-med { background: #fef3c7; color: #b45309; }
+        .badge-low { background: #f1f5f9; color: #475569; }
+
+        .badge-auto-yes { background: #dcfce7; color: #15803d; }
+        .badge-auto-no { background: #f1f5f9; color: #64748b; }
+
+        .badge-blocked { background: #fef3c7; color: #b45309; border: 1px solid #f59e0b; }
+        .badge-scope { background: #f1f5f9; color: #64748b; border: 1px solid #cbd5e1; }
+
+        .tc-id { font-family: monospace; font-weight: bold; color: var(--accent-blue); }
+        .req-tag { font-family: monospace; background: var(--code-bg); padding: 1px 4px; border-radius: 3px; font-size: 0.8rem; }
+
+        ol { padding-left: 18px; margin: 0; }
+        li { margin-bottom: 3px; }
+
+        @media print {
+            .container { box-shadow: none; width: 100%; max-width: 100%; }
+            .header { padding: 20px; }
+            .main-content { padding: 20px; }
+            .summary-card { page-break-after: always; }
+            .module-section { page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header class="header">
+        <h1>DANH SÁCH TEST CASE ĐẦY ĐỦ (TEST SUITE)</h1>
+        <p>Hệ thống Quản lý Thư viện & Mượn trả Sách — Libris (Editorial Archive System)</p>
+        <div class="metadata-grid">
+            <div class="metadata-item"><span>Dự án</span><strong>Libris Library Management</strong></div>
+            <div class="metadata-item"><span>Vai trò lập</span><strong>QA Lead</strong></div>
+            <div class="metadata-item"><span>Tài liệu tham chiếu</span><strong>SRS v1.0.0 (srs.html)</strong></div>
+            <div class="metadata-item"><span>Ngày hoàn thành</span><strong>14/09/2026</strong></div>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <!-- Coverage Dashboard Summary -->
+        <div class="summary-card">
+            <h2>1. BẢNG TỔNG HỢP PHẠM VI KIỂM THỬ (TEST COVERAGE SUMMARY)</h2>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="number">16</div>
+                    <div class="label">Yêu cầu chức năng (FR)</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number">5</div>
+                    <div class="label">Yêu cầu phi chức năng (NFR)</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number">32</div>
+                    <div class="label">Tổng số Test Cases</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number" style="color: var(--accent-green);">24</div>
+                    <div class="label">Automated: Yes</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number" style="color: var(--accent-amber);">3</div>
+                    <div class="label">BLOCKED (Chờ xác nhận)</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number" style="color: var(--text-muted);">1</div>
+                    <div class="label">OUT OF SCOPE</div>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Phân loại Module</th>
+                        <th>Số lượng Yêu cầu (FR/NFR)</th>
+                        <th>Tổng số TC</th>
+                        <th>Positive TCs</th>
+                        <th>Negative / Boundary TCs</th>
+                        <th>Automated TCs</th>
+                        <th>Ghi chú Trạng thái</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Xác thực & Phân quyền (Auth)</strong></td>
+                        <td>FR-AUTH-01, FR-AUTH-02</td>
+                        <td>4</td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td><span class="badge badge-blocked">1 BLOCKED</span> (Mã hóa pass)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Quản lý Kho Sách (Books)</strong></td>
+                        <td>FR-BOOK-01 đến FR-BOOK-05</td>
+                        <td>8</td>
+                        <td>5</td>
+                        <td>3</td>
+                        <td>7</td>
+                        <td>Bao phủ UNIQUE & FK Constraints</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Quản lý Độc giả (Customers)</strong></td>
+                        <td>FR-CUST-01 đến FR-CUST-05</td>
+                        <td>5</td>
+                        <td>3</td>
+                        <td>1</td>
+                        <td>4</td>
+                        <td><span class="badge badge-blocked">1 BLOCKED</span> (Đăng ký online)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Vận hành Đơn mượn/trả (Orders)</strong></td>
+                        <td>FR-ORD-01 đến FR-ORD-04</td>
+                        <td>7</td>
+                        <td>3</td>
+                        <td>2</td>
+                        <td>5</td>
+                        <td><span class="badge badge-blocked">1 BLOCKED</span> / <span class="badge badge-scope">1 OUT OF SCOPE</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cổng Độc giả (Customer Portal)</strong></td>
+                        <td>FR-RENT-01 đến FR-RENT-03</td>
+                        <td>3</td>
+                        <td>2</td>
+                        <td>1</td>
+                        <td>3</td>
+                        <td>Giỏ hàng & Đơn Pending</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Báo cáo & Thống kê (Reports)</strong></td>
+                        <td>FR-REP-01 đến FR-REP-03</td>
+                        <td>3</td>
+                        <td>2</td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>JFreeChart & Excel/PDF export</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Hồ sơ & Mật khẩu (Profile)</strong></td>
+                        <td>FR-PROF-01, FR-PROF-02</td>
+                        <td>2</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>Đổi mật khẩu tài khoản</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Yêu cầu phi chức năng (NFR)</strong></td>
+                        <td>NFR-PERF, RELI, USAB, MAINT</td>
+                        <td>5</td>
+                        <td>5</td>
+                        <td>0</td>
+                        <td>3</td>
+                        <td>Benchmark GUI, WAL mode & Transaction</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Module 1: Auth & Security -->
+        <div class="module-section">
+            <h2 class="module-title">2. PHÂN HỆ XÁC THỰC & PHÂN QUYỀN (AUTH & SECURITY)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 90px;">Mã TC</th>
+                        <th style="width: 120px;">Liên kết SRS</th>
+                        <th style="width: 80px;">Loại / UUT</th>
+                        <th style="width: 180px;">Precondition & Test Data</th>
+                        <th>Các bước thực hiện</th>
+                        <th>Kết quả mong đợi</th>
+                        <th style="width: 110px;">Ghi chú & Trạng thái</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="tc-id">TC-AUTH-01</span></td>
+                        <td><span class="req-tag">FR-AUTH-01</span><br><span class="req-tag">UC-01</span></td>
+                        <td><span class="badge badge-pos">Positive</span><br><span class="badge badge-high">High</span><br><span class="badge badge-auto-yes">Auto: Yes</span></td>
+                        <td><strong>Precondition:</strong> CSDL khả dụng.<br><strong>Data:</strong> Username: <code>admin</code>, Pass: <code>123</code></td>
+                        <td><ol><li>Mở LoginView.</li><li>Nhập <code>admin</code> và <code>123</code>.</li><li>Nhấn nút Đăng nhập.</li></ol></td>
+                        <td>Xác thực thành công. LoginView disposed, MainFrame mở ra màn hình mặc định <code>DashboardView</code> dành cho Admin.</td>
+                        <td>Test happy path Admin.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tc-id">TC-AUTH-02</span></td>
+                        <td><span class="req-tag">FR-AUTH-01</span><br><span class="req-tag">UC-01</span></td>
+                        <td><span class="badge badge-pos">Positive</span><br><span class="badge badge-high">High</span><br><span class="badge badge-auto-yes">Auto: Yes</span></td>
+                        <td><strong>Precondition:</strong> CSDL khả dụng.<br><strong>Data:</strong> Username: <code>customer1</code>, Pass: <code>123</code></td>
+                        <td><ol><li>Mở LoginView.</li><li>Nhập <code>customer1</code> và <code>123</code>.</li><li>Nhấn nút Đăng nhập.</li></ol></td>
+                        <td>Xác thực thành công. MainFrame mở ra màn hình mặc định <code>RentView</code> (Customer Portal). Các menu Admin bị ẩn khỏi Sidebar.</td>
+                        <td>Test happy path Customer & RBAC.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tc-id">TC-AUTH-03</span></td>
+                        <td><span class="req-tag">FR-AUTH-02</span><br><span class="req-tag">UC-01</span></td>
+                        <td><span class="badge badge-neg">Negative</span><br><span class="badge badge-med">Medium</span><br><span class="badge badge-auto-yes">Auto: Yes</span></td>
+                        <td><strong>Precondition:</strong> Đang ở LoginView.<br><strong>Data:</strong> Username: <code>admin</code>, Pass: <code>wrongpass</code></td>
+                        <td><ol><li>Nhập Username <code>admin</code> và Password <code>wrongpass</code>.</li><li>Nhấn Đăng nhập.</li></ol></td>
+                        <td>Đăng nhập thất bại. Nhãn <code>lblMessage</code> hiển thị: <em>"Sai tên đăng nhập hoặc mật khẩu!"</em>. Cửa sổ không chuyển màn hình.</td>
+                        <td>Test sai mật khẩu.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tc-id">TC-AUTH-04</span></td>
+                        <td><span class="req-tag">FR-AUTH-01</span><br><span class="req-tag">UC-01</span></td>
+                        <td><span class="badge badge-sec">Security</span><br><span class="badge badge-high">High</span><br><span class="badge badge-auto-no">Auto: No</span></td>
+                        <td><strong>Precondition:</strong> Đã vào CSDL.<br><strong>Data:</strong> Bảng <code>Users</code></td>
+                        <td><ol><li>Truy vấn trực tiếp CSDL SQLite <code>Libris.db</code>.</li><li>Kiểm tra cột <code>Password</code> của bảng <code>Users</code>.</li></ol></td>
+                        <td>Mật khẩu được mã hóa băm an toàn (BCrypt/SHA-256) thay vì PlainText.</td>
+                        <td><span class="badge badge-blocked">BLOCKED — chờ xác nhận</span><br>SRS ghi nhận DB hiện lưu PlainText.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Module 2: Catalog Management -->
+        <div class="module-section">
+            <h2 class="module-title">3. PHÂN HỆ QUẢN LÝ KHO SÁCH (CATALOG MANAGEMENT)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 90px;">Mã TC</th>
+                        <th style="width: 120px;">Liên kết SRS</th>
+                        <th style="width: 80px;">Loại / UUT</th>
+                        <th style="width: 180px;">Precondition & Test Data</th>
+                        <th>Các bước thực hiện</th>
+                        <th>Kết quả mong đợi</th>
+                        <th style="width: 110px;">Ghi chú & Trạng thái</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="tc-id">TC-BOOK-01</span></td>
+                        <td><span class="req-tag">FR-BOOK-01</span><br><span class="req-tag">UC-02</span></td>
+                        <td><span class="badge badge-pos">Positive</span><br><span class="badge badge-high">High</span><br><span class="badge badge-auto-yes">Auto: Yes</span></td>
+                        <td><strong>Precondition:</strong> Đăng nhập tài khoản <code>admin</code>.<br><strong>Data:</strong> Bảng Books có 33 đầu sách.</td>
+                        <td><ol><li>Chuyển sang màn hình <code>BooksView</code>.</li><li>Quan sát bảng dữ liệu JTable.</li></ol></td>
+                        <td>JTable nạp đủ 33 bản ghi sách, hiển thị đầy đủ các cột Mã sách, Tên, Tác giả, Thể loại, Trạng thái, Giá mượn, Cọc.</td>
+                        <td>Verify BookDAO.getAllBooks().</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tc-id">TC-BOOK-02</span></td>
+                        <td><span class="req-tag">FR-BOOK-02</span><br><span class="req-tag">UC-02</span></td>
+                        <td><span class="badge badge-pos">Positive</span><br><span class="badge badge-high">High</span><br><span class="badge badge-auto-yes">Auto: Yes</span></td>
+                        <td><strong>Precondition:</strong> Màn hình BooksView.<br><strong>Data:</strong> Code: <code>B999</code>, Title: <code>Lập Trình Java Swing</code>, Author: <code>Nguyen Van X</code>, Rental: <code>15000</code>, Deposit: <code>60000</code></td>
+                        <td><ol><li>Nhập đầy đủ thông tin vào Form.</li><li>Nhấn nút "Thêm sách".</li></ol></td>
+                        <td>Thêm sách thành công. Bảng tự động làm mới chứa dòng <code>B999</code>. Trong DB chèn 1 bản ghi mới.</td>
+                        <td>Verify BookDAO.addBook().</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tc-id">TC-BOOK-03</span></td>
+                        <td><span class="req-tag">FR-BOOK-02</span><br><span class="req-tag">UC-02</span></td>
+                        <td><span class="badge badge-neg">Negative</span><br><span class="badge badge-high">High</span><br><span class="badge badge-auto-yes">Auto: Yes</span></td>
+                        <td><strong>Precondition:</strong> Sách <code>B001</code> đã tồn tại.<br><strong>Data:</strong> Code: <code>B001</code> (Trùng lặp)</td>
+                        <td><ol><li>Nhập Mã sách <code>B001</code> và thông tin bất kỳ.</li><li>Nhấn "Thêm sách".</li></ol></td>
+                        <td>Hệ thống báo lỗi vi phạm ràng buộc `UNIQUE` trên cột `BookCode`. Không có dòng trùng nào được thêm vào DB.</td>
+                        <td>Test ràng buộc UNIQUE BookCode.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tc-id">TC-BOOK-04</span></td>
+                        <td><span class="req-tag">FR-BOOK-03</span><br><span class="req-tag">UC-02</span></td>
+                        <td><span class="badge badge-pos">Positive</span><br><span class="badge badge-med">Medium</span><br><span class="badge badge-auto-yes">Auto: Yes</span></td>
+                        <td><strong>Precondition:</strong> Chọn sách <code>B001</code>.<br><strong>Data:</strong> RentalPrice mới: <code>20000</code></td>
+                        <td><ol><li>Chọn dòng <code>B001</code> trên bảng.</li><li>Đổi Giá thuê thành <code>20000</code>.</li><li>Nhấn "Cập nhật".</li></ol></td>
+                        <td>Cập nhật thành công. Giá thuê của <code>B001</code> trong DB chuyển thành 20000.</td>
+                        <td>Verify BookDAO.updateBook().</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tc-id">TC-BOOK-05</span></td>
+                        <td><span class="req-tag">FR-BOOK-04</span><br><span class="req-tag">UC-02</span></td>
+                        <td><span class="badge badge-pos">Positive</span><br><span class="badge badge-med">Medium</span><br><span class="badge badge-auto-yes">Auto: Yes</span></td>
+                        <td><strong>Precondition:</strong> Sách <code>B999</code> chưa thuộc đơn thuê nào.<br><strong>Data:</strong> BookID của <code>B999</code></td>
+                        <td><ol><li>Chọn dòng sách <code>B999</code> vừa tạo.</li><li>Nhấn nút "Xóa sách".</li></ol></td>
+                        <td>Xóa thành công. Sách <code>B999</code> biến mất khỏi bảng và DB.</td>
+                        <td>Verify BookDAO.deleteBook().</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tc-id">TC-BOOK-06</span></td>
+                        <td><span class="req-tag">FR-BOOK-04</span><br><span class="req-tag">UC-02</span></td>
+                        <td><span class="badge badge-neg">Negative</span><br><span class="badge badge-high">High</span><br><span class="badge badge-auto-yes">Auto: Yes</span></td>
+                        <td><strong>Precondition:</strong> Sách <code>B003</code> đang thuộc đơn thuê <code>O001</code>.<br><strong>Data:</strong> BookID của <code>B003</code></td>
+                        <td><ol><li>Chọn sách <code>B003</code>.</li><li>Nhấn "Xóa sách".</li></ol></td>
+                        <td>Thao tác bị SQLite ngăn chặn do vi phạm khóa ngoại (FOREIGN KEY constraint). Hệ thống hiển thị thông báo lỗi bảo vệ dữ liệu.</td>
+                        <td>Test bảo vệ ràng buộc FK.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tc-id">TC-BOOK-07</span></td>
+                        <td><span class="req-tag">FR-BOOK-01</span><br><span class="req-tag">UC-02</span></td>
+                        <td><span class="badge badge-pos">Positive</span><br><span class="badge badge-med">Medium</span><br><span class="badge badge-auto-yes">Auto: Yes</span></td>
+                        <td><strong>Precondition:</strong> Màn hình BooksView.<br><strong>Data:</strong> Keyword: <code>Dế Mèn</code></td>
+                        <td><ol><li>Nhập <code>Dế Mèn</code> vào ô tìm kiếm.</li><li>Nhấn nút Tìm kiếm.</li></ol></td>
+                        <td>Bảng lọc hiển thị đúng bản ghi "Dế Mèn Phiêu Lưu Ký" (B001). các sách khác bị ẩn.</td>
+                        <td>Verify BookDAO.searchBook().</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tc-id">TC-BOOK-08</span></td>
+                        <td><span class="req-tag">FR-BOOK-05</span><br><span class="req-tag">UC-02</span></td>
+                        <td><span class="badge badge-pos">Positive</span><br><span class="badge badge-low">Low</span><br><span class="badge badge-auto-no">Auto: No</span></td>
+                        <td><strong>Precondition:</strong> Màn hình BooksView.<br><strong>Data:</strong> File path: <code>books_export.xlsx</code></td>
+                        <td><ol><li>Nhấn nút "Xuất Excel".</li><li>Chọn đường dẫn lưu file.</li></ol></td>
+                        <td>Tạo thành công file <code>.xlsx</code> sử dụng Apache POI chứa đủ số dòng và các cột tiêu đề chuẩn.</td>
+                        <td>Verify ExcelExporter.exportBooks().</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Module 3: Customer Management -->
+        <div class="module-section">
+            <h2 class="module-title">4. PHÂN HỆ QUẢN LÝ ĐỘC GIẢ / KHÁCH HÀNG (CUSTOMER MANAGEMENT)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 90px;">Mã TC</th>
+                        <th style="width: 120px;">Liên kết SRS</th>
+                        <th style="width: 80px;">Loại / UUT</th>
+                        <th style="width: 180px;">Precondition & Test Data</th>
+                        <th>Các bước thực hiện</th>
+                        <th>Kết quả mong đợi</th>
+                        <th style="width: 110px;">Ghi chú & Trạng thái</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="tc-id">TC-CUST-01</span></td>
+                        <td><span class="req-tag">FR-CUST-01</span><br><span class="req-tag">UC-03</span></td>
+                        <td><span class="badge badge-pos">Positive</span><br><span class="badge badge-high">High</span><br><span class="badge badge-auto-yes">Auto: Yes</span></td>
+                        <td><strong>Precondition:</strong> Đăng nhập <code>admin</code>.<br><strong>Data:</strong> Bảng Customers</td>
+                        <td><ol><li>Chuyển sang <code>CustomersView</code>.</li></ol></td>
+                        <td>Bảng JTable hiển thị đầy đủ danh sách các độc giả (Mã C001, C002..., Họ tên, Số điện thoại, Email, Địa chỉ).</td>
+                        <td>Verify CustomerDAO.getAllCustomers().</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tc-id">TC-CUST-02</span></td>
+                        <td><span class="req-tag">FR-CUST-02</span><br><span class="req-tag">UC-03</span></td>
+                        <td><span class="badge badge-pos">Positive</span><br><span class="badge badge-high">High</span><br><span class="badge badge-auto-yes">Auto: Yes</span></td>
+                        <td><strong>Precondition:</strong> Màn hình CustomersView.<br><strong>Data:</strong> Code: <code>C999</code>, Name: <code>Tran Van Y</code>, Phone: <code>0999888777</code></td>
+                        <td><ol><li>Nhập thông tin độc giả mới.</li><li>Nhấn nút "Thêm độc giả".</li></ol></td>
+                        <td>Thêm độc giả thành công. Bản ghi <code>C999</code> lưu vào DB. Bảng dữ liệu cập nhật thêm 1 dòng.</td>
+                        <td>Verify CustomerDAO.addCustomer().</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tc-id">TC-CUST-03</span></td>
+                        <td><span class="req-tag">FR-CUST-03</span><br><span class="req-tag">UC-03</span></td>
+                        <td><span class="badge badge-pos">Positive</span><br><span class="badge badge-med">Medium</span><br><span class="badge badge-auto-yes">Auto: Yes</span></td>
+                        <td><strong>Precondition:</strong> Chọn độc giả <code>C001</code>.<br><strong>Data:</strong> Phone mới: <code>0909999999</code></td>
+                        <td><ol><li>Sửa Số điện thoại thành <code>0909999999</code>.</li><li>Nhấn "Cập nhật".</li></ol></td>
+                        <td>Cập nhật thành công. Số điện thoại của <code>C001</code> trong DB được ghi nhận mới.</td>
+                        <td>Verify CustomerDAO.updateCustomer().</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tc-id">TC-CUST-04</span></td>
+                        <td><span class="req-tag">FR-CUST-04</span><br><span class="req-tag">UC-03</span></td>
+                        <td><span class="badge badge-pos">Positive</span><br><span class="badge badge-med">Medium</span><br><span class="badge badge-auto-yes">Auto: Yes</span></td>
+                        <td><strong>Precondition:</strong> Màn hình CustomersView.<br><strong>Data:</strong> Keyword: <code>Nguyễn Văn A</code></td>
+                        <td><ol><li>Nhập <code>Nguyễn Văn A</code> vào ô tìm kiếm.</li><li>Nhấn Tìm kiếm.</li></ol></td>
+                        <td>Hiển thị chính xác độc giả C001 (Nguyễn Văn A).</td>
+                        <td>Verify CustomerDAO.searchCustomer().</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tc-id">TC-CUST-05</span></td>
+                        <td><span class="req-tag">FR-CUST-05</span><br><span class="req-tag">UC-03</span></td>
+                        <td><span class="badge badge-sec">Security</span><br><span class="badge badge-med">Medium</span><br><span class="badge badge-auto-no">Auto: No</span></td>
+                        <td><strong>Precondition:</strong> Giao diện LoginView.<br><strong>Data:</strong> Nút Đăng ký</td>
+                        <td><ol><li>Mở LoginView.</li><li>Tìm nút/liên kết "Đăng ký độc giả mới".</li></ol></td>
+                        <td>Có giao diện tự đăng ký tài khoản dành cho Độc giả chưa có thẻ.</td>
+                        <td><span class="badge badge-blocked">BLOCKED — chờ xác nhận</span><br>LoginView hiện chỉ hỗ trợ Admin khởi tạo tài khoản.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Module 4: Order & Circulation Management -->
+        <div class="module-section">
+            <h2 class="module-title">5. PHÂN HỆ VẬN HÀNH ĐƠN MƯỢN / TRẢ SÁCH (ORDER & CIRCULATION)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 90px;">Mã TC</th>
+                        <th style="width: 120px;">Liên kết SRS</th>
+                        <th style="width: 80px;">Loại / UUT</th>
+                        <th style="width: 180px;">Precondition & Test Data</th>
+                        <th>Các bước thực hiện</th>
+                        <th>Kết quả mong đợi</th>
+                        <th style="width: 110px;">Ghi chú & Trạng thái</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="tc-id">TC-ORD-01</span></td>
+                        <td><span class="req-tag">FR-ORD-01</span><br><span class="req-tag">UC-04</span></td>
+                        <td><span class="badge badge-pos">Positive</span><br><span class="badge badge-high">High</span><br><span class="badge badge-auto-yes">Auto: Yes</span></td>
+                        <td><strong>Precondition:</strong> Đăng nhập <code>admin</code>.<br><strong>Data:</strong> Bảng RentalOrders</td>
+                        <td><ol><li>Chuyển sang <code>OrdersView</code>.</li></ol></td>
+                        <td>Hiển thị đủ danh sách đơn mượn, cập nhật đúng các thẻ KPI tổng số đơn theo trạng thái (Pending, Renting, Returned, Rejected).</td>
+                        <td>Verify RentalOrderDAO.getAllOrders().</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tc-id">TC-ORD-02</span></td>
+                        <td><span class="req-tag">FR-ORD-02</span><br><span class="req-tag">UC-04</span></td>
+                        <td><span class="badge badge-pos">Positive</span><br><span class="badge badge-high">High</span><br><span class="badge badge-auto-yes">Auto: Yes</span></td>
+                        <td><strong>Precondition:</strong> Có đơn mượn ở trạng thái <code>Pending</code>.<br><strong>Data:</strong> OrderID của đơn Pending</td>
+                        <td><ol><li>Chọn đơn Pending trong JTable.</li><li>Nhấn nút "Duyệt đơn".</li></ol></td>
+                        <td>Duyệt đơn thành công. Trạng thái đơn chuyển thành <code>Renting</code>, trạng thái của các sách trong đơn đổi thành <code>Rented</code>.</td>
+                        <td>Verify RentalOrderDAO.updateOrderStatus().</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tc-id">TC-ORD-03</span></td>
+                        <td><span class="req-tag">FR-ORD-03</span><br><span class="req-tag">UC-04</span></td>
+                        <td><span class="badge badge-pos">Positive</span><br><span class="badge badge-med">Medium</span><br><span class="badge badge-auto-yes">Auto: Yes</span></td>
+                        <td><strong>Precondition:</strong> Chọn 1 đơn <code>Pending</code>.<br><strong>Data:</strong> OrderID của đơn Pending</td>
+                        <td><ol><li>Nhấn nút "Từ chối đơn".</li></ol></td>
+                        <td>Đơn chuyển trạng thái thành <code>Rejected</code>. Sách không bị khóa trạng thái mượn.</td>
+                        <td>Verify Từ chối đơn.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tc-id">TC-ORD-04</span></td>
+                        <td><span class="req-tag">FR-ORD-04</span><br><span class="req-tag">UC-04</span></td>
+                        <td><span class="badge badge-pos">Positive</span><br><span class="badge badge-high">High</span><br><span class="badge badge-auto-yes">Auto: Yes</span></td>
+                        <td><strong>Precondition:</strong> Đơn mượn <code>O001</code> đang ở trạng thái <code>Renting</code> (Sách <code>B003</code> đang Rented).<br><strong>Data:</strong> OrderID <code>1</code></td>
+                        <td><ol><li>Chọn đơn <code>O001</code>.</li><li>Nhấn nút "Xác nhận trả sách".</li></ol></td>
+                        <td>Đơn chuyển thành <code>Returned</code>. Ngày trả <code>ReturnDate</code> được ghi nhận thời gian hiện tại. Sách <code>B003</code> tự động chuyển về <code>Available</code> trong 1 Transaction.</td>
+                        <td>Verify Trả sách & Transaction Rollback/Commit.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tc-id">TC-ORD-05</span></td>
+                        <td><span class="req-tag">FR-ORD-02</span><br><span class="req-tag">UC-04</span></td>
+                        <td><span class="badge badge-neg">Negative</span><br><span class="badge badge-high">High</span><br><span class="badge badge-auto-yes">Auto: Yes</span></td>
+                        <td><strong>Precondition:</strong> Đơn <code>O101</code> đang có trạng thái <code>Returned</code>.<br><strong>Data:</strong> OrderID của <code>O101</code></td>
+                        <td><ol><li>Chọn đơn <code>O101</code>.</li><li>Nhấn nút "Duyệt đơn".</li></ol></td>
+                        <td>Hệ thống ngăn chặn và báo lỗi quy tắc nghiệp vụ: <em>"BR-order-002: Chỉ được phép duyệt đơn ở trạng thái Pending!"</em>.</td>
+                        <td>Test vi phạm quy tắc BR-order-002.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tc-id">TC-ORD-06</span></td>
+                        <td><span class="req-tag">FR-ORD-04</span><br><span class="req-tag">UC-04</span></td>
+                        <td><span class="badge badge-bound">Boundary</span><br><span class="badge badge-high">High</span><br><span class="badge badge-auto-no">Auto: No</span></td>
+                        <td><strong>Precondition:</strong> Đơn thuê quá hạn trả.<br><strong>Data:</strong> ExpectedReturnDate < RentDate</td>
+                        <td><ol><li>Tính toán số tiền phạt quá hạn (Late Fee).</li></ol></td>
+                        <td>Tính toán tự động tiền phạt LateFee = $1.0/ngày quá hạn.</td>
+                        <td><span class="badge badge-blocked">BLOCKED — chờ xác nhận</span><br>Công thức phạt hiện lưu tĩnh trong DB.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tc-id">TC-ORD-07</span></td>
+                        <td><span class="req-tag">FR-ORD-04</span><br><span class="req-tag">UC-04</span></td>
+                        <td><span class="badge badge-pos">Positive</span><br><span class="badge badge-low">Low</span><br><span class="badge badge-auto-no">Auto: No</span></td>
+                        <td><strong>Precondition:</strong> Giao dịch mượn/trả.<br><strong>Data:</strong> Cổng thanh toán VNPay</td>
+                        <td><ol><li>Thanh toán tiền đặt cọc qua cổng VNPay/ZaloPay.</li></ol></td>
+                        <td>Thanh toán trực tuyến thành công, cập nhật số dư.</td>
+                        <td><span class="badge badge-scope">OUT OF SCOPE</span><br>Dự án mô phỏng thanh toán tiền mặt tại quầy.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Module 5: Customer Rent Portal -->
+        <div class="module-section">
+            <h2 class="module-title">6. PHÂN HỆ CỔNG ĐỘC GIẢ (CUSTOMER PORTAL & MY RENTALS)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 90px;">Mã TC</th>
+                        <th style="width: 120px;">Liên kết SRS</th>
+                        <th style="width: 80px;">Loại / UUT</th>
+                        <th style="width: 180px;">Precondition & Test Data</th>
+                        <th>Các bước thực hiện</th>
+                        <th>Kết quả mong đợi</th>
+                        <th style="width: 110px;">Ghi chú & Trạng thái</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="tc-id">TC-RENT-01</span></td>
+                        <td><span class="req-tag">FR-RENT-01</span><br><span class="req-tag">UC-06</span></td>
+                        <td><span class="badge badge-pos">Positive</span><br><span class="badge badge-high">High</span><br><span class="badge badge-auto-yes">Auto: Yes</span></td>
+                        <td><strong>Precondition:</strong> Đăng nhập tài khoản <code>customer1</code>.<br><strong>Data:</strong> RentView</td>
+                        <td><ol><li>Chuyển sang màn hình <code>RentView</code>.</li></ol></td>
+                        <td>Hiển thị danh sách các sách đang ở trạng thái <code>Available</code> dưới dạng lưới thẻ sách 3 cột. Các sách mượn hết không xuất hiện.</td>
+                        <td>Verify RentDAO.getAvailableBooks().</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tc-id">TC-RENT-02</span></td>
+                        <td><span class="req-tag">FR-RENT-02</span><br><span class="req-tag">UC-06</span></td>
+                        <td><span class="badge badge-pos">Positive</span><br><span class="badge badge-high">High</span><br><span class="badge badge-auto-yes">Auto: Yes</span></td>
+                        <td><strong>Precondition:</strong> Màn hình RentView.<br><strong>Data:</strong> Sách B001, Thời hạn: 14 ngày</td>
+                        <td><ol><li>Chọn sách B001 thêm vào giỏ mượn.</li><li>Chọn thời hạn mượn 14 ngày.</li><li>Nhấn "Gửi yêu cầu thuê sách".</li></ol></td>
+                        <td>Tạo đơn mượn thành công với trạng thái <code>Pending</code>. Tiền cọc (TotalDeposit = DepositPrice) và Tiền thuê (TotalRentalFee = RentalPrice * 14) được tính toán chính xác.</td>
+                        <td>Verify RentDAO.createRentRequest().</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tc-id">TC-RENT-03</span></td>
+                        <td><span class="req-tag">FR-RENT-03</span><br><span class="req-tag">UC-07</span></td>
+                        <td><span class="badge badge-pos">Positive</span><br><span class="badge badge-med">Medium</span><br><span class="badge badge-auto-yes">Auto: Yes</span></td>
+                        <td><strong>Precondition:</strong> Đăng nhập <code>customer1</code> (CustomerID = 1).<br><strong>Data:</strong> MyRentalsView</td>
+                        <td><ol><li>Chuyển sang màn hình <code>MyRentalsView</code>.</li></ol></td>
+                        <td>Hiển thị chính xác tất cả các đơn mượn cá nhân của độc giả customer1, hạn trả và tình trạng đơn. Không thấy đơn độc giả khác.</td>
+                        <td>Verify RentDAO.getCustomerRentals().</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Module 6: Reports & Analytics -->
+        <div class="module-section">
+            <h2 class="module-title">7. PHÂN HỆ BÁO CÁO & THỐNG KÊ (REPORTS & DASHBOARD)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 90px;">Mã TC</th>
+                        <th style="width: 120px;">Liên kết SRS</th>
+                        <th style="width: 80px;">Loại / UUT</th>
+                        <th style="width: 180px;">Precondition & Test Data</th>
+                        <th>Các bước thực hiện</th>
+                        <th>Kết quả mong đợi</th>
+                        <th style="width: 110px;">Ghi chú & Trạng thái</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="tc-id">TC-REP-01</span></td>
+                        <td><span class="req-tag">FR-REP-01</span><br><span class="req-tag">UC-05</span></td>
+                        <td><span class="badge badge-pos">Positive</span><br><span class="badge badge-high">High</span><br><span class="badge badge-auto-yes">Auto: Yes</span></td>
+                        <td><strong>Precondition:</strong> Đăng nhập <code>admin</code>.<br><strong>Data:</strong> DashboardView</td>
+                        <td><ol><li>Mở <code>DashboardView</code>.</li></ol></td>
+                        <td>Hiển thị 6 chỉ số KPI chính (Tổng độc giả, Đơn chờ duyệt, Đơn quá hạn, Đơn đang mượn...) khớp số liệu SQL thực tế.</td>
+                        <td>Verify ReportDAO.getDashboardStats().</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tc-id">TC-REP-02</span></td>
+                        <td><span class="req-tag">FR-REP-02</span><br><span class="req-tag">UC-05</span></td>
+                        <td><span class="badge badge-pos">Positive</span><br><span class="badge badge-med">Medium</span><br><span class="badge badge-auto-yes">Auto: Yes</span></td>
+                        <td><strong>Precondition:</strong> Thư viện JFreeChart 1.5.6.<br><strong>Data:</strong> Năm 2026</td>
+                        <td><ol><li>Quan sát các panel biểu đồ trên DashboardView.</li></ol></td>
+                        <td>Vẽ thành công Combo Chart (Doanh thu), Donut Chart (Thể loại sách), Horizontal Bar Chart (Top 5 sách mượn). Không văng NullPointerException.</td>
+                        <td>Verify ChartGenerator.java.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tc-id">TC-REP-03</span></td>
+                        <td><span class="req-tag">FR-REP-03</span><br><span class="req-tag">UC-05</span></td>
+                        <td><span class="badge badge-pos">Positive</span><br><span class="badge badge-low">Low</span><br><span class="badge badge-auto-no">Auto: No</span></td>
+                        <td><strong>Precondition:</strong> Màn hình ReportsView.<br><strong>Data:</strong> Nút Xuất PDF / Biên lai</td>
+                        <td><ol><li>Chuyển sang <code>ReportsView</code>.</li><li>Nhấn "Xuất báo cáo PDF".</li></ol></td>
+                        <td>Gọi module <code>PDFExporter</code> sinh file HTML báo cáo mẫu và tự động mở trình duyệt mặc định sẵn sàng in (Ctrl+P).</td>
+                        <td>Verify PDFExporter.java.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Module 7: Profile & Security -->
+        <div class="module-section">
+            <h2 class="module-title">8. PHÂN HỆ HỒ SƠ & AN TOÀN TÀI KHOẢN (PROFILE & SECURITY)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 90px;">Mã TC</th>
+                        <th style="width: 120px;">Liên kết SRS</th>
+                        <th style="width: 80px;">Loại / UUT</th>
+                        <th style="width: 180px;">Precondition & Test Data</th>
+                        <th>Các bước thực hiện</th>
+                        <th>Kết quả mong đợi</th>
+                        <th style="width: 110px;">Ghi chú & Trạng thái</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="tc-id">TC-PROF-01</span></td>
+                        <td><span class="req-tag">FR-PROF-01</span><br><span class="req-tag">UC-08</span></td>
+                        <td><span class="badge badge-pos">Positive</span><br><span class="badge badge-high">High</span><br><span class="badge badge-auto-yes">Auto: Yes</span></td>
+                        <td><strong>Precondition:</strong> Đăng nhập <code>customer1</code> (UserID = 4).<br><strong>Data:</strong> CurPass: <code>123</code>, NewPass: <code>456</code></td>
+                        <td><ol><li>Mở <code>ProfileView</code>.</li><li>Nhập mật khẩu hiện tại <code>123</code>, mật khẩu mới <code>456</code> và xác nhận <code>456</code>.</li><li>Nhấn "Đổi mật khẩu".</li></ol></td>
+                        <td>Đổi mật khẩu thành công. Lần đăng nhập tiếp theo với <code>customer1</code> phải dùng mật khẩu mới <code>456</code>.</td>
+                        <td>Verify UserDAO.changePassword().</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tc-id">TC-PROF-02</span></td>
+                        <td><span class="req-tag">FR-PROF-02</span><br><span class="req-tag">UC-08</span></td>
+                        <td><span class="badge badge-neg">Negative</span><br><span class="badge badge-med">Medium</span><br><span class="badge badge-auto-yes">Auto: Yes</span></td>
+                        <td><strong>Precondition:</strong> Đang ở ProfileView.<br><strong>Data:</strong> NewPass: <code>456</code>, ConfirmPass: <code>789</code></td>
+                        <td><ol><li>Nhập Mật khẩu mới <code>456</code> và Mật khẩu xác nhận <code>789</code> (không khớp).</li><li>Nhấn "Đổi mật khẩu".</li></ol></td>
+                        <td>Báo lỗi: <em>"Mật khẩu xác nhận không khớp!"</em>. Mật khẩu trong DB không bị thay đổi.</td>
+                        <td>Verify validate mật khẩu không khớp.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Module 8: Non-Functional Requirements -->
+        <div class="module-section">
+            <h2 class="module-title">9. YÊU CẦU PHI CHỨC NĂNG (NON-FUNCTIONAL REQUIREMENTS)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 90px;">Mã TC</th>
+                        <th style="width: 120px;">Liên kết SRS</th>
+                        <th style="width: 80px;">Loại / UUT</th>
+                        <th style="width: 180px;">Precondition & Test Data</th>
+                        <th>Các bước thực hiện</th>
+                        <th>Kết quả mong đợi</th>
+                        <th style="width: 110px;">Ghi chú & Trạng thái</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="tc-id">TC-NFR-01</span></td>
+                        <td><span class="req-tag">NFR-PERF-01</span></td>
+                        <td><span class="badge badge-pos">Performance</span><br><span class="badge badge-med">Medium</span><br><span class="badge badge-auto-yes">Auto: Yes</span></td>
+                        <td><strong>Precondition:</strong> MainFrame đang mở.<br><strong>Data:</strong> Chuyển giữa 8 views</td>
+                        <td><ol><li>Đo thời gian chuyển tab qua CardLayout <code>navigateTo()</code>.</li></ol></td>
+                        <td>Thời gian chuyển tab và hiển thị UI dưới <strong>300ms</strong>.</td>
+                        <td>Hiệu năng phản hồi GUI.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tc-id">TC-NFR-02</span></td>
+                        <td><span class="req-tag">NFR-PERF-02</span></td>
+                        <td><span class="badge badge-pos">Performance</span><br><span class="badge badge-high">High</span><br><span class="badge badge-auto-yes">Auto: Yes</span></td>
+                        <td><strong>Precondition:</strong> DatabaseConnection.java.<br><strong>Data:</strong> SQLite PRAGMA WAL</td>
+                        <td><ol><li>Thực thi đồng thời các câu lệnh đọc/ghi CSDL.</li></ol></td>
+                        <td>CSDL chạy ổn định chế độ WAL journal, không bị treo lỗi <code>database locked</code>.</td>
+                        <td>Hiệu năng CSDL SQLite.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tc-id">TC-NFR-03</span></td>
+                        <td><span class="req-tag">NFR-RELI-01</span></td>
+                        <td><span class="badge badge-pos">Reliability</span><br><span class="badge badge-high">High</span><br><span class="badge badge-auto-yes">Auto: Yes</span></td>
+                        <td><strong>Precondition:</strong> Thao tác trả sách trong RentalOrderDAO.<br><strong>Data:</strong> SQLException giả lập</td>
+                        <td><ol><li>Cố tình gây lỗi SQL khi đang cập nhật danh sách sách trong Transaction trả sách.</li></ol></td>
+                        <td>Hệ thống gọi <code>rollback()</code>. Trạng thái đơn mượn và sách không bị cập nhật dở dang.</td>
+                        <td>Test tính toàn vẹn Transaction.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tc-id">TC-NFR-04</span></td>
+                        <td><span class="req-tag">NFR-USAB-01</span></td>
+                        <td><span class="badge badge-pos">Usability</span><br><span class="badge badge-low">Low</span><br><span class="badge badge-auto-no">Auto: No</span></td>
+                        <td><strong>Precondition:</strong> Thư viện FlatLaf 3.7.1.<br><strong>Data:</strong> FlatDarkLaf</td>
+                        <td><ol><li>Khởi chạy ứng dụng và quan sát theme.</li></ol></td>
+                        <td>Giao diện áp dụng chuẩn Flat Dark Theme, bảng màu <code>LibrisColors</code> nhất quán.</td>
+                        <td>Test bộ theme FlatLaf.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tc-id">TC-NFR-05</span></td>
+                        <td><span class="req-tag">NFR-MAINT-01</span></td>
+                        <td><span class="badge badge-pos">Maintainability</span><br><span class="badge badge-med">Medium</span><br><span class="badge badge-auto-no">Auto: No</span></td>
+                        <td><strong>Precondition:</strong> Script <code>run.bat</code> hoặc Maven build.<br><strong>Data:</strong> <code>mvn package</code></td>
+                        <td><ol><li>Chạy lệnh đóng gói Maven assembly.</li><li>Chạy file batch <code>run.bat</code> trên Windows.</li></ol></td>
+                        <td>Tạo file executable JAR thành công và khởi chạy ứng dụng mượt mượt qua script batch.</td>
+                        <td>Test khả năng đóng gói.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

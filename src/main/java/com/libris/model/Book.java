@@ -11,6 +11,7 @@ public class Book {
     private String bookStatus;
     private int rentalPrice;
     private int depositPrice;
+    private int rentCount;
 
     public Book() {
     }
@@ -32,7 +33,15 @@ public class Book {
         return bookid;
     }
 
+    public int getBookId() {
+        return bookid;
+    }
+
     public void setBookid(int bookid) {
+        this.bookid = bookid;
+    }
+
+    public void setBookId(int bookid) {
         this.bookid = bookid;
     }
 
@@ -108,5 +117,12 @@ public class Book {
         this.depositPrice = depositPrice;
     }
 
-    
+    public int getRentCount() {
+        return rentCount;
+    }
+
+    public void setRentCount(int rentCount) {
+        this.rentCount = rentCount;
+    }
+
 }

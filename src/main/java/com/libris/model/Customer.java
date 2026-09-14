@@ -40,7 +40,15 @@ public class Customer {
         return name;
     }
 
+    public String getFullName() {
+        return name;
+    }
+
     public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setFullName(String name) {
         this.name = name;
     }
 

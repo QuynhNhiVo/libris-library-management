@@ -22,3 +22,12 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+
+# SQLite Database Files
+*.db
+*.db-wal
+*.db-shm
+
+# Exception: Keep main database for GitHub
+!Libris.db
+

@@ -6,7 +6,9 @@ public class Constants {
     public static final String DATABASE_NAME = "Libris";
     public static final String DATABASE_URL_PREFIX = "jdbc:sqlite:";
     public static final String DATABASE_FILE_EXTENSION = ".db";
-    public static final String URL = DATABASE_URL_PREFIX + DATABASE_NAME + DATABASE_FILE_EXTENSION;
+    // Use an absolute path for the SQLite database file to avoid classpath/run-dir issues
+    public static final String DATABASE_FULL_PATH = System.getProperty("user.dir") + System.getProperty("file.separator") + DATABASE_NAME + DATABASE_FILE_EXTENSION;
+    public static final String URL = DATABASE_URL_PREFIX + DATABASE_FULL_PATH;
 
     public static final String ROLE_ADMIN = "Admin";
     public static final String ROLE_CUSTOMER = "Customer";
@@ -48,6 +50,8 @@ public class Constants {
     public static final String IC_RENTALS = PropertiesHelpers.getValue("icon.rentals.url");
 
     public static final String IC_REPORTS = PropertiesHelpers.getValue("icon.reports.url");
+    public static final String IC_ORDERS = IC_REPORTS;
+    public static final String IC_CUSTOMERS = IC_REPORTS;
 
     public static final String IC_RENT_BOOK = PropertiesHelpers.getValue("icon.rent.book.url");
 

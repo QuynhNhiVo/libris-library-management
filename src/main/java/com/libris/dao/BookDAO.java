@@ -17,8 +17,7 @@ public class BookDAO {
     /** Lấy tất cả sách */
     public List<Book> getAllBooks() throws SQLException {
         List<Book> books = new ArrayList<>();
-        String query = "SELECT * FROM Books ORDER BY BookID DESC";
-        
+        String query = "SELECT b.*, (SELECT COUNT(*) FROM RentalOrderDetails d WHERE d.BookID = b.BookID) AS RentCount FROM Books b ORDER BY b.BookID DESC";
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -38,11 +37,13 @@ public class BookDAO {
                 book.setBookStatus(rs.getString("BookStatus"));
                 book.setRentalPrice(rs.getInt("RentalPrice"));
                 book.setDepositPrice(rs.getInt("DepositPrice"));
+                book.setRentCount(rs.getInt("RentCount"));
                 books.add(book);
             }
         } finally {
             if (rs != null) try { rs.close(); } catch (SQLException e) {}
             if (stmt != null) try { stmt.close(); } catch (SQLException e) {}
+            if (conn != null) try { conn.close(); } catch (SQLException e) {}
         }
         return books;
     }
@@ -69,6 +70,7 @@ public class BookDAO {
             return stmt.executeUpdate() > 0;
         } finally {
             if (stmt != null) try { stmt.close(); } catch (SQLException e) {}
+            if (conn != null) try { conn.close(); } catch (SQLException e) {}
         }
     }
 
@@ -94,6 +96,7 @@ public class BookDAO {
             return stmt.executeUpdate() > 0;
         } finally {
             if (stmt != null) try { stmt.close(); } catch (SQLException e) {}
+            if (conn != null) try { conn.close(); } catch (SQLException e) {}
         }
     }
 
@@ -110,16 +113,16 @@ public class BookDAO {
             return stmt.executeUpdate() > 0;
         } finally {
             if (stmt != null) try { stmt.close(); } catch (SQLException e) {}
+            if (conn != null) try { conn.close(); } catch (SQLException e) {}
         }
     }
 
     /** Tìm sách theo từ khóa (Title, Author, BookCode) */
     public List<Book> searchBook(String keyword) throws SQLException {
         List<Book> books = new ArrayList<>();
-        String query = "SELECT * FROM Books WHERE Title LIKE ? OR Author LIKE ? OR BookCode LIKE ?";
+        String query = "SELECT b.*, (SELECT COUNT(*) FROM RentalOrderDetails d WHERE d.BookID = b.BookID) AS RentCount FROM Books b WHERE b.Title LIKE ? OR b.Author LIKE ? OR b.BookCode LIKE ?";
         Connection conn = null;
         PreparedStatement stmt = null;
-
         try {
             conn = DatabaseConnection.getConnection();
             stmt = conn.prepareStatement(query);
@@ -140,6 +143,7 @@ public class BookDAO {
                     book.setBookStatus(rs.getString("BookStatus"));
                     book.setRentalPrice(rs.getInt("RentalPrice"));
                     book.setDepositPrice(rs.getInt("DepositPrice"));
+                    book.setRentCount(rs.getInt("RentCount"));
                     books.add(book);
                 }
             }

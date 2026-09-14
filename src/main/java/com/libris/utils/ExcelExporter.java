@@ -130,34 +130,36 @@ public class ExcelExporter {
         }
     }
 
-    public static boolean exportRevenueReport(List<ReportStat> monthlyRevenue, File file) {
+    public static boolean exportFullReport(File file, int year, List<ReportStat> rev, List<ReportStat> books, List<ReportStat> cats, List<ReportStat> custs, List<RentalOrder> overdue) {
         try (Workbook workbook = new XSSFWorkbook()) {
-            Sheet sheet = workbook.createSheet("Báo cáo doanh thu");
-
-            Row header = sheet.createRow(0);
-            header.createCell(0).setCellValue("Tháng");
-            header.createCell(1).setCellValue("Doanh thu (VNĐ)");
-            header.getCell(0).setCellStyle(createHeaderStyle(workbook));
-            header.getCell(1).setCellStyle(createHeaderStyle(workbook));
-
-            int rowNum = 1;
-            for (ReportStat stat : monthlyRevenue) {
-                Row row = sheet.createRow(rowNum++);
-                row.createCell(0).setCellValue(stat.getLabel());
-                row.createCell(1).setCellValue(stat.getDoubleValue());
-            }
-
-            sheet.autoSizeColumn(0);
-            sheet.autoSizeColumn(1);
-
-            try (FileOutputStream outputStream = new FileOutputStream(file)) {
-                workbook.write(outputStream);
-            }
+            // Sheet 1: Doanh thu
+            Sheet s1 = workbook.createSheet("Doanh thu " + year);
+            Row h1 = s1.createRow(0); h1.createCell(0).setCellValue("Tháng"); h1.createCell(1).setCellValue("Doanh thu (VNĐ)"); h1.createCell(2).setCellValue("Số đơn mượn");
+            int r = 1; for (ReportStat s : rev) { Row row = s1.createRow(r++); row.createCell(0).setCellValue(s.getLabel()); row.createCell(1).setCellValue(s.getDoubleValue()); row.createCell(2).setCellValue(s.getValue()); }
+            
+            // Sheet 2: Top Sách
+            Sheet s2 = workbook.createSheet("Top Sách");
+            Row h2 = s2.createRow(0); h2.createCell(0).setCellValue("Tên sách"); h2.createCell(1).setCellValue("Lượt mượn"); h2.createCell(2).setCellValue("Doanh thu (VNĐ)");
+            r = 1; for (ReportStat s : books) { Row row = s2.createRow(r++); row.createCell(0).setCellValue(s.getLabel()); row.createCell(1).setCellValue(s.getValue()); row.createCell(2).setCellValue(s.getDoubleValue()); }
+            
+            // Sheet 3: Thể loại
+            Sheet s3 = workbook.createSheet("Thể loại");
+            Row h3 = s3.createRow(0); h3.createCell(0).setCellValue("Thể loại"); h3.createCell(1).setCellValue("Số đầu sách"); h3.createCell(2).setCellValue("Tổng lượt mượn");
+            r = 1; for (ReportStat s : cats) { Row row = s3.createRow(r++); row.createCell(0).setCellValue(s.getLabel()); row.createCell(1).setCellValue(s.getValue()); row.createCell(2).setCellValue(s.getDoubleValue()); }
+            
+            // Sheet 4: Khách hàng
+            Sheet s4 = workbook.createSheet("Khách hàng");
+            Row h4 = s4.createRow(0); h4.createCell(0).setCellValue("Tên khách hàng"); h4.createCell(1).setCellValue("Số đơn"); h4.createCell(2).setCellValue("Tổng chi (VNĐ)");
+            r = 1; for (ReportStat s : custs) { Row row = s4.createRow(r++); row.createCell(0).setCellValue(s.getLabel()); row.createCell(1).setCellValue(s.getValue()); row.createCell(2).setCellValue(s.getDoubleValue()); }
+            
+            // Sheet 5: Quá hạn
+            Sheet s5 = workbook.createSheet("Quá hạn");
+            Row h5 = s5.createRow(0); h5.createCell(0).setCellValue("Mã đơn"); h5.createCell(1).setCellValue("Khách hàng"); h5.createCell(2).setCellValue("Hạn trả"); h5.createCell(3).setCellValue("Tiền phạt dự kiến (VNĐ)");
+            r = 1; for (RentalOrder o : overdue) { Row row = s5.createRow(r++); row.createCell(0).setCellValue(o.getOrderCode()); row.createCell(1).setCellValue(o.getCustomerName()); row.createCell(2).setCellValue(o.getExpectedReturnDate()!=null?o.getExpectedReturnDate().toString():""); row.createCell(3).setCellValue(o.getTotalAmount()); }
+            
+            try (FileOutputStream out = new FileOutputStream(file)) { workbook.write(out); }
             return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
+        } catch (Exception e) { return false; }
     }
 
     private static CellStyle createHeaderStyle(Workbook workbook) {

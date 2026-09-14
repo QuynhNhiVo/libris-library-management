@@ -32,6 +32,8 @@ public class DatabaseConnection {
             props.setProperty("foreign_keys", "ON");
             props.setProperty("busy_timeout", "30000");
 
+            // Debug: print DB URL being used to help diagnose connection issues
+            System.out.println("[DatabaseConnection] Connecting to: " + Constants.URL);
             Connection conn = DriverManager.getConnection(Constants.URL, props);
 
             try (Statement stmt = conn.createStatement()) {
@@ -116,7 +118,7 @@ public class DatabaseConnection {
                 if (line.trim().startsWith("--") || line.trim().isEmpty()) {
                     continue;
                 }
-                sql.append(line);
+                sql.append(line).append("\n");
                 // Khi gặp dấu ; thì thực thi câu lệnh
                 if (line.trim().endsWith(";")) {
                     String statement = sql.toString();
@@ -142,7 +144,7 @@ public class DatabaseConnection {
     }
 
     public static String getDatabasePath() {
-        return Constants.DATABASE_NAME + ".db";
+        return Constants.DATABASE_FULL_PATH;
     }
 
     /* 

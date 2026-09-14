@@ -20,6 +20,7 @@ public class RentalOrder {
     private int totalAmount;
 
     private List<RentalOrderDetail> details = new ArrayList<>();
+    private int detailCount = 0;
 
     public RentalOrder() {
     }
@@ -149,6 +150,14 @@ public class RentalOrder {
 
     public void setDetails(List<RentalOrderDetail> details) {
         this.details = details;
+    }
+
+    public int getDetailCount() {
+        return detailCount;
+    }
+
+    public void setDetailCount(int detailCount) {
+        this.detailCount = detailCount;
     }
 
     

@@ -44,8 +44,11 @@ public class RentalOrderDAO {
     // Lấy tất cả đơn thuê 
     public List<RentalOrder> getAllOrders() throws SQLException {
         List<RentalOrder> orders = new ArrayList<>();
-        String query = "SELECT o.*, c.CustomerCode as CustomerCode, c.FullName as CustomerName FROM RentalOrders o " +
+        String query = "SELECT o.*, c.CustomerCode as CustomerCode, c.FullName as CustomerName, " +
+                   "COUNT(d.OrderDetailID) as DetailCount FROM RentalOrders o " +
                    "LEFT JOIN Customers c ON o.CustomerID = c.CustomerID " +
+                   "LEFT JOIN RentalOrderDetails d ON o.OrderID = d.OrderID " +
+                   "GROUP BY o.OrderID " +
                    "ORDER BY o.OrderID DESC";
 
         Connection conn = null;
@@ -71,7 +74,9 @@ public class RentalOrderDAO {
                 order.setTotalRentalFee(rs.getInt("TotalRentalFee"));
                 order.setLateFee(rs.getInt("LateFee"));
                 order.setTotalAmount(rs.getInt("TotalAmount"));
-                //order.setDetails(getOrderDetails(order.getOrderId()));
+                int count = rs.getInt("DetailCount");
+                order.setDetailCount(count);
+                // keep details empty here to avoid N+1 queries; details can be loaded on demand
                 orders.add(order);
             }
         } finally {

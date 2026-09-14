@@ -11,6 +11,7 @@ import com.libris.utils.DatabaseConnection;
 public class UserDAO {
     /** Login: Xác thực người dùng */
     public User login(String username, String password) throws SQLException {
+        System.out.println("[UserDAO] login() -> DB=" + com.libris.config.Constants.URL + ", username=" + username + ", password=" + password);
         String sql = "SELECT u.*, c.FullName, c.Email, c.Phone " +
                      "FROM Users u LEFT JOIN Customers c ON u.CustomerID = c.CustomerID " +
                      "WHERE u.Username = ? AND u.Password = ?";
