@@ -167,19 +167,7 @@ mvn test
 
 ---
 
-## 7. Demo & Hình ảnh giao diện
-
-| Màn hình Đăng nhập (Login View) | Màn hình Dashboard Thống kê |
-| :---: | :---: |
-| ![Login View Placeholder](https://via.placeholder.com/400x250?text=Login+View+Demo) | ![Dashboard Placeholder](https://via.placeholder.com/400x250?text=Dashboard+View+Demo) |
-
-| Quản lý Kho Sách (Books View) | Quản lý Mượn / Trả Sách (Rentals View) |
-| :---: | :---: |
-| ![Books View Placeholder](https://via.placeholder.com/400x250?text=Books+Management) | ![Rentals View Placeholder](https://via.placeholder.com/400x250?text=Rentals+Management) |
-
----
-
-## 8. Cấu trúc thư mục dự án
+## 7. Cấu trúc thư mục dự án
 
 ```
 libris-library-management/
