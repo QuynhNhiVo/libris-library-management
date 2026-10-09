@@ -25,12 +25,13 @@
 - [2. Vấn đề giải quyết & Giá trị mang lại](#2-vấn-đề-giải-quyết--giá-trị-mang-lại)
 - [3. Kiến trúc Hệ thống (System Architecture)](#3-kiến-trúc-hệ-thống-system-architecture)
 - [4. Các Tính năng Cốt lõi (Key Features)](#4-các-tính-năng-cốt-lõi-key-features)
-- [5. Công nghệ & Thư viện (Tech Stack)](#5-công-nghệ--thư-viện-tech-stack)
-- [6. Hướng dẫn Cài đặt (Getting Started)](#6-hướng-dẫn-cài-đặt-getting-started)
-- [7. Hướng dẫn Chi tiết các Cách Chạy Ứng dụng](#7-hướng-dẫn-chi-tiết-các-cách-chạy-ứng-dụng)
-- [8. Tài liệu Dự án & Báo cáo Trực tuyến (Online Documentation)](#8-tài-liệu-dự-án--báo-cáo-trực-tuyến-online-documentation)
-- [9. Cấu trúc Thư mục Dự án (Directory Structure)](#9-cấu-trúc-thư-mục-dự-án-directory-structure)
-- [10. Đóng góp & Bản quyền (License & Credits)](#10-đóng-góp--bản-quyền-license--credits)
+- [5. Giao diện Ứng dụng (Application Screenshots)](#5-giao-diện-ứng-dụng-application-screenshots)
+- [6. Công nghệ & Thư viện (Tech Stack)](#6-công-nghệ--thư-viện-tech-stack)
+- [7. Hướng dẫn Cài đặt (Getting Started)](#7-hướng-dẫn-cài-đặt-getting-started)
+- [8. Hướng dẫn Chi tiết các Cách Chạy Ứng dụng](#8-hướng-dẫn-chi-tiết-các-cách-chạy-ứng-dụng)
+- [9. Tài liệu Dự án & Báo cáo Trực tuyến (Online Documentation)](#9-tài-liệu-dự-án--báo-cáo-trực-tuyến-online-documentation)
+- [10. Cấu trúc Thư mục Dự án (Directory Structure)](#10-cấu-trúc-thư-mục-dự-án-directory-structure)
+- [11. Đóng góp & Bản quyền (License & Credits)](#11-đóng-góp--bản-quyền-license--credits)
 
 ---
 
@@ -122,7 +123,31 @@ Dự án tuân thủ nghiêm ngặt mô hình kiến trúc **3 tầng (Layered A
 
 ---
 
-## 5. Công nghệ & Thư viện (Tech Stack)
+## 5. Giao diện Ứng dụng (Application Screenshots)
+
+Dưới đây là một số hình ảnh giao diện nổi bật của ứng dụng:
+
+**1. Màn hình Đăng nhập (Login View)**
+![Login View](screenshots/Hinh_5.1_LoginView.png)
+
+**2. Màn hình Tổng quan - Dashboard (Admin)**
+![Dashboard View](screenshots/Hinh_5.2_DashboardView.png)
+
+**3. Quản lý Sách (Books View)**
+![Books View](screenshots/Hinh_5.3_BooksView.png)
+
+**4. Quản lý Đơn mượn (Orders View)**
+![Orders View](screenshots/Hinh_5.4_OrdersView.png)
+
+**5. Màn hình Mượn & Trả Sách (Rent View)**
+![Rent View](screenshots/Hinh_5.9_RentView.png)
+
+**6. Giao diện Độc giả - Thư viện Sách (Books View - Customer)**
+![Books View Customer](screenshots/Hinh_5.8_BooksView_Customer.png)
+
+---
+
+## 6. Công nghệ & Thư viện (Tech Stack)
 
 | Thành phần | Công nghệ / Thư viện | Phiên bản | Mô tả chi tiết |
 | :--- | :--- | :---: | :--- |
@@ -137,7 +162,7 @@ Dự án tuân thủ nghiêm ngặt mô hình kiến trúc **3 tầng (Layered A
 
 ---
 
-## 6. Hướng dẫn Cài đặt (Getting Started)
+## 7. Hướng dẫn Cài đặt (Getting Started)
 
 ### Yêu cầu Hệ thống (Prerequisites)
 * **Java Development Kit (JDK)**: Phiên bản **Java 17** trở lên (Khuyên dùng **JDK 25**).
@@ -157,7 +182,7 @@ Dự án tuân thủ nghiêm ngặt mô hình kiến trúc **3 tầng (Layered A
 
 ---
 
-## 7. Hướng dẫn Chi tiết các Cách Chạy Ứng dụng
+## 8. Hướng dẫn Chi tiết các Cách Chạy Ứng dụng
 
 Bạn có thể chạy ứng dụng Libris bằng một trong các cách dưới đây:
 
@@ -214,7 +239,7 @@ Sau khi khởi chạy ứng dụng, bạn có thể đăng nhập bằng các t�
 
 ---
 
-## 8. Tài liệu Dự án & Báo cáo Trực tuyến (Online Documentation)
+## 9. Tài liệu Dự án & Báo cáo Trực tuyến (Online Documentation)
 
 Toàn bộ tài liệu phân tích thiết kế, đặc tả yêu cầu và báo cáo kiểm thử của dự án đã được xuất bản trực tuyến tại các liên kết dưới đây:
 
@@ -229,7 +254,7 @@ Toàn bộ tài liệu phân tích thiết kế, đặc tả yêu cầu và báo
 
 ---
 
-## 9. Cấu trúc Thư mục Dự án (Directory Structure)
+## 10. Cấu trúc Thư mục Dự án (Directory Structure)
 
 ```
 libris-library-management/
@@ -260,7 +285,7 @@ libris-library-management/
 
 ---
 
-## 10. Đóng góp & Bản quyền (License & Credits)
+## 11. Đóng góp & Bản quyền (License & Credits)
 
 * **Dự án**: Đồ án môn học **IE303 - Công nghệ Java**
 * **Trường**: Đại học Công nghệ Thông tin - ĐHQG-HCM (UIT - VNUHCM)
